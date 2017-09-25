@@ -1,0 +1,71 @@
+﻿import React, { PureComponent, PropTypes } from 'react';
+import Comment from './Comment';
+import ReactDOM from 'react-dom';
+
+export default class CommentsBox extends PureComponent {
+    static propTypes = {
+        initialComments: React.PropTypes.array.isRequired
+    };
+
+    getInitialState() {
+        return {
+            comments: this.props.initialComments,
+            page: 1,
+            hasMore: true,
+            loadingMore: false
+        };
+    }
+
+    loadMoreClicked(evt) {
+        var nextPage = this.state.page + 1;
+        this.setState({
+            page: nextPage,
+            loadingMore: true
+        });
+
+        var url = evt.target.href;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.onload = () => {
+            var data = JSON.parse(xhr.responseText);
+            this.setState({
+                comments: this.state.comments.concat(data.comments),
+                hasMore: data.hasMore,
+                loadingMore: false
+            });
+        };
+        xhr.send();
+        evt.preventDefault();
+    }
+
+    render() {
+        var commentNodes = this.state.comments.map(comment =>
+            <Comment author={comment.Author}>{comment.Text}</Comment>
+        );
+
+        return (
+            <div className="comments">
+                <h1>Comments</h1>
+                <ol className="commentList">
+                    {commentNodes}
+                </ol>
+                {this.renderMoreLink()}
+            </div>
+        );
+    }
+
+    renderMoreLink() {
+        if (this.state.loadingMore) {
+            return <em>Loading...</em>;
+        } else if (this.state.hasMore) {
+            return (
+                <div onClick={this.loadMoreClicked}>
+                    Load More
+                </div>
+            );
+        } else {
+            return <em>No more comments</em>;
+        }
+    }
+}
+
