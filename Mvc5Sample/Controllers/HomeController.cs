@@ -60,7 +60,7 @@ namespace Mvc5Sample.Controllers
             {
                 Comments = _comments.Take(COMMENTS_PER_PAGE),
                 CommentsPerPage = COMMENTS_PER_PAGE,
-                Page = 1
+                Page = 1;
             });
         }
 

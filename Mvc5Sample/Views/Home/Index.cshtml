@@ -6,4 +6,5 @@
     <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
 </div>
 
-@Html.React("Components.CommentsBox", new { initialComments = Model.Comments })
+
+@Html.React("Components.CommentsBox", new { initialComments = Model.Comments }, clientOnly:true)

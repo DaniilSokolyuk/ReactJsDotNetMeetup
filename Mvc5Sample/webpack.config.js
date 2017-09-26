@@ -1,14 +1,4 @@
-﻿/*
- *  Copyright (c) 2015, Facebook, Inc.
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree. An additional grant 
- *  of patent rights can be found in the PATENTS file in the same directory.
- */
-
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const autoprefixer = require('autoprefixer');
+﻿const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
@@ -41,6 +31,8 @@ module.exports = [
             sourcePrefix: '  ',
             filename: '[name].js'
         },
+        plugins,
+
         module: {
             loaders: [
                 {
@@ -64,6 +56,7 @@ module.exports = [
                 },
                 {
                     test: /\.css$/,
+                    include: p('ClientApp/css'),
                     loader: ExtractTextPlugin.extract([
                         'css?-minimize',
                     ]),
@@ -89,7 +82,6 @@ module.exports = [
             sourcePrefix: '  ',
             filename: '[name].js'
         },
-        plugins,
         module: {
             loaders: [
                 {

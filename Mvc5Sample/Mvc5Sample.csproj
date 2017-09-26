@@ -157,6 +157,7 @@
     <Content Include="ClientApp\components\index.js" />
     <Content Include="ClientApp\components\Comment.jsx" />
     <Content Include="ClientApp\components\Avatar.jsx" />
+    <Content Include="ClientApp\css\Sample.css" />
     <Content Include="ClientApp\server.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -177,9 +178,11 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="webpack.config.js" />
+    <Content Include="webpack.watch.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ClientApp\common\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

@@ -17,9 +17,9 @@ export default class CommentsBox extends Component {
             loadingMore: true
         });
 
-        var url = evt.target.href;
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
+        xhr.open('GET', "/Home/Comments/?page=" + nextPage, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onload = () => {
             var data = JSON.parse(xhr.responseText);
             this.setState({

@@ -2,7 +2,8 @@
   "name": "React",
   "version": "1.0.0",
   "scripts": {
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "watch": "node webpack.watch.js"
   },
   "private": true,
   "dependencies": {
@@ -16,7 +17,6 @@
   "devDependencies": {
     "autoprefixer": "6.7.7",
     "babel-core": "6.24.0",
-    "babel-eslint": "7.2.0",
     "babel-loader": "6.4.1",
     "babel-plugin-transform-decorators-legacy": "1.3.4",
     "babel-preset-es2015": "6.24.0",
@@ -26,6 +26,8 @@
     "extract-text-webpack-plugin": "1.0.1",
     "file-loader": "0.10.1",
     "imports-loader": "0.7.1",
+    "postcss-loader": "1.3.3",
+    "css-loader": "0.27.3",
     "style-loader": "0.15.0",
     "stylus": "0.54.5",
     "stylus-loader": "3.0.1",
