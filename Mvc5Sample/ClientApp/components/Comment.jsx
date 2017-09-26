@@ -1,12 +1,7 @@
-﻿import React, { PureComponent, PropTypes } from 'react';
+﻿import React, { Component, PropTypes } from 'react';
 import Avatar from './Avatar';
 
-export default class Comment extends PureComponent {
-
-    static propTypes = {
-        author: React.PropTypes.object.isRequired,
-    };
-
+export default class Comment extends Component {
     render() {
         return (
             <li>
@@ -17,3 +12,7 @@ export default class Comment extends PureComponent {
         );
     }
 }
+
+Comment.propTypes = {
+    author: React.PropTypes.object.isRequired,
+};

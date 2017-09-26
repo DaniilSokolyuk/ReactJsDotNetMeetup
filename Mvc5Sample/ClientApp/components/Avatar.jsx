@@ -1,11 +1,6 @@
 ﻿import React, { PureComponent, PropTypes } from 'react';
 
 export default class Avatar extends PureComponent {
-
-    static propTypes = {
-        author: React.PropTypes.object.isRequired,
-    };
-
     render() {
         return (
             <img
@@ -22,3 +17,7 @@ export default class Avatar extends PureComponent {
         return 'https://avatars.githubusercontent.com/' + author.GithubUsername + '?s=50';
     }
 }
+
+Avatar.propTypes = {
+    author: React.PropTypes.object.isRequired,
+};

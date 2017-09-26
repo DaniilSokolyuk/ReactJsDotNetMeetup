@@ -1,22 +1,16 @@
-﻿import React, { PureComponent, PropTypes } from 'react';
+﻿import React, { Component, PropTypes } from 'react';
 import Comment from './Comment';
-import ReactDOM from 'react-dom';
 
-export default class CommentsBox extends PureComponent {
-    static propTypes = {
-        initialComments: React.PropTypes.array.isRequired
+export default class CommentsBox extends Component {
+
+    state = {
+        comments: this.props.initialComments,
+        page: 1,
+        hasMore: true,
+        loadingMore: false
     };
 
-    getInitialState() {
-        return {
-            comments: this.props.initialComments,
-            page: 1,
-            hasMore: true,
-            loadingMore: false
-        };
-    }
-
-    loadMoreClicked(evt) {
+    loadMoreClicked = (evt) => {
         var nextPage = this.state.page + 1;
         this.setState({
             page: nextPage,
@@ -36,7 +30,7 @@ export default class CommentsBox extends PureComponent {
         };
         xhr.send();
         evt.preventDefault();
-    }
+    };
 
     render() {
         var commentNodes = this.state.comments.map(comment =>
@@ -54,7 +48,7 @@ export default class CommentsBox extends PureComponent {
         );
     }
 
-    renderMoreLink() {
+    renderMoreLink = () => {
         if (this.state.loadingMore) {
             return <em>Loading...</em>;
         } else if (this.state.hasMore) {
@@ -66,6 +60,9 @@ export default class CommentsBox extends PureComponent {
         } else {
             return <em>No more comments</em>;
         }
-    }
+    };
 }
 
+CommentsBox.propTypes = {
+    initialComments: React.PropTypes.array.isRequired
+};
