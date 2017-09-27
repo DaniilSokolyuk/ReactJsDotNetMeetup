@@ -1,6 +1,7 @@
 ﻿const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
+const autoprefixer = require('autoprefixer');
 
 function p(name) {
     return path.resolve(__dirname, name);
@@ -32,7 +33,17 @@ module.exports = [
             filename: '[name].js'
         },
         plugins,
-
+        postcss: [
+            autoprefixer({
+                browsers: [
+                    'Chrome >= 49',
+                    'Firefox >= 45',
+                    'IE >= 11',
+                    'Opera >= 36',
+                    'Safari >= 9',
+                ],
+            }),
+        ],
         module: {
             loaders: [
                 {
@@ -103,6 +114,7 @@ module.exports = [
                 './ClientApp',
                 'node_modules',
             ],
-        }
+        },
+        externals: { react: 'React' },
     }
 ];

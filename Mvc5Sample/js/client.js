@@ -81,8 +81,10 @@
   window.React = _react2.default;
   window.ReactDOM = _reactDom2.default;
   
+  __webpack_require__(178);
+  
   // Expose components globally so ReactJS.NET can use them
-  var Components = __webpack_require__(178);
+  var Components = __webpack_require__(179);
 
 /***/ },
 /* 1 */
@@ -21521,26 +21523,32 @@
 
 /***/ },
 /* 178 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-  /* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Components"] = __webpack_require__(179);
-  /* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+  // removed by extract-text-webpack-plugin
 
 /***/ },
 /* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
+  /* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Components"] = __webpack_require__(180);
+  /* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
   'use strict';
   
-  var _Avatar = __webpack_require__(180);
+  var _Avatar = __webpack_require__(181);
   
   var _Avatar2 = _interopRequireDefault(_Avatar);
   
-  var _Comment = __webpack_require__(181);
+  var _Comment = __webpack_require__(182);
   
   var _Comment2 = _interopRequireDefault(_Comment);
   
-  var _CommentsBox = __webpack_require__(182);
+  var _CommentsBox = __webpack_require__(183);
   
   var _CommentsBox2 = _interopRequireDefault(_CommentsBox);
   
@@ -21554,7 +21562,7 @@
   };
 
 /***/ },
-/* 180 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -21615,7 +21623,7 @@
   };
 
 /***/ },
-/* 181 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -21630,7 +21638,7 @@
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _Avatar = __webpack_require__(180);
+  var _Avatar = __webpack_require__(181);
   
   var _Avatar2 = _interopRequireDefault(_Avatar);
   
@@ -21680,7 +21688,7 @@
   };
 
 /***/ },
-/* 182 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -21695,7 +21703,7 @@
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _Comment = __webpack_require__(181);
+  var _Comment = __webpack_require__(182);
   
   var _Comment2 = _interopRequireDefault(_Comment);
   
