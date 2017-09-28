@@ -1,4 +1,6 @@
-﻿import React, { Component, PropTypes } from 'react';
+﻿import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import Avatar from './Avatar';
 
 export default class Comment extends Component {
@@ -14,5 +16,5 @@ export default class Comment extends Component {
 }
 
 Comment.propTypes = {
-    author: React.PropTypes.object.isRequired,
+    author: PropTypes.object.isRequired,
 };

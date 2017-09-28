@@ -14,6 +14,8 @@ const plugins = [
     new ExtractTextPlugin('../css/[name].css', {
         allChunks: true,
     }),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
         compress: {
             warnings: false,
@@ -91,7 +93,8 @@ module.exports = [
         output: {
             path: p('js/'),
             sourcePrefix: '  ',
-            filename: '[name].js'
+            filename: '[name].js',
+            libraryTarget: 'this'
         },
         module: {
             loaders: [
@@ -107,6 +110,13 @@ module.exports = [
                 },
             ],
         },
+        plugins: [
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': '"production"'
+            }),
+            new webpack.optimize.OccurenceOrderPlugin(),
+            new webpack.optimize.DedupePlugin()
+        ],
         resolve: {
             // Allow require('./blah') to require blah.jsx
             extensions: ['', '.js', '.jsx'],
@@ -114,7 +124,6 @@ module.exports = [
                 './ClientApp',
                 'node_modules',
             ],
-        },
-        externals: { react: 'React' },
+        }
     }
 ];

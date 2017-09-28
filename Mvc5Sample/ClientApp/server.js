@@ -10,4 +10,13 @@
 // All JavaScript in here will be loaded server-side
 
 // Expose components globally so ReactJS.NET can use them
+//import React from 'react';
+//import ReactDOM from 'react-dom';
+//import ReactDOMServer from 'react-dom/server';
+
+
+global.React = require('react');
+global.ReactDOM = require('react-dom');
+global.ReactDOMServer = require('react-dom/server');
+
 var Components = require('expose?Components!./components');

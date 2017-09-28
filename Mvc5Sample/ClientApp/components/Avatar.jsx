@@ -1,4 +1,5 @@
-﻿import React, { PureComponent, PropTypes } from 'react';
+﻿import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
 export default class Avatar extends PureComponent {
     render() {
@@ -19,5 +20,5 @@ export default class Avatar extends PureComponent {
 }
 
 Avatar.propTypes = {
-    author: React.PropTypes.object.isRequired,
+    author: PropTypes.object.isRequired,
 };
