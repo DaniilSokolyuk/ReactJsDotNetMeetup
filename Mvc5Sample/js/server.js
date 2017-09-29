@@ -87,10 +87,10 @@
 
 
   global.React = __webpack_require__(1);
-  global.ReactDOM = __webpack_require__(18);
-  global.ReactDOMServer = __webpack_require__(30);
+  global.ReactDOM = __webpack_require__(7);
+  global.ReactDOMServer = __webpack_require__(31);
 
-  var Components = __webpack_require__(11);
+  var Components = __webpack_require__(13);
   /* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
@@ -100,7 +100,7 @@
   'use strict';
 
   if (true) {
-    module.exports = __webpack_require__(31);
+    module.exports = __webpack_require__(32);
   } else {
     module.exports = require('./cjs/react.development.js');
   }
@@ -108,6 +108,40 @@
 
 /***/ },
 /* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+
+  if (false) {
+    var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
+      Symbol.for &&
+      Symbol.for('react.element')) ||
+      0xeac7;
+
+    var isValidElement = function(object) {
+      return typeof object === 'object' &&
+        object !== null &&
+        object.$$typeof === REACT_ELEMENT_TYPE;
+    };
+
+    // By explicitly using `prop-types` you are opting into new development behavior.
+    // http://fb.me/prop-types-in-prod
+    var throwOnDirectAccess = true;
+    module.exports = require('./factoryWithTypeCheckers')(isValidElement, throwOnDirectAccess);
+  } else {
+    // By explicitly using `prop-types` you are opting into new production behavior.
+    // http://fb.me/prop-types-in-prod
+    module.exports = __webpack_require__(14)();
+  }
+
+
+/***/ },
+/* 3 */
 /***/ function(module, exports) {
 
   /*
@@ -203,40 +237,6 @@
 
 
 /***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-  /**
-   * Copyright (c) 2013-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   */
-
-  if (false) {
-    var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
-      Symbol.for &&
-      Symbol.for('react.element')) ||
-      0xeac7;
-
-    var isValidElement = function(object) {
-      return typeof object === 'object' &&
-        object !== null &&
-        object.$$typeof === REACT_ELEMENT_TYPE;
-    };
-
-    // By explicitly using `prop-types` you are opting into new development behavior.
-    // http://fb.me/prop-types-in-prod
-    var throwOnDirectAccess = true;
-    module.exports = require('./factoryWithTypeCheckers')(isValidElement, throwOnDirectAccess);
-  } else {
-    // By explicitly using `prop-types` you are opting into new production behavior.
-    // http://fb.me/prop-types-in-prod
-    module.exports = __webpack_require__(12)();
-  }
-
-
-/***/ },
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -252,7 +252,7 @@
 
   var _react2 = _interopRequireDefault(_react);
 
-  var _propTypes = __webpack_require__(3);
+  var _propTypes = __webpack_require__(2);
 
   var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -317,7 +317,7 @@
 
   var _react2 = _interopRequireDefault(_react);
 
-  var _propTypes = __webpack_require__(3);
+  var _propTypes = __webpack_require__(2);
 
   var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -371,7 +371,52 @@
   };
 
 /***/ },
-/* 6 */
+/* 6 */,
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+
+  function checkDCE() {
+    /* global __REACT_DEVTOOLS_GLOBAL_HOOK__ */
+    if (
+      typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ === 'undefined' ||
+      typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE !== 'function'
+    ) {
+      return;
+    }
+    if (false) {
+      // This branch is unreachable because this function is only called
+      // in production, but the condition is true only in development.
+      // Therefore if the branch is still here, dead code elimination wasn't
+      // properly applied.
+      // Don't change the message. React DevTools relies on it. Also make sure
+      // this message doesn't occur elsewhere in this function, or it will cause
+      // a false positive.
+      throw new Error('^_^');
+    }
+    try {
+      // Verify that the code above has been dead code eliminated (DCE'd).
+      __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(checkDCE);
+    } catch (err) {
+      // DevTools shouldn't crash React, no matter what.
+      // We should still report in case we break this code.
+      console.error(err);
+    }
+  }
+
+  if (true) {
+    // DCE check should happen before ReactDOM bundle executes so that
+    // DevTools can report bad minification during injection.
+    checkDCE();
+    module.exports = __webpack_require__(19);
+  } else {
+    module.exports = require('./cjs/react-dom.development.js');
+  }
+
+
+/***/ },
+/* 8 */
 /***/ function(module, exports) {
 
   "use strict";
@@ -412,7 +457,7 @@
   module.exports = emptyFunction;
 
 /***/ },
-/* 7 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -434,7 +479,7 @@
   module.exports = emptyObject;
 
 /***/ },
-/* 8 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -492,7 +537,7 @@
   module.exports = invariant;
 
 /***/ },
-/* 9 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -507,7 +552,7 @@
 
   var _react2 = _interopRequireDefault(_react);
 
-  var _propTypes = __webpack_require__(3);
+  var _propTypes = __webpack_require__(2);
 
   var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -588,6 +633,7 @@
       _createClass(CommentsBox, [{
           key: 'render',
           value: function render() {
+
               var commentNodes = this.state.comments.map(function (comment) {
                   return _react2.default.createElement(
                       _Comment2.default,
@@ -625,7 +671,7 @@
   };
 
 /***/ },
-/* 10 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -638,7 +684,7 @@
 
   var _Comment2 = _interopRequireDefault(_Comment);
 
-  var _CommentsBox = __webpack_require__(9);
+  var _CommentsBox = __webpack_require__(11);
 
   var _CommentsBox2 = _interopRequireDefault(_CommentsBox);
 
@@ -652,14 +698,14 @@
   };
 
 /***/ },
-/* 11 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-  /* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Components"] = __webpack_require__(10);
+  /* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Components"] = __webpack_require__(12);
   /* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 12 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -671,9 +717,9 @@
 
   'use strict';
 
-  var emptyFunction = __webpack_require__(14);
-  var invariant = __webpack_require__(15);
-  var ReactPropTypesSecret = __webpack_require__(13);
+  var emptyFunction = __webpack_require__(16);
+  var invariant = __webpack_require__(17);
+  var ReactPropTypesSecret = __webpack_require__(15);
 
   module.exports = function() {
     function shim(props, propName, componentName, location, propFullName, secret) {
@@ -723,7 +769,7 @@
 
 
 /***/ },
-/* 13 */
+/* 15 */
 /***/ function(module, exports) {
 
   /**
@@ -741,11 +787,11 @@
 
 
 /***/ },
-/* 14 */
-6,
-/* 15 */
-8,
 /* 16 */
+8,
+/* 17 */
+10,
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
   /*
@@ -757,7 +803,7 @@
    This source code is licensed under the MIT license found in the
    LICENSE file in the root directory of this source tree.
   */
-  'use strict';var h=__webpack_require__(2);__webpack_require__(8);var m=__webpack_require__(1),n=__webpack_require__(7),aa=__webpack_require__(25),ba=__webpack_require__(28);
+  'use strict';var h=__webpack_require__(3);__webpack_require__(10);var m=__webpack_require__(1),n=__webpack_require__(9),aa=__webpack_require__(26),ba=__webpack_require__(29);
   function w(a){for(var b=arguments.length-1,g="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)g+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(g+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}
   function x(a){switch(a){case "svg":return"http://www.w3.org/2000/svg";case "math":return"http://www.w3.org/1998/Math/MathML";default:return"http://www.w3.org/1999/xhtml"}}
   var y={Namespaces:{html:"http://www.w3.org/1999/xhtml",mathml:"http://www.w3.org/1998/Math/MathML",svg:"http://www.w3.org/2000/svg"},getIntrinsicNamespace:x,getChildNamespace:function(a,b){return null==a||"http://www.w3.org/1999/xhtml"===a?x(b):"http://www.w3.org/2000/svg"===a&&"foreignObject"===b?"http://www.w3.org/1999/xhtml":a}},ca={children:!0,dangerouslySetInnerHTML:!0,autoFocus:!0,defaultValue:!0,defaultChecked:!0,innerHTML:!0,suppressContentEditableWarning:!0,style:!0};
@@ -793,7 +839,7 @@
 
 
 /***/ },
-/* 17 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
   /*
@@ -806,7 +852,7 @@
    LICENSE file in the root directory of this source tree.
    Modernizr 3.0.0pre (Custom Build) | MIT
   */
-  'use strict';var aa=__webpack_require__(1);__webpack_require__(8);var l=__webpack_require__(20),n=__webpack_require__(2),ba=__webpack_require__(19),ca=__webpack_require__(6),da=__webpack_require__(7),ea=__webpack_require__(29),fa=__webpack_require__(21),ha=__webpack_require__(22),ia=__webpack_require__(23);
+  'use strict';var aa=__webpack_require__(1);__webpack_require__(10);var l=__webpack_require__(21),n=__webpack_require__(3),ba=__webpack_require__(20),ca=__webpack_require__(8),da=__webpack_require__(9),ea=__webpack_require__(30),fa=__webpack_require__(22),ha=__webpack_require__(23),ia=__webpack_require__(24);
   function w(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:w("227");
   function ja(a){switch(a){case "svg":return"http://www.w3.org/2000/svg";case "math":return"http://www.w3.org/1998/Math/MathML";default:return"http://www.w3.org/1999/xhtml"}}
   var ka={Namespaces:{html:"http://www.w3.org/1999/xhtml",mathml:"http://www.w3.org/1998/Math/MathML",svg:"http://www.w3.org/2000/svg"},getIntrinsicNamespace:ja,getChildNamespace:function(a,b){return null==a||"http://www.w3.org/1999/xhtml"===a?ja(b):"http://www.w3.org/2000/svg"===a&&"foreignObject"===b?"http://www.w3.org/1999/xhtml":a}},la=null,oa={};
@@ -1055,51 +1101,7 @@
 
 
 /***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-
-  function checkDCE() {
-    /* global __REACT_DEVTOOLS_GLOBAL_HOOK__ */
-    if (
-      typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ === 'undefined' ||
-      typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE !== 'function'
-    ) {
-      return;
-    }
-    if (false) {
-      // This branch is unreachable because this function is only called
-      // in production, but the condition is true only in development.
-      // Therefore if the branch is still here, dead code elimination wasn't
-      // properly applied.
-      // Don't change the message. React DevTools relies on it. Also make sure
-      // this message doesn't occur elsewhere in this function, or it will cause
-      // a false positive.
-      throw new Error('^_^');
-    }
-    try {
-      // Verify that the code above has been dead code eliminated (DCE'd).
-      __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(checkDCE);
-    } catch (err) {
-      // DevTools shouldn't crash React, no matter what.
-      // We should still report in case we break this code.
-      console.error(err);
-    }
-  }
-
-  if (true) {
-    // DCE check should happen before ReactDOM bundle executes so that
-    // DevTools can report bad minification during injection.
-    checkDCE();
-    module.exports = __webpack_require__(17);
-  } else {
-    module.exports = require('./cjs/react-dom.development.js');
-  }
-
-
-/***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -1113,7 +1115,7 @@
    * @typechecks
    */
 
-  var emptyFunction = __webpack_require__(6);
+  var emptyFunction = __webpack_require__(8);
 
   /**
    * Upstream version of event listener. Does not take into account specific
@@ -1178,7 +1180,7 @@
   module.exports = EventListener;
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports) {
 
   /**
@@ -1216,7 +1218,7 @@
   module.exports = ExecutionEnvironment;
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -1230,7 +1232,7 @@
    * 
    */
 
-  var isTextNode = __webpack_require__(27);
+  var isTextNode = __webpack_require__(28);
 
   /*eslint-disable no-bitwise */
 
@@ -1258,7 +1260,7 @@
   module.exports = containsNode;
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports) {
 
   /**
@@ -1287,7 +1289,7 @@
   module.exports = focusNode;
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports) {
 
   'use strict';
@@ -1328,7 +1330,7 @@
   module.exports = getActiveElement;
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports) {
 
   'use strict';
@@ -1363,7 +1365,7 @@
   module.exports = hyphenate;
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -1377,7 +1379,7 @@
 
   'use strict';
 
-  var hyphenate = __webpack_require__(24);
+  var hyphenate = __webpack_require__(25);
 
   var msPattern = /^ms-/;
 
@@ -1404,7 +1406,7 @@
   module.exports = hyphenateStyleName;
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports) {
 
   'use strict';
@@ -1431,7 +1433,7 @@
   module.exports = isNode;
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -1445,7 +1447,7 @@
    * @typechecks
    */
 
-  var isNode = __webpack_require__(26);
+  var isNode = __webpack_require__(27);
 
   /**
    * @param {*} object The object to check.
@@ -1458,7 +1460,7 @@
   module.exports = isTextNode;
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports) {
 
   /**
@@ -1490,7 +1492,7 @@
   module.exports = memoizeStringOnly;
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports) {
 
   /**
@@ -1560,20 +1562,20 @@
   module.exports = shallowEqual;
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
 
   if (true) {
-    module.exports = __webpack_require__(16);
+    module.exports = __webpack_require__(18);
   } else {
     module.exports = require('./cjs/react-dom-server.browser.development.js');
   }
 
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
   /*
@@ -1585,7 +1587,7 @@
    This source code is licensed under the MIT license found in the
    LICENSE file in the root directory of this source tree.
   */
-  'use strict';var f=__webpack_require__(2),p=__webpack_require__(33);__webpack_require__(34);var r=__webpack_require__(32);
+  'use strict';var f=__webpack_require__(3),p=__webpack_require__(34);__webpack_require__(35);var r=__webpack_require__(33);
   function t(a){for(var b=arguments.length-1,d="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,e=0;e<b;e++)d+="\x26args[]\x3d"+encodeURIComponent(arguments[e+1]);b=Error(d+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}
   var u={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};function v(a,b,d){this.props=a;this.context=b;this.refs=p;this.updater=d||u}v.prototype.isReactComponent={};v.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?t("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};v.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};
   function w(a,b,d){this.props=a;this.context=b;this.refs=p;this.updater=d||u}function x(){}x.prototype=v.prototype;var y=w.prototype=new x;y.constructor=w;f(y,v.prototype);y.isPureReactComponent=!0;function z(a,b,d){this.props=a;this.context=b;this.refs=p;this.updater=d||u}var A=z.prototype=new x;A.constructor=z;f(A,v.prototype);A.unstable_isAsyncReactComponent=!0;A.render=function(){return this.props.children};
@@ -1602,10 +1604,10 @@
 
 
 /***/ },
-/* 32 */
-6,
 /* 33 */
-7,
+8,
 /* 34 */
-8
+9,
+/* 35 */
+10
 /******/ ])))));

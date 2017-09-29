@@ -22,11 +22,13 @@ namespace Mvc5Sample
 
 		    engineSwitcher.EngineFactories.Clear();
 
-            //engineSwitcher.EngineFactories.Add(new ChakraCoreJsEngineFactory());
-            //engineSwitcher.DefaultEngineName = ChakraCoreJsEngine.EngineName;
+		    engineSwitcher.EngineFactories.Add(new V8JsEngineFactory());
+		    engineSwitcher.DefaultEngineName = V8JsEngine.EngineName;
 
-            engineSwitcher.EngineFactories.Add(new V8JsEngineFactory());
-            engineSwitcher.DefaultEngineName = V8JsEngine.EngineName;
+
+            engineSwitcher.EngineFactories.Add(new ChakraCoreJsEngineFactory());
+            engineSwitcher.DefaultEngineName = ChakraCoreJsEngine.EngineName;
+
         }
-	}
+    }
 }

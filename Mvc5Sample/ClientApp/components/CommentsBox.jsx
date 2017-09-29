@@ -1,6 +1,5 @@
 ﻿import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import Comment from './Comment';
 
 export default class CommentsBox extends Component {
@@ -10,12 +9,7 @@ export default class CommentsBox extends Component {
         page: 1,
         hasMore: true,
         loadingMore: false,
-        isClient: false
     };
-
-    componentDidMount() {
-        this.setState({ isClient: true });
-    }
 
     loadMoreClicked = (evt) => {
         var nextPage = this.state.page + 1;
@@ -41,14 +35,12 @@ export default class CommentsBox extends Component {
 
     render() {
 
-        const { isClient } = this.state;
         var commentNodes = this.state.comments.map(comment =>
             <Comment author={comment.Author}>{comment.Text}</Comment>
         );
 
         return (
             <div className="comments">
-                {isClient && <p>sdfyh</p>}
                 <h1>Comments</h1>
                 <ol className="commentList">
                     {commentNodes}
