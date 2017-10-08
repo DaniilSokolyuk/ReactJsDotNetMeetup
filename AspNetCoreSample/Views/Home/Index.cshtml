@@ -3,6 +3,12 @@
 
 
 
+@Html.React("Components.SimpleTweet", new { }, clientOnly: false)
+
+
+
+
+
 @Html.React("Components.CommentsBox", new { initialComments = Model.Comments })
 
 

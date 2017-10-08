@@ -1,0 +1,6 @@
+﻿@using AspNetCoreSample.Controllers
+@using Newtonsoft.Json
+@model IEnumerable<Tweetinvi.Models.ITweet>
+
+    
+@JsonConvert.SerializeObject(Model)
