@@ -1,19 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net461</TargetFramework>
+        <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="JSPool" Version="2.0.1" />
-        <PackageReference Include="React.Web.Mvc4" Version="3.0.1" />
-        <PackageReference Include="JavaScriptEngineSwitcher.ChakraCore" Version="2.4.8" />
-        <PackageReference Include="JavaScriptEngineSwitcher.ChakraCore.Native.win-x64" Version="2.4.6" />
-        <PackageReference Include="JavaScriptEngineSwitcher.Core" Version="2.4.9" />
-        <PackageReference Include="JavaScriptEngineSwitcher.Msie" Version="2.4.9" />
-        <PackageReference Include="JavaScriptEngineSwitcher.V8" Version="2.4.2" />
-        <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x64" Version="2.4.2" />
-        <PackageReference Include="JSPool" Version="2.0.1" />
+        <PackageReference Include="React.Core" Version="3.0.1" />
     </ItemGroup>
 
 </Project>

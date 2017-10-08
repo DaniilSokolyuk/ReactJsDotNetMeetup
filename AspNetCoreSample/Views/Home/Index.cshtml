@@ -1,0 +1,10 @@
+﻿@using AspNetCoreSample.Controllers
+@model AspNetCoreSample.Controllers.IndexViewModel
+
+
+
+@Html.React("Components.CommentsBox", new { initialComments = Model.Comments }, clientOnly: true)
+
+
+
+

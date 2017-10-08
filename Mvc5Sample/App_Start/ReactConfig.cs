@@ -1,7 +1,6 @@
 using JavaScriptEngineSwitcher.ChakraCore;
 using JavaScriptEngineSwitcher.Core;
 using JavaScriptEngineSwitcher.V8;
-using JsPoolOptimization;
 using Mvc5Sample;
 using React;
 
@@ -16,8 +15,8 @@ namespace Mvc5Sample
             JsEngineSwitcher engineSwitcher = JsEngineSwitcher.Instance;
             engineSwitcher.EngineFactories
                 .AddV8()
-                .AddChakraCore()
-                ;
+                .AddChakraCore();
+
             engineSwitcher.DefaultEngineName = ChakraCoreJsEngine.EngineName;
 
             ReactSiteConfiguration.Configuration
