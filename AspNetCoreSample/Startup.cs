@@ -4,7 +4,6 @@ using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
 using JsPoolOptimization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -31,10 +30,10 @@ namespace AspNetCoreSample
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 });
 
-            services.AddJsEngineSwitcher(options => options.DefaultEngineName = ChakraCoreJsEngine.EngineName)
+            services
+                .AddJsEngineSwitcher(options => options.DefaultEngineName = ChakraCoreJsEngine.EngineName)
                 .AddChakraCore();
 
-            React.AssemblyRegistration.Container.Register<IJavaScriptEngineFactory, AfishaJavaScriptEngineFactory>().AsSingleton();
             services.AddReact();
 
             return services.BuildServiceProvider();
@@ -49,6 +48,8 @@ namespace AspNetCoreSample
 
             app.UseReact(config =>
             {
+                React.AssemblyRegistration.Container.Register<IJavaScriptEngineFactory, AfishaJavaScriptEngineFactory>().AsSingleton();
+
                 config
                     .SetLoadBabel(false)
                     .SetLoadReact(false)
