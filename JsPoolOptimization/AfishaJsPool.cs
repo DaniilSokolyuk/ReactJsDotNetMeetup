@@ -7,12 +7,12 @@ using JSPool;
 
 namespace JsPoolOptimization
 {
-    public class AfishaJsPool : JsPool<IJsEngine>, IJsPool
+    public class AfishaJsPool : JsPool<PooledJsEngine, IJsEngine>, IJsPool
     {
         private readonly AutoResetEvent _enginePopulateEvent = new AutoResetEvent(false);
         private readonly AutoResetEvent _engineEnqueuedEvent = new AutoResetEvent(false);
-        private readonly ConcurrentDictionary<IJsEngine, DateTime> _engineGcTime = new ConcurrentDictionary<IJsEngine, DateTime>();
-        private readonly ConcurrentQueue<IJsEngine> _enginesToGc = new ConcurrentQueue<IJsEngine>();
+        private readonly ConcurrentDictionary<PooledJsEngine, DateTime> _engineGcTime = new ConcurrentDictionary<PooledJsEngine, DateTime>();
+        private readonly ConcurrentQueue<PooledJsEngine> _enginesToGc = new ConcurrentQueue<PooledJsEngine>();
 
         public AfishaJsPool(JsPoolConfig<IJsEngine> config) : base(config)
         {
@@ -71,21 +71,20 @@ namespace JsPoolOptimization
                 }).Start();
         }
 
-        public override void ReturnEngineToPool(IJsEngine engine)
+        protected override void ReturnEngineToPoolInternal(PooledJsEngine engine)
         {
             if (!_metadata.TryGetValue(engine, out var metadata))
             {
                 // This engine was from another pool. This could happen if a pool is recycled
                 // and replaced with a different one (like what ReactJS.NET does when any 
                 // loaded files change). Let's just pretend we never saw it.
-                engine.Dispose();
-
+                engine.InnerEngine?.Dispose();
                 return;
             }
 
             metadata.InUse = false;
             var usageCount = metadata.UsageCount;
-            if ((_config.MaxUsagesPerEngine > 0) && (usageCount >= _config.MaxUsagesPerEngine))
+            if (_config.MaxUsagesPerEngine > 0 && usageCount >= _config.MaxUsagesPerEngine)
             {
                 // Engine has been reused the maximum number of times, recycle it.
                 DisposeEngine(engine);

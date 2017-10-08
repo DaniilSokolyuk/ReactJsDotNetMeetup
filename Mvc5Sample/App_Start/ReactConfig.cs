@@ -17,7 +17,7 @@ namespace Mvc5Sample
                 .AddV8()
                 .AddChakraCore();
 
-            engineSwitcher.DefaultEngineName = ChakraCoreJsEngine.EngineName;
+            engineSwitcher.DefaultEngineName = V8JsEngine.EngineName;
 
             ReactSiteConfiguration.Configuration
                 .SetLoadBabel(false)

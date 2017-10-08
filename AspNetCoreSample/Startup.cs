@@ -2,6 +2,7 @@
 using JavaScriptEngineSwitcher.ChakraCore;
 using JavaScriptEngineSwitcher.Core;
 using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
+using JsPoolOptimization;
 // using JsPoolOptimization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -49,29 +50,30 @@ namespace AspNetCoreSample
             {
                 app.UseDeveloperExceptionPage();
 
-            app.UseReact(config =>
-            {
-                React.AssemblyRegistration.Container.Register<IJavaScriptEngineFactory, AfishaJavaScriptEngineFactory>().AsSingleton();
+                app.UseReact(config =>
+                {
+                    React.AssemblyRegistration.Container.Register<IJavaScriptEngineFactory, AfishaJavaScriptEngineFactory>().AsSingleton();
 
-                config
-                    .SetLoadBabel(false)
-                    .SetLoadReact(false)
-                    .AddScriptWithoutTransform("~/js/server.js")
-                    .SetJsonSerializerSettings(new JsonSerializerSettings
-                    {
-                        StringEscapeHandling = StringEscapeHandling.EscapeHtml,
-                        ContractResolver = new DefaultContractResolver()
-                    });
-            });
+                    config
+                        .SetLoadBabel(false)
+                        .SetLoadReact(false)
+                        .AddScriptWithoutTransform("~/js/server.js")
+                        .SetJsonSerializerSettings(new JsonSerializerSettings
+                        {
+                            StringEscapeHandling = StringEscapeHandling.EscapeHtml,
+                            ContractResolver = new DefaultContractResolver()
+                        });
+                });
 
-            app.UseStaticFiles();
+                app.UseStaticFiles();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+                app.UseMvc(routes =>
+                {
+                    routes.MapRoute(
+                        name: "default",
+                        template: "{controller=Home}/{action=Index}/{id?}");
+                });
+            }
         }
     }
 }
