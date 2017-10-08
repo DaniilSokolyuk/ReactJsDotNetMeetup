@@ -1,9 +1,11 @@
 ﻿using System;
 using JavaScriptEngineSwitcher.ChakraCore;
+using JavaScriptEngineSwitcher.Core;
 using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
-using JsPoolOptimization;
+// using JsPoolOptimization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -36,6 +38,8 @@ namespace AspNetCoreSample
 
             services.AddReact();
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             return services.BuildServiceProvider();
         }
 
@@ -44,7 +48,6 @@ namespace AspNetCoreSample
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
 
             app.UseReact(config =>
             {
