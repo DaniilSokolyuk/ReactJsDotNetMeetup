@@ -74,6 +74,11 @@ module.exports = [
                         'css?-minimize',
                     ]),
                 },
+                {
+                    test: /\.(png|jpg|svg|gif)/,
+                    include: p('node_modules/react-photoswipe'),
+                    loader: 'url-loader?hash=sha512&digest=hex&name=[name]_[hash].[ext]',
+                },
             ],
         },
         resolve: {

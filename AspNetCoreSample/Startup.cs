@@ -1,4 +1,5 @@
 ﻿using System;
+using AspNetCoreSample.Controllers.Home.Services;
 using JavaScriptEngineSwitcher.ChakraCore;
 using JavaScriptEngineSwitcher.Core;
 using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
@@ -32,6 +33,8 @@ namespace AspNetCoreSample
                 {
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 });
+
+            services.AddSingleton<IInstagramDataService, InstagramDataService>();
 
             services
                 .AddJsEngineSwitcher(options => options.DefaultEngineName = ChakraCoreJsEngine.EngineName)

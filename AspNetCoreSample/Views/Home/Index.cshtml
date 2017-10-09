@@ -1,9 +1,9 @@
 ﻿@using AspNetCoreSample.Controllers
 @using AspNetCoreSample.Controllers.Home
-@model AspNetCoreSample.Controllers.Home.IndexViewModel
+@model AspNetCoreSample.Controllers.Home.Models.InstagramSearch
 
 
 
-@Html.React("Components.SimpleTweet", new { }, clientOnly: false)
+@Html.React("Components.Instagram", new { search = Model }, clientOnly: false)
 
 
