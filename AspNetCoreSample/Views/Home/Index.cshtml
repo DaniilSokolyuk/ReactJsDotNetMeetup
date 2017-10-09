@@ -1,16 +1,9 @@
 ﻿@using AspNetCoreSample.Controllers
-@model AspNetCoreSample.Controllers.IndexViewModel
+@using AspNetCoreSample.Controllers.Home
+@model AspNetCoreSample.Controllers.Home.IndexViewModel
 
 
 
 @Html.React("Components.SimpleTweet", new { }, clientOnly: false)
-
-
-
-
-
-@Html.React("Components.CommentsBox", new { initialComments = Model.Comments })
-
-
 
 

@@ -19,7 +19,6 @@
         <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
         <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
         <PackageReference Include="System.Net.Http" Version="4.3.3" />
-        <PackageReference Include="TweetinviAPI" Version="2.0.0" />
         <PackageReference Include="WebActivatorEx" Version="2.2.0" />
 
         <PackageReference Include="React.Web.Mvc4" Version="3.1.0" />

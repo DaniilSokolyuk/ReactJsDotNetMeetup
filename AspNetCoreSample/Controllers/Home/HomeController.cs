@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AspNetCoreSample.Controllers
+namespace AspNetCoreSample.Controllers.Home
 {
     public class AuthorModel
     {
