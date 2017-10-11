@@ -1,20 +1,8 @@
 ﻿import React, { Component } from 'react';
 import User from './User'
 import { PhotoSwipe } from 'react-photoswipe';
-
- function debounce(callback, delay, context) {
-    let timeout = null;
-    return function() {
-      if (timeout)
-        clearTimeout(timeout);
-
-     let args = arguments;
-      timeout = setTimeout(() => {
-        callback.apply(context || null, args);
-        timeout = null;
-      }, delay | 0);
-    };
-  }
+import api, { APIActions } from '../common/api';
+import { debounce } from '../common/utils';
 
 export default class Instagram extends Component {
     state = {
@@ -30,22 +18,24 @@ export default class Instagram extends Component {
         }
     }
 
-    request = debounce(searchText =>
-    {
+    request = debounce(searchText => {
         this.setState({
             loading: true
         });
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', "/Home/Search/?text=" + searchText, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onload = () => {
-            var data = JSON.parse(xhr.responseText);
-            this.setState({
-                users: data.users,
-                loading: false
+
+        api(APIActions.SEARCH, searchText)
+            .then(
+            (response) => {
+                const data = JSON.parse(response);
+                this.setState({
+                    users: data.users,
+                    loading: false
+                });
+            },
+            (error) => {
+                console.log(error);
             });
-        };
-        xhr.send();
+
     }, 200)
 
     handleChange = (evt) => {

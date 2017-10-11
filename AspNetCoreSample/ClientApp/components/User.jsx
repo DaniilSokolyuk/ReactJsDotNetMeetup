@@ -1,8 +1,14 @@
 ﻿import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Avatar from './Avatar'
+import { events } from '../common/utils'
 
 export default class User extends Component {
+
+    handleNewData = () => {
+        events.publish('OpenPhotos', {});
+    }
+
     render() {
         return (
             <li>
