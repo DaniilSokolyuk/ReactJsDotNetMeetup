@@ -74,10 +74,14 @@ module.exports = [
                         'css?-minimize',
                     ]),
                 },
+                {
+                    test: /\.(png|jpg|svg|gif)/,
+                    include: p('node_modules/react-photoswipe'),
+                    loader: 'url-loader?hash=sha512&digest=hex&name=[name]_[hash].[ext]',
+                },
             ],
         },
         resolve: {
-            // Allow require('./blah') to require blah.jsx
             extensions: ['', '.js', '.jsx'],
             modulesDirectories: [
                 './ClientApp',
@@ -91,7 +95,7 @@ module.exports = [
             server: 'server',
         },
         output: {
-            path: p('js/'),
+            path: p('js'),
             sourcePrefix: '  ',
             filename: '[name].js',
             libraryTarget: 'this'
@@ -118,7 +122,6 @@ module.exports = [
             new webpack.optimize.DedupePlugin()
         ],
         resolve: {
-            // Allow require('./blah') to require blah.jsx
             extensions: ['', '.js', '.jsx'],
             modulesDirectories: [
                 './ClientApp',

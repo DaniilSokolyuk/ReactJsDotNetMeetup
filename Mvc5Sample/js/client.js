@@ -51,30 +51,7 @@
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ((function(modules) {
-	// Check all modules for deduplicated modules
-	for(var i in modules) {
-		if(Object.prototype.hasOwnProperty.call(modules, i)) {
-			switch(typeof modules[i]) {
-			case "function": break;
-			case "object":
-				// Module can be created from a template
-				modules[i] = (function(_m) {
-					var args = _m.slice(1), fn = modules[_m[0]];
-					return function (a,b,c) {
-						fn.apply(this, [a,b,c].concat(args));
-					};
-				}(modules[i]));
-				break;
-			default:
-				// Module is a copy of another module
-				modules[i] = modules[modules[i]];
-				break;
-			}
-		}
-	}
-	return modules;
-}([
+/******/ ([
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -84,30 +61,19 @@
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _reactDom = __webpack_require__(16);
+  var _reactDom = __webpack_require__(47);
   
   var _reactDom2 = _interopRequireDefault(_reactDom);
   
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
   
-  /**
-   *  Copyright (c) 2015, Facebook, Inc.
-   *  All rights reserved.
-   *
-   *  This source code is licensed under the BSD-style license found in the
-   *  LICENSE file in the root directory of this source tree. An additional grant 
-   *  of patent rights can be found in the PATENTS file in the same directory.
-   */
-  
-  // All JavaScript in here will be loaded client-side
-  
   window.React = _react2.default;
   window.ReactDOM = _reactDom2.default;
   
-  __webpack_require__(29);
+  __webpack_require__(30);
   
   // Expose components globally so ReactJS.NET can use them
-  var Components = __webpack_require__(28);
+  var Components = __webpack_require__(29);
 
 /***/ },
 /* 1 */
@@ -306,15 +272,115 @@
   /* WEBPACK VAR INJECTION */(function(process) {'use strict';
   
   if (process.env.NODE_ENV === 'production') {
-    module.exports = __webpack_require__(44);
+    module.exports = __webpack_require__(50);
   } else {
-    module.exports = __webpack_require__(43);
+    module.exports = __webpack_require__(49);
   }
   
   /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
 /* 3 */
+/***/ function(module, exports) {
+
+  "use strict";
+  
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *
+   * 
+   */
+  
+  function makeEmptyFunction(arg) {
+    return function () {
+      return arg;
+    };
+  }
+  
+  /**
+   * This function accepts and discards inputs; it has no side effects. This is
+   * primarily useful idiomatically for overridable function endpoints which
+   * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+   */
+  var emptyFunction = function emptyFunction() {};
+  
+  emptyFunction.thatReturns = makeEmptyFunction;
+  emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
+  emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
+  emptyFunction.thatReturnsNull = makeEmptyFunction(null);
+  emptyFunction.thatReturnsThis = function () {
+    return this;
+  };
+  emptyFunction.thatReturnsArgument = function (arg) {
+    return arg;
+  };
+  
+  module.exports = emptyFunction;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+  /* WEBPACK VAR INJECTION */(function(process) {/**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *
+   */
+  
+  'use strict';
+  
+  /**
+   * Use invariant() to assert state which your program assumes to be true.
+   *
+   * Provide sprintf-style format (only %s is supported) and arguments
+   * to provide information about what broke and what you were
+   * expecting.
+   *
+   * The invariant message will be stripped in production, but the invariant
+   * will remain to ensure logic does not differ in production.
+   */
+  
+  var validateFormat = function validateFormat(format) {};
+  
+  if (process.env.NODE_ENV !== 'production') {
+    validateFormat = function validateFormat(format) {
+      if (format === undefined) {
+        throw new Error('invariant requires an error message argument');
+      }
+    };
+  }
+  
+  function invariant(condition, format, a, b, c, d, e, f) {
+    validateFormat(format);
+  
+    if (!condition) {
+      var error;
+      if (format === undefined) {
+        error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+      } else {
+        var args = [a, b, c, d, e, f];
+        var argIndex = 0;
+        error = new Error(format.replace(/%s/g, function () {
+          return args[argIndex++];
+        }));
+        error.name = 'Invariant Violation';
+      }
+  
+      error.framesToPop = 1; // we don't care about invariant's own frame
+      throw error;
+    }
+  }
+  
+  module.exports = invariant;
+  /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ },
+/* 5 */
 /***/ function(module, exports) {
 
   /*
@@ -410,7 +476,7 @@
 
 
 /***/ },
-/* 4 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
   /* WEBPACK VAR INJECTION */(function(process) {/**
@@ -435,58 +501,179 @@
     // By explicitly using `prop-types` you are opting into new development behavior.
     // http://fb.me/prop-types-in-prod
     var throwOnDirectAccess = true;
-    module.exports = __webpack_require__(31)(isValidElement, throwOnDirectAccess);
+    module.exports = __webpack_require__(44)(isValidElement, throwOnDirectAccess);
   } else {
     // By explicitly using `prop-types` you are opting into new production behavior.
     // http://fb.me/prop-types-in-prod
-    module.exports = __webpack_require__(30)();
+    module.exports = __webpack_require__(43)();
   }
   
   /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 5 */
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+  /* WEBPACK VAR INJECTION */(function(process) {/**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *
+   */
+  
+  'use strict';
+  
+  var emptyObject = {};
+  
+  if (process.env.NODE_ENV !== 'production') {
+    Object.freeze(emptyObject);
+  }
+  
+  module.exports = emptyObject;
+  /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+  /* WEBPACK VAR INJECTION */(function(process) {/**
+   * Copyright (c) 2014-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *
+   */
+  
+  'use strict';
+  
+  var emptyFunction = __webpack_require__(3);
+  
+  /**
+   * Similar to invariant but only logs a warning if the condition is not met.
+   * This can be used to log issues in development environments in critical
+   * paths. Removing the logging code for production environments will keep the
+   * same logic and follow the same code paths.
+   */
+  
+  var warning = emptyFunction;
+  
+  if (process.env.NODE_ENV !== 'production') {
+    var printWarning = function printWarning(format) {
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
+  
+      var argIndex = 0;
+      var message = 'Warning: ' + format.replace(/%s/g, function () {
+        return args[argIndex++];
+      });
+      if (typeof console !== 'undefined') {
+        console.error(message);
+      }
+      try {
+        // --- Welcome to debugging React ---
+        // This error was thrown as a convenience so that you can use this stack
+        // to find the callsite that caused this warning to fire.
+        throw new Error(message);
+      } catch (x) {}
+    };
+  
+    warning = function warning(condition, format) {
+      if (format === undefined) {
+        throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+      }
+  
+      if (format.indexOf('Failed Composite propType: ') === 0) {
+        return; // Ignore CompositeComponent proptype check.
+      }
+  
+      if (!condition) {
+        for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+          args[_key2 - 2] = arguments[_key2];
+        }
+  
+        printWarning.apply(undefined, [format].concat(args));
+      }
+    };
+  }
+  
+  module.exports = warning;
+  /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+  exports.events = undefined;
+  exports.debounce = debounce;
+  
+  var _EventChannel = __webpack_require__(25);
+  
+  var _EventChannel2 = _interopRequireDefault(_EventChannel);
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+  
+  var events = exports.events = new _EventChannel2.default();
+  
+  function debounce(callback, delay, context) {
+      var timeout = null;
+      return function () {
+          if (timeout) clearTimeout(timeout);
+  
+          var args = arguments;
+          timeout = setTimeout(function () {
+              callback.apply(context || null, args);
+              timeout = null;
+          }, delay | 0);
+      };
+  }
+
+/***/ },
+/* 10 */
 /***/ function(module, exports) {
 
-  "use strict";
-  
   /**
    * Copyright (c) 2013-present, Facebook, Inc.
    *
    * This source code is licensed under the MIT license found in the
    * LICENSE file in the root directory of this source tree.
    *
-   * 
    */
   
-  function makeEmptyFunction(arg) {
-    return function () {
-      return arg;
-    };
-  }
+  'use strict';
+  
+  var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
   
   /**
-   * This function accepts and discards inputs; it has no side effects. This is
-   * primarily useful idiomatically for overridable function endpoints which
-   * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+   * Simple, lightweight module assisting with the detection and context of
+   * Worker. Helps avoid circular dependencies and allows code to reason about
+   * whether or not they are in a Worker, even if they never include the main
+   * `ReactWorker` dependency.
    */
-  var emptyFunction = function emptyFunction() {};
+  var ExecutionEnvironment = {
   
-  emptyFunction.thatReturns = makeEmptyFunction;
-  emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
-  emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
-  emptyFunction.thatReturnsNull = makeEmptyFunction(null);
-  emptyFunction.thatReturnsThis = function () {
-    return this;
-  };
-  emptyFunction.thatReturnsArgument = function (arg) {
-    return arg;
+    canUseDOM: canUseDOM,
+  
+    canUseWorkers: typeof Worker !== 'undefined',
+  
+    canUseEventListeners: canUseDOM && !!(window.addEventListener || window.attachEvent),
+  
+    canUseViewport: canUseDOM && !!window.screen,
+  
+    isInWorker: !canUseDOM // For now, this is true - might change in the future.
+  
   };
   
-  module.exports = emptyFunction;
+  module.exports = ExecutionEnvironment;
 
 /***/ },
-/* 6 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
   /* WEBPACK VAR INJECTION */(function(process) {/**
@@ -499,9 +686,9 @@
   'use strict';
   
   if (process.env.NODE_ENV !== 'production') {
-    var invariant = __webpack_require__(9);
-    var warning = __webpack_require__(15);
-    var ReactPropTypesSecret = __webpack_require__(7);
+    var invariant = __webpack_require__(4);
+    var warning = __webpack_require__(8);
+    var ReactPropTypesSecret = __webpack_require__(12);
     var loggedTypeFailures = {};
   }
   
@@ -552,7 +739,7 @@
   /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 7 */
+/* 12 */
 /***/ function(module, exports) {
 
   /**
@@ -570,108 +757,71 @@
 
 
 /***/ },
-/* 8 */
-5,
-/* 9 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-  /* WEBPACK VAR INJECTION */(function(process) {/**
-   * Copyright (c) 2013-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   *
-   */
+  /* WEBPACK VAR INJECTION */(function(Promise) {'use strict';
   
-  'use strict';
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+  exports.default = api;
+  var APIActions = exports.APIActions = Object.freeze({
+      SEARCH: 'Search',
+      GET_USER: 'GetUser'
+  });
   
-  /**
-   * Use invariant() to assert state which your program assumes to be true.
-   *
-   * Provide sprintf-style format (only %s is supported) and arguments
-   * to provide information about what broke and what you were
-   * expecting.
-   *
-   * The invariant message will be stripped in production, but the invariant
-   * will remain to ensure logic does not differ in production.
-   */
+  function api(action, data) {
   
-  var validateFormat = function validateFormat(format) {};
+      var xhr = new XMLHttpRequest();
   
-  if (process.env.NODE_ENV !== 'production') {
-    validateFormat = function validateFormat(format) {
-      if (format === undefined) {
-        throw new Error('invariant requires an error message argument');
-      }
-    };
-  }
+      // Default method
+      var method = 'GET';
   
-  function invariant(condition, format, a, b, c, d, e, f) {
-    validateFormat(format);
+      // Default expected status
+      var expectedStatus = 200;
   
-    if (!condition) {
-      var error;
-      if (format === undefined) {
-        error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-      } else {
-        var args = [a, b, c, d, e, f];
-        var argIndex = 0;
-        error = new Error(format.replace(/%s/g, function () {
-          return args[argIndex++];
-        }));
-        error.name = 'Invariant Violation';
+      // Default request header
+      var requestHeaderKey = 'Content-type';
+      var requestHeaderValue = 'application/json';
+  
+      var params = null;
+      var url = void 0;
+  
+      switch (action) {
+  
+          case APIActions.SEARCH:
+              url = '/Home/Search/?text=' + data;
+              break;
+  
+          case APIActions.GET_USER:
+              url = '/Home/User/?userName=' + data;
+              break;
       }
   
-      error.framesToPop = 1; // we don't care about invariant's own frame
-      throw error;
-    }
+      return new Promise(function (resolve, reject) {
+          xhr.open(method, url, true);
+          xhr.setRequestHeader(requestHeaderKey, requestHeaderValue);
+          xhr.onload = function () {
+              if (this.status === expectedStatus) {
+                  resolve(this.response);
+              } else {
+                  var error = new Error(this.statusText);
+                  error.code = this.status;
+                  reject(error);
+              }
+          };
+  
+          xhr.onerror = function () {
+              reject(new Error('Network Error'));
+          };
+          xhr.send(params);
+      });
   }
-  
-  module.exports = invariant;
-  /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+  /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(42)))
 
 /***/ },
-/* 10 */
-/***/ function(module, exports) {
-
-  /**
-   * Copyright (c) 2013-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   *
-   */
-  
-  'use strict';
-  
-  var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
-  
-  /**
-   * Simple, lightweight module assisting with the detection and context of
-   * Worker. Helps avoid circular dependencies and allows code to reason about
-   * whether or not they are in a Worker, even if they never include the main
-   * `ReactWorker` dependency.
-   */
-  var ExecutionEnvironment = {
-  
-    canUseDOM: canUseDOM,
-  
-    canUseWorkers: typeof Worker !== 'undefined',
-  
-    canUseEventListeners: canUseDOM && !!(window.addEventListener || window.attachEvent),
-  
-    canUseViewport: canUseDOM && !!window.screen,
-  
-    isInWorker: !canUseDOM // For now, this is true - might change in the future.
-  
-  };
-  
-  module.exports = ExecutionEnvironment;
-
-/***/ },
-/* 11 */
-5,
-/* 12 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -686,7 +836,7 @@
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _propTypes = __webpack_require__(4);
+  var _propTypes = __webpack_require__(6);
   
   var _propTypes2 = _interopRequireDefault(_propTypes);
   
@@ -711,17 +861,12 @@
           key: 'render',
           value: function render() {
               return _react2.default.createElement('img', {
-                  src: this.getPhotoUrl(this.props.author),
-                  alt: 'Photo of ' + this.props.author.Name,
+                  src: this.props.picUrl,
+                  alt: 'Photo of ' + this.props.name,
                   width: 50,
                   height: 50,
                   className: 'commentPhoto'
               });
-          }
-      }, {
-          key: 'getPhotoUrl',
-          value: function getPhotoUrl(author) {
-              return 'https://avatars.githubusercontent.com/' + author.GithubUsername + '?s=50';
           }
       }]);
   
@@ -732,11 +877,12 @@
   
   
   Avatar.propTypes = {
-      author: _propTypes2.default.object.isRequired
+      picUrl: _propTypes2.default.string.isRequired,
+      name: _propTypes2.default.string.isRequired
   };
 
 /***/ },
-/* 13 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -751,13 +897,19 @@
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _propTypes = __webpack_require__(4);
+  var _propTypes = __webpack_require__(6);
   
   var _propTypes2 = _interopRequireDefault(_propTypes);
   
-  var _Avatar = __webpack_require__(12);
+  var _Avatar = __webpack_require__(14);
   
   var _Avatar2 = _interopRequireDefault(_Avatar);
+  
+  var _utils = __webpack_require__(9);
+  
+  var _api = __webpack_require__(13);
+  
+  var _api2 = _interopRequireDefault(_api);
   
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
   
@@ -767,90 +919,130 @@
   
   function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
   
-  var Comment = function (_Component) {
-      _inherits(Comment, _Component);
+  var User = function (_Component) {
+      _inherits(User, _Component);
   
-      function Comment() {
-          _classCallCheck(this, Comment);
+      function User() {
+          var _ref;
   
-          return _possibleConstructorReturn(this, (Comment.__proto__ || Object.getPrototypeOf(Comment)).apply(this, arguments));
+          var _temp, _this, _ret;
+  
+          _classCallCheck(this, User);
+  
+          for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+              args[_key] = arguments[_key];
+          }
+  
+          return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = User.__proto__ || Object.getPrototypeOf(User)).call.apply(_ref, [this].concat(args))), _this), _this.handleClick = function () {
+  
+              (0, _api2.default)(_api.APIActions.GET_USER, _this.props.username).then(function (response) {
+                  var data = JSON.parse(response);
+  
+                  _utils.events.publish('OpenPhotos', data.items);
+              }, function (error) {
+                  console.log(error);
+              });
+          }, _temp), _possibleConstructorReturn(_this, _ret);
       }
   
-      _createClass(Comment, [{
+      _createClass(User, [{
           key: 'render',
           value: function render() {
               return _react2.default.createElement(
                   'li',
-                  null,
-                  _react2.default.createElement(_Avatar2.default, { author: this.props.author }),
+                  { onClick: this.handleClick },
+                  _react2.default.createElement(_Avatar2.default, { picUrl: this.props.profile_pic_url, name: this.props.full_name }),
+                  _react2.default.createElement(
+                      'p',
+                      null,
+                      this.props.username
+                  ),
+                  _react2.default.createElement(
+                      'p',
+                      null,
+                      this.props.byline
+                  ),
+                  this.props.is_private && _react2.default.createElement(
+                      'h3',
+                      null,
+                      ' Private '
+                  ),
                   _react2.default.createElement(
                       'strong',
                       null,
-                      this.props.author.Name
-                  ),
-                  ': ',
-                  this.props.children
+                      this.props.full_name
+                  )
               );
           }
       }]);
   
-      return Comment;
+      return User;
   }(_react.Component);
   
-  exports.default = Comment;
+  exports.default = User;
   
   
-  Comment.propTypes = {
-      author: _propTypes2.default.object.isRequired
+  User.propTypes = {
+      full_name: _propTypes2.default.string.isRequired,
+      profile_pic_url: _propTypes2.default.string.isRequired,
+      username: _propTypes2.default.string.isRequired,
+      byline: _propTypes2.default.string.isRequired,
+      is_private: _propTypes2.default.bool.isRequired
   };
 
 /***/ },
-/* 14 */,
-/* 15 */
-[46, 8],
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-  /* WEBPACK VAR INJECTION */(function(process) {'use strict';
+  var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+    Copyright (c) 2016 Jed Watson.
+    Licensed under the MIT License (MIT), see
+    http://jedwatson.github.io/classnames
+  */
+  /* global define */
   
-  function checkDCE() {
-    /* global __REACT_DEVTOOLS_GLOBAL_HOOK__ */
-    if (
-      typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ === 'undefined' ||
-      typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE !== 'function'
-    ) {
-      return;
-    }
-    if (process.env.NODE_ENV !== 'production') {
-      // This branch is unreachable because this function is only called
-      // in production, but the condition is true only in development.
-      // Therefore if the branch is still here, dead code elimination wasn't
-      // properly applied.
-      // Don't change the message. React DevTools relies on it. Also make sure
-      // this message doesn't occur elsewhere in this function, or it will cause
-      // a false positive.
-      throw new Error('^_^');
-    }
-    try {
-      // Verify that the code above has been dead code eliminated (DCE'd).
-      __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(checkDCE);
-    } catch (err) {
-      // DevTools shouldn't crash React, no matter what.
-      // We should still report in case we break this code.
-      console.error(err);
-    }
-  }
+  (function () {
+  	'use strict';
   
-  if (process.env.NODE_ENV === 'production') {
-    // DCE check should happen before ReactDOM bundle executes so that
-    // DevTools can report bad minification during injection.
-    checkDCE();
-    module.exports = __webpack_require__(33);
-  } else {
-    module.exports = __webpack_require__(32);
-  }
+  	var hasOwn = {}.hasOwnProperty;
   
-  /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+  	function classNames () {
+  		var classes = [];
+  
+  		for (var i = 0; i < arguments.length; i++) {
+  			var arg = arguments[i];
+  			if (!arg) continue;
+  
+  			var argType = typeof arg;
+  
+  			if (argType === 'string' || argType === 'number') {
+  				classes.push(arg);
+  			} else if (Array.isArray(arg)) {
+  				classes.push(classNames.apply(null, arg));
+  			} else if (argType === 'object') {
+  				for (var key in arg) {
+  					if (hasOwn.call(arg, key) && arg[key]) {
+  						classes.push(key);
+  					}
+  				}
+  			}
+  		}
+  
+  		return classes.join(' ');
+  	}
+  
+  	if (typeof module !== 'undefined' && module.exports) {
+  		module.exports = classNames;
+  	} else if (true) {
+  		// register as 'classnames', consistent with npm package name
+  		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+  			return classNames;
+  		}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  	} else {
+  		window.classNames = classNames;
+  	}
+  }());
+
 
 /***/ },
 /* 17 */
@@ -867,7 +1059,7 @@
    * @typechecks
    */
   
-  var emptyFunction = __webpack_require__(5);
+  var emptyFunction = __webpack_require__(3);
   
   /**
    * Upstream version of event listener. Does not take into account specific
@@ -947,7 +1139,7 @@
    * 
    */
   
-  var isTextNode = __webpack_require__(39);
+  var isTextNode = __webpack_require__(36);
   
   /*eslint-disable no-bitwise */
   
@@ -976,29 +1168,6 @@
 
 /***/ },
 /* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-  /* WEBPACK VAR INJECTION */(function(process) {/**
-   * Copyright (c) 2013-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   *
-   */
-  
-  'use strict';
-  
-  var emptyObject = {};
-  
-  if (process.env.NODE_ENV !== 'production') {
-    Object.freeze(emptyObject);
-  }
-  
-  module.exports = emptyObject;
-  /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ },
-/* 20 */
 /***/ function(module, exports) {
 
   /**
@@ -1027,7 +1196,7 @@
   module.exports = focusNode;
 
 /***/ },
-/* 21 */
+/* 20 */
 /***/ function(module, exports) {
 
   'use strict';
@@ -1068,9 +1237,7 @@
   module.exports = getActiveElement;
 
 /***/ },
-/* 22 */
-9,
-/* 23 */
+/* 21 */
 /***/ function(module, exports) {
 
   /**
@@ -1140,10 +1307,369 @@
   module.exports = shallowEqual;
 
 /***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+  
+  var _react = __webpack_require__(2);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _propTypes = __webpack_require__(6);
+  
+  var _propTypes2 = _interopRequireDefault(_propTypes);
+  
+  var _photoswipe = __webpack_require__(41);
+  
+  var _photoswipe2 = _interopRequireDefault(_photoswipe);
+  
+  var _photoswipeUiDefault = __webpack_require__(40);
+  
+  var _photoswipeUiDefault2 = _interopRequireDefault(_photoswipeUiDefault);
+  
+  var _classnames = __webpack_require__(16);
+  
+  var _classnames2 = _interopRequireDefault(_classnames);
+  
+  var _events = __webpack_require__(23);
+  
+  var _events2 = _interopRequireDefault(_events);
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+  
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var PhotoSwipe = function (_React$Component) {
+    _inherits(PhotoSwipe, _React$Component);
+  
+    function PhotoSwipe() {
+      var _ref;
+  
+      var _temp, _this, _ret;
+  
+      _classCallCheck(this, PhotoSwipe);
+  
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+  
+      return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PhotoSwipe.__proto__ || Object.getPrototypeOf(PhotoSwipe)).call.apply(_ref, [this].concat(args))), _this), _initialiseProps.call(_this), _temp), _possibleConstructorReturn(_this, _ret);
+    }
+  
+    _createClass(PhotoSwipe, [{
+      key: 'render',
+      value: function render() {
+        var _this2 = this;
+  
+        var id = this.props.id;
+        var className = this.props.className;
+  
+        className = (0, _classnames2.default)(['pswp', className]).trim();
+        return _react2.default.createElement(
+          'div',
+          {
+            id: id,
+            className: className,
+            tabIndex: '-1',
+            role: 'dialog',
+            'aria-hidden': 'true',
+            ref: function ref(node) {
+              _this2.pswpElement = node;
+            }
+          },
+          _react2.default.createElement('div', { className: 'pswp__bg' }),
+          _react2.default.createElement(
+            'div',
+            { className: 'pswp__scroll-wrap' },
+            _react2.default.createElement(
+              'div',
+              { className: 'pswp__container' },
+              _react2.default.createElement('div', { className: 'pswp__item' }),
+              _react2.default.createElement('div', { className: 'pswp__item' }),
+              _react2.default.createElement('div', { className: 'pswp__item' })
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'pswp__ui pswp__ui--hidden' },
+              _react2.default.createElement(
+                'div',
+                { className: 'pswp__top-bar' },
+                _react2.default.createElement('div', { className: 'pswp__counter' }),
+                _react2.default.createElement('button', {
+                  className: 'pswp__button pswp__button--close',
+                  title: 'Close (Esc)'
+                }),
+                _react2.default.createElement('button', {
+                  className: 'pswp__button pswp__button--share',
+                  title: 'Share'
+                }),
+                _react2.default.createElement('button', {
+                  className: 'pswp__button pswp__button--fs',
+                  title: 'Toggle fullscreen'
+                }),
+                _react2.default.createElement('button', { className: 'pswp__button pswp__button--zoom', title: 'Zoom in/out' }),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'pswp__preloader' },
+                  _react2.default.createElement(
+                    'div',
+                    { className: 'pswp__preloader__icn' },
+                    _react2.default.createElement(
+                      'div',
+                      { className: 'pswp__preloader__cut' },
+                      _react2.default.createElement('div', { className: 'pswp__preloader__donut' })
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'pswp__share-modal pswp__share-modal--hidden pswp__single-tap' },
+                _react2.default.createElement('div', { className: 'pswp__share-tooltip' })
+              ),
+              _react2.default.createElement('button', {
+                className: 'pswp__button pswp__button--arrow--left',
+                title: 'Previous (arrow left)'
+              }),
+              _react2.default.createElement('button', {
+                className: 'pswp__button pswp__button--arrow--right',
+                title: 'Next (arrow right)'
+              }),
+              _react2.default.createElement(
+                'div',
+                { className: 'pswp__caption' },
+                _react2.default.createElement('div', { className: 'pswp__caption__center' })
+              )
+            )
+          )
+        );
+      }
+    }]);
+  
+    return PhotoSwipe;
+  }(_react2.default.Component);
+  
+  PhotoSwipe.propTypes = {
+    isOpen: _propTypes2.default.bool.isRequired,
+    items: _propTypes2.default.array.isRequired,
+    options: _propTypes2.default.object,
+    onClose: _propTypes2.default.func,
+    id: _propTypes2.default.string,
+    className: _propTypes2.default.string
+  };
+  PhotoSwipe.defaultProps = {
+    options: {},
+    onClose: function onClose() {},
+    id: '',
+    className: ''
+  };
+  
+  var _initialiseProps = function _initialiseProps() {
+    var _this3 = this;
+  
+    this.state = {
+      isOpen: this.props.isOpen
+    };
+  
+    this.componentDidMount = function () {
+      var isOpen = _this3.state.isOpen;
+  
+      if (isOpen) {
+        _this3.openPhotoSwipe(_this3.props);
+      }
+    };
+  
+    this.componentWillReceiveProps = function (nextProps) {
+      var isOpen = _this3.state.isOpen;
+  
+      if (nextProps.isOpen) {
+        if (!isOpen) {
+          _this3.openPhotoSwipe(nextProps);
+        } else {
+          _this3.updateItems(nextProps.items);
+        }
+      } else if (isOpen) {
+        _this3.closePhotoSwipe();
+      }
+    };
+  
+    this.componentWillUnmount = function () {
+      _this3.closePhotoSwipe();
+    };
+  
+    this.openPhotoSwipe = function (props) {
+      var items = props.items,
+          options = props.options;
+  
+      var pswpElement = _this3.pswpElement;
+      _this3.photoSwipe = new _photoswipe2.default(pswpElement, _photoswipeUiDefault2.default, items, options);
+      _events2.default.forEach(function (event) {
+        var callback = props[event];
+        if (callback || event === 'destroy') {
+          var self = _this3;
+          _this3.photoSwipe.listen(event, function () {
+            if (callback) {
+              for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+                args[_key2] = arguments[_key2];
+              }
+  
+              args.unshift(this);
+              callback.apply(undefined, args);
+            }
+            if (event === 'destroy') {
+              self.handleClose();
+            }
+          });
+        }
+      });
+      _this3.setState({
+        isOpen: true
+      }, function () {
+        _this3.photoSwipe.init();
+      });
+    };
+  
+    this.updateItems = function () {
+      var items = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  
+      _this3.photoSwipe.items.length = 0;
+      items.forEach(function (item) {
+        _this3.photoSwipe.items.push(item);
+      });
+      _this3.photoSwipe.invalidateCurrItems();
+      _this3.photoSwipe.updateSize(true);
+    };
+  
+    this.closePhotoSwipe = function () {
+      if (!_this3.photoSwipe) {
+        return;
+      }
+      _this3.photoSwipe.close();
+    };
+  
+    this.handleClose = function () {
+      var onClose = _this3.props.onClose;
+  
+      _this3.setState({
+        isOpen: false
+      }, function () {
+        if (onClose) {
+          onClose();
+        }
+      });
+    };
+  };
+  
+  exports.default = PhotoSwipe;
+  module.exports = exports['default'];
+
+/***/ },
+/* 23 */
+/***/ function(module, exports) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = ['beforeChange', 'afterChange', 'imageLoadComplete', 'resize', 'gettingData', 'mouseUsed', 'initialZoomIn', 'initialZoomInEnd', 'initialZoomOut', 'initialZoomOutEnd', 'parseVerticalMargin', 'close', 'unbindEvents', 'destroy', 'updateScrollOffset', 'preventDragEvent', 'shareLinkClick'];
+  module.exports = exports['default'];
+
+/***/ },
 /* 24 */
-19,
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.PhotoSwipeGallery = exports.PhotoSwipe = undefined;
+  
+  var _PhotoSwipe = __webpack_require__(22);
+  
+  var _PhotoSwipe2 = _interopRequireDefault(_PhotoSwipe);
+  
+  var _PhotoSwipeGallery = __webpack_require__(48);
+  
+  var _PhotoSwipeGallery2 = _interopRequireDefault(_PhotoSwipeGallery);
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+  
+  exports.default = _PhotoSwipe2.default;
+  exports.PhotoSwipe = _PhotoSwipe2.default;
+  exports.PhotoSwipeGallery = _PhotoSwipeGallery2.default;
+
+/***/ },
 /* 25 */
-9,
+/***/ function(module, exports) {
+
+  "use strict";
+  
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+  
+  var EventChannel = function () {
+    function EventChannel() {
+      _classCallCheck(this, EventChannel);
+  
+      this.handlers = {};
+      this.history = [];
+    }
+  
+    _createClass(EventChannel, [{
+      key: "subscribe",
+      value: function subscribe(event, handler) {
+        if (!this.handlers[event]) this.handlers[event] = new Set();
+        this.handlers[event].add(handler);
+  
+        return this.unsubscribe.bind(this, event, handler);
+      }
+    }, {
+      key: "unsubscribe",
+      value: function unsubscribe(event, handler) {
+        this.handlers[event] && this.handlers[event].delete(handler);
+      }
+    }, {
+      key: "publish",
+      value: function publish(event, payload) {
+  
+        this.history.push({ name: event, payload: payload });
+  
+        var handlers = this.handlers[event];
+        handlers && handlers.forEach(function (handler) {
+          return handler(payload);
+        });
+      }
+    }, {
+      key: "getAll",
+      value: function getAll() {
+        return this.history.slice(0);
+      }
+    }]);
+  
+    return EventChannel;
+  }();
+  
+  exports.default = EventChannel;
+
+/***/ },
 /* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1159,13 +1685,9 @@
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _propTypes = __webpack_require__(4);
+  var _utils = __webpack_require__(9);
   
-  var _propTypes2 = _interopRequireDefault(_propTypes);
-  
-  var _Comment = __webpack_require__(13);
-  
-  var _Comment2 = _interopRequireDefault(_Comment);
+  var _reactPhotoswipe = __webpack_require__(24);
   
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
   
@@ -1175,107 +1697,73 @@
   
   function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
   
-  var CommentsBox = function (_Component) {
-      _inherits(CommentsBox, _Component);
+  var Gallery = function (_Component) {
+      _inherits(Gallery, _Component);
   
-      function CommentsBox() {
+      function Gallery() {
           var _ref;
   
           var _temp, _this, _ret;
   
-          _classCallCheck(this, CommentsBox);
+          _classCallCheck(this, Gallery);
   
           for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
               args[_key] = arguments[_key];
           }
   
-          return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CommentsBox.__proto__ || Object.getPrototypeOf(CommentsBox)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-              comments: _this.props.initialComments,
-              page: 1,
-              hasMore: true,
-              loadingMore: false
-          }, _this.loadMoreClicked = function (evt) {
-              var nextPage = _this.state.page + 1;
-              _this.setState({
-                  page: nextPage,
-                  loadingMore: true
+          return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Gallery.__proto__ || Object.getPrototypeOf(Gallery)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+              isOpen: false,
+              items: []
+          }, _this.handleOpen = function (payload) {
+  
+              var items = payload.map(function (item) {
+                  var image = item.images.standard_resolution;
+  
+                  return {
+                      w: image.width,
+                      h: image.height,
+                      src: image.url
+                  };
               });
   
-              var xhr = new XMLHttpRequest();
-              xhr.open('GET', "/Home/Comments/?page=" + nextPage, true);
-              xhr.setRequestHeader("Content-Type", "application/json");
-              xhr.onload = function () {
-                  var data = JSON.parse(xhr.responseText);
-                  _this.setState({
-                      comments: _this.state.comments.concat(data.comments),
-                      hasMore: data.hasMore,
-                      loadingMore: false
-                  });
-              };
-              xhr.send();
-              evt.preventDefault();
-          }, _this.renderMoreLink = function () {
-              if (_this.state.loadingMore) {
-                  return _react2.default.createElement(
-                      'em',
-                      null,
-                      'Loading...'
-                  );
-              } else if (_this.state.hasMore) {
-                  return _react2.default.createElement(
-                      'div',
-                      { onClick: _this.loadMoreClicked },
-                      'Load More'
-                  );
-              } else {
-                  return _react2.default.createElement(
-                      'em',
-                      null,
-                      'No more comments'
-                  );
-              }
+              _this.setState({
+                  isOpen: true,
+                  items: items
+              });
           }, _temp), _possibleConstructorReturn(_this, _ret);
       }
   
-      _createClass(CommentsBox, [{
+      _createClass(Gallery, [{
+          key: 'componentDidMount',
+          value: function componentDidMount() {
+              this.unsubscribe = _utils.events.subscribe('OpenPhotos', this.handleOpen);
+          }
+      }, {
+          key: 'componentWillUnmount',
+          value: function componentWillUnmount() {
+              this.unsubscribe();
+          }
+      }, {
           key: 'render',
           value: function render() {
+              var photoSwipeOptions = {
+                  index: 0,
+                  closeOnVerticalDrag: false
+              };
   
-              var commentNodes = this.state.comments.map(function (comment) {
-                  return _react2.default.createElement(
-                      _Comment2.default,
-                      { author: comment.Author },
-                      comment.Text
-                  );
+              return _react2.default.createElement(_reactPhotoswipe.PhotoSwipe, {
+                  isOpen: this.state.isOpen,
+                  items: this.state.items
+                  // onClose={this.hidePhotoSwipe}
+                  , options: photoSwipeOptions
               });
-  
-              return _react2.default.createElement(
-                  'div',
-                  { className: 'comments' },
-                  _react2.default.createElement(
-                      'h1',
-                      null,
-                      'Comments'
-                  ),
-                  _react2.default.createElement(
-                      'ol',
-                      { className: 'commentList' },
-                      commentNodes
-                  ),
-                  this.renderMoreLink()
-              );
           }
       }]);
   
-      return CommentsBox;
+      return Gallery;
   }(_react.Component);
   
-  exports.default = CommentsBox;
-  
-  
-  CommentsBox.propTypes = {
-      initialComments: _propTypes2.default.array.isRequired
-  };
+  exports.default = Gallery;
 
 /***/ },
 /* 27 */
@@ -1283,42 +1771,5790 @@
 
   'use strict';
   
-  var _Avatar = __webpack_require__(12);
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
   
-  var _Avatar2 = _interopRequireDefault(_Avatar);
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
   
-  var _Comment = __webpack_require__(13);
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
   
-  var _Comment2 = _interopRequireDefault(_Comment);
+  var _react = __webpack_require__(2);
   
-  var _CommentsBox = __webpack_require__(26);
+  var _react2 = _interopRequireDefault(_react);
   
-  var _CommentsBox2 = _interopRequireDefault(_CommentsBox);
+  var _User = __webpack_require__(15);
+  
+  var _User2 = _interopRequireDefault(_User);
+  
+  var _reactPhotoswipe = __webpack_require__(24);
+  
+  var _api = __webpack_require__(13);
+  
+  var _api2 = _interopRequireDefault(_api);
+  
+  var _utils = __webpack_require__(9);
   
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
   
-  // We need to add here all React components which we gonna use from React.net
-  module.exports = {
-      Avatar: _Avatar2.default,
-      Comment: _Comment2.default,
-      CommentsBox: _CommentsBox2.default
-  };
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+  
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var Instagram = function (_Component) {
+      _inherits(Instagram, _Component);
+  
+      function Instagram() {
+          var _ref;
+  
+          var _temp, _this, _ret;
+  
+          _classCallCheck(this, Instagram);
+  
+          for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+              args[_key] = arguments[_key];
+          }
+  
+          return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Instagram.__proto__ || Object.getPrototypeOf(Instagram)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+              users: _this.props.search.users,
+              searchText: _this.props.search.text,
+              loading: false
+          }, _this.request = (0, _utils.debounce)(function (searchText) {
+              _this.setState({
+                  loading: true
+              });
+  
+              (0, _api2.default)(_api.APIActions.SEARCH, searchText).then(function (response) {
+                  var data = JSON.parse(response);
+                  _this.setState({
+                      users: data.users,
+                      loading: false
+                  });
+              }, function (error) {
+                  console.log(error);
+              });
+          }, 200), _this.handleChange = function (evt) {
+              _this.setState({
+                  searchText: evt.target.value
+              });
+          }, _temp), _possibleConstructorReturn(_this, _ret);
+      }
+  
+      _createClass(Instagram, [{
+          key: 'componentWillUpdate',
+          value: function componentWillUpdate(prevProps, prevState) {
+              var searchText = this.state.searchText;
+  
+              if (prevState.searchText !== searchText && searchText) {
+                  this.request(searchText);
+              }
+          }
+      }, {
+          key: 'render',
+          value: function render() {
+  
+              var userNodes = this.state.users.map(function (user) {
+                  return _react2.default.createElement(_User2.default, _extends({}, user.user, { key: user.user.pk }));
+              });
+  
+              return _react2.default.createElement(
+                  'div',
+                  null,
+                  _react2.default.createElement('input', {
+                      type: 'text',
+                      value: this.state.searchText,
+                      onChange: this.handleChange
+                  }),
+                  _react2.default.createElement(
+                      'h1',
+                      null,
+                      'Users'
+                  ),
+                  _react2.default.createElement(
+                      'ol',
+                      { className: 'userList' },
+                      userNodes
+                  )
+              );
+          }
+      }]);
+  
+      return Instagram;
+  }(_react.Component);
+  
+  exports.default = Instagram;
 
 /***/ },
 /* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-  /* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Components"] = __webpack_require__(27);
-  /* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+  'use strict';
+  
+  var _User = __webpack_require__(15);
+  
+  var _User2 = _interopRequireDefault(_User);
+  
+  var _Instagram = __webpack_require__(27);
+  
+  var _Instagram2 = _interopRequireDefault(_Instagram);
+  
+  var _Avatar = __webpack_require__(14);
+  
+  var _Avatar2 = _interopRequireDefault(_Avatar);
+  
+  var _Gallery = __webpack_require__(26);
+  
+  var _Gallery2 = _interopRequireDefault(_Gallery);
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+  
+  module.exports = {
+      User: _User2.default,
+      Instagram: _Instagram2.default,
+      Avatar: _Avatar2.default,
+      Gallery: _Gallery2.default
+  };
 
 /***/ },
 /* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+  /* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Components"] = __webpack_require__(28);
+  /* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 30 */
 /***/ function(module, exports) {
 
   // removed by extract-text-webpack-plugin
 
 /***/ },
-/* 30 */
+/* 31 */
+/***/ function(module, exports) {
+
+  "use strict";
+  
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *
+   * @typechecks
+   */
+  
+  var _hyphenPattern = /-(.)/g;
+  
+  /**
+   * Camelcases a hyphenated string, for example:
+   *
+   *   > camelize('background-color')
+   *   < "backgroundColor"
+   *
+   * @param {string} string
+   * @return {string}
+   */
+  function camelize(string) {
+    return string.replace(_hyphenPattern, function (_, character) {
+      return character.toUpperCase();
+    });
+  }
+  
+  module.exports = camelize;
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *
+   * @typechecks
+   */
+  
+  'use strict';
+  
+  var camelize = __webpack_require__(31);
+  
+  var msPattern = /^-ms-/;
+  
+  /**
+   * Camelcases a hyphenated CSS property name, for example:
+   *
+   *   > camelizeStyleName('background-color')
+   *   < "backgroundColor"
+   *   > camelizeStyleName('-moz-transition')
+   *   < "MozTransition"
+   *   > camelizeStyleName('-ms-transition')
+   *   < "msTransition"
+   *
+   * As Andi Smith suggests
+   * (http://www.andismith.com/blog/2012/02/modernizr-prefixed/), an `-ms` prefix
+   * is converted to lowercase `ms`.
+   *
+   * @param {string} string
+   * @return {string}
+   */
+  function camelizeStyleName(string) {
+    return camelize(string.replace(msPattern, 'ms-'));
+  }
+  
+  module.exports = camelizeStyleName;
+
+/***/ },
+/* 33 */
+/***/ function(module, exports) {
+
+  'use strict';
+  
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *
+   * @typechecks
+   */
+  
+  var _uppercasePattern = /([A-Z])/g;
+  
+  /**
+   * Hyphenates a camelcased string, for example:
+   *
+   *   > hyphenate('backgroundColor')
+   *   < "background-color"
+   *
+   * For CSS style names, use `hyphenateStyleName` instead which works properly
+   * with all vendor prefixes, including `ms`.
+   *
+   * @param {string} string
+   * @return {string}
+   */
+  function hyphenate(string) {
+    return string.replace(_uppercasePattern, '-$1').toLowerCase();
+  }
+  
+  module.exports = hyphenate;
+
+/***/ },
+/* 34 */
+/***/ function(module, exports, __webpack_require__) {
+
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *
+   * @typechecks
+   */
+  
+  'use strict';
+  
+  var hyphenate = __webpack_require__(33);
+  
+  var msPattern = /^ms-/;
+  
+  /**
+   * Hyphenates a camelcased CSS property name, for example:
+   *
+   *   > hyphenateStyleName('backgroundColor')
+   *   < "background-color"
+   *   > hyphenateStyleName('MozTransition')
+   *   < "-moz-transition"
+   *   > hyphenateStyleName('msTransition')
+   *   < "-ms-transition"
+   *
+   * As Modernizr suggests (http://modernizr.com/docs/#prefixed), an `ms` prefix
+   * is converted to `-ms-`.
+   *
+   * @param {string} string
+   * @return {string}
+   */
+  function hyphenateStyleName(string) {
+    return hyphenate(string).replace(msPattern, '-ms-');
+  }
+  
+  module.exports = hyphenateStyleName;
+
+/***/ },
+/* 35 */
+/***/ function(module, exports) {
+
+  'use strict';
+  
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *
+   * @typechecks
+   */
+  
+  /**
+   * @param {*} object The object to check.
+   * @return {boolean} Whether or not the object is a DOM node.
+   */
+  function isNode(object) {
+    var doc = object ? object.ownerDocument || object : document;
+    var defaultView = doc.defaultView || window;
+    return !!(object && (typeof defaultView.Node === 'function' ? object instanceof defaultView.Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
+  }
+  
+  module.exports = isNode;
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *
+   * @typechecks
+   */
+  
+  var isNode = __webpack_require__(35);
+  
+  /**
+   * @param {*} object The object to check.
+   * @return {boolean} Whether or not the object is a DOM text node.
+   */
+  function isTextNode(object) {
+    return isNode(object) && object.nodeType == 3;
+  }
+  
+  module.exports = isTextNode;
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *
+   * @typechecks
+   */
+  
+  'use strict';
+  
+  var ExecutionEnvironment = __webpack_require__(10);
+  
+  var performance;
+  
+  if (ExecutionEnvironment.canUseDOM) {
+    performance = window.performance || window.msPerformance || window.webkitPerformance;
+  }
+  
+  module.exports = performance || {};
+
+/***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *
+   * @typechecks
+   */
+  
+  var performance = __webpack_require__(37);
+  
+  var performanceNow;
+  
+  /**
+   * Detect if we can use `window.performance.now()` and gracefully fallback to
+   * `Date.now()` if it doesn't exist. We need to support Firefox < 15 for now
+   * because of Facebook's testing infrastructure.
+   */
+  if (performance.now) {
+    performanceNow = function performanceNow() {
+      return performance.now();
+    };
+  } else {
+    performanceNow = function performanceNow() {
+      return Date.now();
+    };
+  }
+  
+  module.exports = performanceNow;
+
+/***/ },
+/* 39 */
+/***/ function(module, exports) {
+
+  /* WEBPACK VAR INJECTION */(function(global) {/**
+   * lodash (Custom Build) <https://lodash.com/>
+   * Build: `lodash modularize exports="npm" -o ./`
+   * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+   * Released under MIT license <https://lodash.com/license>
+   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+   */
+  
+  /** Used as references for various `Number` constants. */
+  var INFINITY = 1 / 0,
+      MAX_SAFE_INTEGER = 9007199254740991;
+  
+  /** `Object#toString` result references. */
+  var argsTag = '[object Arguments]',
+      funcTag = '[object Function]',
+      genTag = '[object GeneratorFunction]',
+      symbolTag = '[object Symbol]';
+  
+  /** Detect free variable `global` from Node.js. */
+  var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+  
+  /** Detect free variable `self`. */
+  var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+  
+  /** Used as a reference to the global object. */
+  var root = freeGlobal || freeSelf || Function('return this')();
+  
+  /**
+   * A faster alternative to `Function#apply`, this function invokes `func`
+   * with the `this` binding of `thisArg` and the arguments of `args`.
+   *
+   * @private
+   * @param {Function} func The function to invoke.
+   * @param {*} thisArg The `this` binding of `func`.
+   * @param {Array} args The arguments to invoke `func` with.
+   * @returns {*} Returns the result of `func`.
+   */
+  function apply(func, thisArg, args) {
+    switch (args.length) {
+      case 0: return func.call(thisArg);
+      case 1: return func.call(thisArg, args[0]);
+      case 2: return func.call(thisArg, args[0], args[1]);
+      case 3: return func.call(thisArg, args[0], args[1], args[2]);
+    }
+    return func.apply(thisArg, args);
+  }
+  
+  /**
+   * A specialized version of `_.map` for arrays without support for iteratee
+   * shorthands.
+   *
+   * @private
+   * @param {Array} [array] The array to iterate over.
+   * @param {Function} iteratee The function invoked per iteration.
+   * @returns {Array} Returns the new mapped array.
+   */
+  function arrayMap(array, iteratee) {
+    var index = -1,
+        length = array ? array.length : 0,
+        result = Array(length);
+  
+    while (++index < length) {
+      result[index] = iteratee(array[index], index, array);
+    }
+    return result;
+  }
+  
+  /**
+   * Appends the elements of `values` to `array`.
+   *
+   * @private
+   * @param {Array} array The array to modify.
+   * @param {Array} values The values to append.
+   * @returns {Array} Returns `array`.
+   */
+  function arrayPush(array, values) {
+    var index = -1,
+        length = values.length,
+        offset = array.length;
+  
+    while (++index < length) {
+      array[offset + index] = values[index];
+    }
+    return array;
+  }
+  
+  /** Used for built-in method references. */
+  var objectProto = Object.prototype;
+  
+  /** Used to check objects for own properties. */
+  var hasOwnProperty = objectProto.hasOwnProperty;
+  
+  /**
+   * Used to resolve the
+   * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+   * of values.
+   */
+  var objectToString = objectProto.toString;
+  
+  /** Built-in value references. */
+  var Symbol = root.Symbol,
+      propertyIsEnumerable = objectProto.propertyIsEnumerable,
+      spreadableSymbol = Symbol ? Symbol.isConcatSpreadable : undefined;
+  
+  /* Built-in method references for those with the same name as other `lodash` methods. */
+  var nativeMax = Math.max;
+  
+  /**
+   * The base implementation of `_.flatten` with support for restricting flattening.
+   *
+   * @private
+   * @param {Array} array The array to flatten.
+   * @param {number} depth The maximum recursion depth.
+   * @param {boolean} [predicate=isFlattenable] The function invoked per iteration.
+   * @param {boolean} [isStrict] Restrict to values that pass `predicate` checks.
+   * @param {Array} [result=[]] The initial result value.
+   * @returns {Array} Returns the new flattened array.
+   */
+  function baseFlatten(array, depth, predicate, isStrict, result) {
+    var index = -1,
+        length = array.length;
+  
+    predicate || (predicate = isFlattenable);
+    result || (result = []);
+  
+    while (++index < length) {
+      var value = array[index];
+      if (depth > 0 && predicate(value)) {
+        if (depth > 1) {
+          // Recursively flatten arrays (susceptible to call stack limits).
+          baseFlatten(value, depth - 1, predicate, isStrict, result);
+        } else {
+          arrayPush(result, value);
+        }
+      } else if (!isStrict) {
+        result[result.length] = value;
+      }
+    }
+    return result;
+  }
+  
+  /**
+   * The base implementation of `_.pick` without support for individual
+   * property identifiers.
+   *
+   * @private
+   * @param {Object} object The source object.
+   * @param {string[]} props The property identifiers to pick.
+   * @returns {Object} Returns the new object.
+   */
+  function basePick(object, props) {
+    object = Object(object);
+    return basePickBy(object, props, function(value, key) {
+      return key in object;
+    });
+  }
+  
+  /**
+   * The base implementation of  `_.pickBy` without support for iteratee shorthands.
+   *
+   * @private
+   * @param {Object} object The source object.
+   * @param {string[]} props The property identifiers to pick from.
+   * @param {Function} predicate The function invoked per property.
+   * @returns {Object} Returns the new object.
+   */
+  function basePickBy(object, props, predicate) {
+    var index = -1,
+        length = props.length,
+        result = {};
+  
+    while (++index < length) {
+      var key = props[index],
+          value = object[key];
+  
+      if (predicate(value, key)) {
+        result[key] = value;
+      }
+    }
+    return result;
+  }
+  
+  /**
+   * The base implementation of `_.rest` which doesn't validate or coerce arguments.
+   *
+   * @private
+   * @param {Function} func The function to apply a rest parameter to.
+   * @param {number} [start=func.length-1] The start position of the rest parameter.
+   * @returns {Function} Returns the new function.
+   */
+  function baseRest(func, start) {
+    start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
+    return function() {
+      var args = arguments,
+          index = -1,
+          length = nativeMax(args.length - start, 0),
+          array = Array(length);
+  
+      while (++index < length) {
+        array[index] = args[start + index];
+      }
+      index = -1;
+      var otherArgs = Array(start + 1);
+      while (++index < start) {
+        otherArgs[index] = args[index];
+      }
+      otherArgs[start] = array;
+      return apply(func, this, otherArgs);
+    };
+  }
+  
+  /**
+   * Checks if `value` is a flattenable `arguments` object or array.
+   *
+   * @private
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is flattenable, else `false`.
+   */
+  function isFlattenable(value) {
+    return isArray(value) || isArguments(value) ||
+      !!(spreadableSymbol && value && value[spreadableSymbol]);
+  }
+  
+  /**
+   * Converts `value` to a string key if it's not a string or symbol.
+   *
+   * @private
+   * @param {*} value The value to inspect.
+   * @returns {string|symbol} Returns the key.
+   */
+  function toKey(value) {
+    if (typeof value == 'string' || isSymbol(value)) {
+      return value;
+    }
+    var result = (value + '');
+    return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+  }
+  
+  /**
+   * Checks if `value` is likely an `arguments` object.
+   *
+   * @static
+   * @memberOf _
+   * @since 0.1.0
+   * @category Lang
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+   *  else `false`.
+   * @example
+   *
+   * _.isArguments(function() { return arguments; }());
+   * // => true
+   *
+   * _.isArguments([1, 2, 3]);
+   * // => false
+   */
+  function isArguments(value) {
+    // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+    return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+      (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+  }
+  
+  /**
+   * Checks if `value` is classified as an `Array` object.
+   *
+   * @static
+   * @memberOf _
+   * @since 0.1.0
+   * @category Lang
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+   * @example
+   *
+   * _.isArray([1, 2, 3]);
+   * // => true
+   *
+   * _.isArray(document.body.children);
+   * // => false
+   *
+   * _.isArray('abc');
+   * // => false
+   *
+   * _.isArray(_.noop);
+   * // => false
+   */
+  var isArray = Array.isArray;
+  
+  /**
+   * Checks if `value` is array-like. A value is considered array-like if it's
+   * not a function and has a `value.length` that's an integer greater than or
+   * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+   *
+   * @static
+   * @memberOf _
+   * @since 4.0.0
+   * @category Lang
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+   * @example
+   *
+   * _.isArrayLike([1, 2, 3]);
+   * // => true
+   *
+   * _.isArrayLike(document.body.children);
+   * // => true
+   *
+   * _.isArrayLike('abc');
+   * // => true
+   *
+   * _.isArrayLike(_.noop);
+   * // => false
+   */
+  function isArrayLike(value) {
+    return value != null && isLength(value.length) && !isFunction(value);
+  }
+  
+  /**
+   * This method is like `_.isArrayLike` except that it also checks if `value`
+   * is an object.
+   *
+   * @static
+   * @memberOf _
+   * @since 4.0.0
+   * @category Lang
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is an array-like object,
+   *  else `false`.
+   * @example
+   *
+   * _.isArrayLikeObject([1, 2, 3]);
+   * // => true
+   *
+   * _.isArrayLikeObject(document.body.children);
+   * // => true
+   *
+   * _.isArrayLikeObject('abc');
+   * // => false
+   *
+   * _.isArrayLikeObject(_.noop);
+   * // => false
+   */
+  function isArrayLikeObject(value) {
+    return isObjectLike(value) && isArrayLike(value);
+  }
+  
+  /**
+   * Checks if `value` is classified as a `Function` object.
+   *
+   * @static
+   * @memberOf _
+   * @since 0.1.0
+   * @category Lang
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+   * @example
+   *
+   * _.isFunction(_);
+   * // => true
+   *
+   * _.isFunction(/abc/);
+   * // => false
+   */
+  function isFunction(value) {
+    // The use of `Object#toString` avoids issues with the `typeof` operator
+    // in Safari 8-9 which returns 'object' for typed array and other constructors.
+    var tag = isObject(value) ? objectToString.call(value) : '';
+    return tag == funcTag || tag == genTag;
+  }
+  
+  /**
+   * Checks if `value` is a valid array-like length.
+   *
+   * **Note:** This method is loosely based on
+   * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+   *
+   * @static
+   * @memberOf _
+   * @since 4.0.0
+   * @category Lang
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+   * @example
+   *
+   * _.isLength(3);
+   * // => true
+   *
+   * _.isLength(Number.MIN_VALUE);
+   * // => false
+   *
+   * _.isLength(Infinity);
+   * // => false
+   *
+   * _.isLength('3');
+   * // => false
+   */
+  function isLength(value) {
+    return typeof value == 'number' &&
+      value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+  }
+  
+  /**
+   * Checks if `value` is the
+   * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+   * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+   *
+   * @static
+   * @memberOf _
+   * @since 0.1.0
+   * @category Lang
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+   * @example
+   *
+   * _.isObject({});
+   * // => true
+   *
+   * _.isObject([1, 2, 3]);
+   * // => true
+   *
+   * _.isObject(_.noop);
+   * // => true
+   *
+   * _.isObject(null);
+   * // => false
+   */
+  function isObject(value) {
+    var type = typeof value;
+    return !!value && (type == 'object' || type == 'function');
+  }
+  
+  /**
+   * Checks if `value` is object-like. A value is object-like if it's not `null`
+   * and has a `typeof` result of "object".
+   *
+   * @static
+   * @memberOf _
+   * @since 4.0.0
+   * @category Lang
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+   * @example
+   *
+   * _.isObjectLike({});
+   * // => true
+   *
+   * _.isObjectLike([1, 2, 3]);
+   * // => true
+   *
+   * _.isObjectLike(_.noop);
+   * // => false
+   *
+   * _.isObjectLike(null);
+   * // => false
+   */
+  function isObjectLike(value) {
+    return !!value && typeof value == 'object';
+  }
+  
+  /**
+   * Checks if `value` is classified as a `Symbol` primitive or object.
+   *
+   * @static
+   * @memberOf _
+   * @since 4.0.0
+   * @category Lang
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+   * @example
+   *
+   * _.isSymbol(Symbol.iterator);
+   * // => true
+   *
+   * _.isSymbol('abc');
+   * // => false
+   */
+  function isSymbol(value) {
+    return typeof value == 'symbol' ||
+      (isObjectLike(value) && objectToString.call(value) == symbolTag);
+  }
+  
+  /**
+   * Creates an object composed of the picked `object` properties.
+   *
+   * @static
+   * @since 0.1.0
+   * @memberOf _
+   * @category Object
+   * @param {Object} object The source object.
+   * @param {...(string|string[])} [props] The property identifiers to pick.
+   * @returns {Object} Returns the new object.
+   * @example
+   *
+   * var object = { 'a': 1, 'b': '2', 'c': 3 };
+   *
+   * _.pick(object, ['a', 'c']);
+   * // => { 'a': 1, 'c': 3 }
+   */
+  var pick = baseRest(function(object, props) {
+    return object == null ? {} : basePick(object, arrayMap(baseFlatten(props, 1), toKey));
+  });
+  
+  module.exports = pick;
+  
+  /* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+  var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! PhotoSwipe Default UI - 4.1.2 - 2017-04-05
+  * http://photoswipe.com
+  * Copyright (c) 2017 Dmitry Semenov; */
+  /**
+  *
+  * UI on top of main sliding area (caption, arrows, close button, etc.).
+  * Built just using public methods/properties of PhotoSwipe.
+  * 
+  */
+  (function (root, factory) { 
+  	if (true) {
+  		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  	} else if (typeof exports === 'object') {
+  		module.exports = factory();
+  	} else {
+  		root.PhotoSwipeUI_Default = factory();
+  	}
+  })(this, function () {
+  
+  	'use strict';
+  
+  
+  
+  var PhotoSwipeUI_Default =
+   function(pswp, framework) {
+  
+  	var ui = this;
+  	var _overlayUIUpdated = false,
+  		_controlsVisible = true,
+  		_fullscrenAPI,
+  		_controls,
+  		_captionContainer,
+  		_fakeCaptionContainer,
+  		_indexIndicator,
+  		_shareButton,
+  		_shareModal,
+  		_shareModalHidden = true,
+  		_initalCloseOnScrollValue,
+  		_isIdle,
+  		_listen,
+  
+  		_loadingIndicator,
+  		_loadingIndicatorHidden,
+  		_loadingIndicatorTimeout,
+  
+  		_galleryHasOneSlide,
+  
+  		_options,
+  		_defaultUIOptions = {
+  			barsSize: {top:44, bottom:'auto'},
+  			closeElClasses: ['item', 'caption', 'zoom-wrap', 'ui', 'top-bar'], 
+  			timeToIdle: 4000, 
+  			timeToIdleOutside: 1000,
+  			loadingIndicatorDelay: 1000, // 2s
+  			
+  			addCaptionHTMLFn: function(item, captionEl /*, isFake */) {
+  				if(!item.title) {
+  					captionEl.children[0].innerHTML = '';
+  					return false;
+  				}
+  				captionEl.children[0].innerHTML = item.title;
+  				return true;
+  			},
+  
+  			closeEl:true,
+  			captionEl: true,
+  			fullscreenEl: true,
+  			zoomEl: true,
+  			shareEl: true,
+  			counterEl: true,
+  			arrowEl: true,
+  			preloaderEl: true,
+  
+  			tapToClose: false,
+  			tapToToggleControls: true,
+  
+  			clickToCloseNonZoomable: true,
+  
+  			shareButtons: [
+  				{id:'facebook', label:'Share on Facebook', url:'https://www.facebook.com/sharer/sharer.php?u={{url}}'},
+  				{id:'twitter', label:'Tweet', url:'https://twitter.com/intent/tweet?text={{text}}&url={{url}}'},
+  				{id:'pinterest', label:'Pin it', url:'http://www.pinterest.com/pin/create/button/'+
+  													'?url={{url}}&media={{image_url}}&description={{text}}'},
+  				{id:'download', label:'Download image', url:'{{raw_image_url}}', download:true}
+  			],
+  			getImageURLForShare: function( /* shareButtonData */ ) {
+  				return pswp.currItem.src || '';
+  			},
+  			getPageURLForShare: function( /* shareButtonData */ ) {
+  				return window.location.href;
+  			},
+  			getTextForShare: function( /* shareButtonData */ ) {
+  				return pswp.currItem.title || '';
+  			},
+  				
+  			indexIndicatorSep: ' / ',
+  			fitControlsWidth: 1200
+  
+  		},
+  		_blockControlsTap,
+  		_blockControlsTapTimeout;
+  
+  
+  
+  	var _onControlsTap = function(e) {
+  			if(_blockControlsTap) {
+  				return true;
+  			}
+  
+  
+  			e = e || window.event;
+  
+  			if(_options.timeToIdle && _options.mouseUsed && !_isIdle) {
+  				// reset idle timer
+  				_onIdleMouseMove();
+  			}
+  
+  
+  			var target = e.target || e.srcElement,
+  				uiElement,
+  				clickedClass = target.getAttribute('class') || '',
+  				found;
+  
+  			for(var i = 0; i < _uiElements.length; i++) {
+  				uiElement = _uiElements[i];
+  				if(uiElement.onTap && clickedClass.indexOf('pswp__' + uiElement.name ) > -1 ) {
+  					uiElement.onTap();
+  					found = true;
+  
+  				}
+  			}
+  
+  			if(found) {
+  				if(e.stopPropagation) {
+  					e.stopPropagation();
+  				}
+  				_blockControlsTap = true;
+  
+  				// Some versions of Android don't prevent ghost click event 
+  				// when preventDefault() was called on touchstart and/or touchend.
+  				// 
+  				// This happens on v4.3, 4.2, 4.1, 
+  				// older versions strangely work correctly, 
+  				// but just in case we add delay on all of them)	
+  				var tapDelay = framework.features.isOldAndroid ? 600 : 30;
+  				_blockControlsTapTimeout = setTimeout(function() {
+  					_blockControlsTap = false;
+  				}, tapDelay);
+  			}
+  
+  		},
+  		_fitControlsInViewport = function() {
+  			return !pswp.likelyTouchDevice || _options.mouseUsed || screen.width > _options.fitControlsWidth;
+  		},
+  		_togglePswpClass = function(el, cName, add) {
+  			framework[ (add ? 'add' : 'remove') + 'Class' ](el, 'pswp__' + cName);
+  		},
+  
+  		// add class when there is just one item in the gallery
+  		// (by default it hides left/right arrows and 1ofX counter)
+  		_countNumItems = function() {
+  			var hasOneSlide = (_options.getNumItemsFn() === 1);
+  
+  			if(hasOneSlide !== _galleryHasOneSlide) {
+  				_togglePswpClass(_controls, 'ui--one-slide', hasOneSlide);
+  				_galleryHasOneSlide = hasOneSlide;
+  			}
+  		},
+  		_toggleShareModalClass = function() {
+  			_togglePswpClass(_shareModal, 'share-modal--hidden', _shareModalHidden);
+  		},
+  		_toggleShareModal = function() {
+  
+  			_shareModalHidden = !_shareModalHidden;
+  			
+  			
+  			if(!_shareModalHidden) {
+  				_toggleShareModalClass();
+  				setTimeout(function() {
+  					if(!_shareModalHidden) {
+  						framework.addClass(_shareModal, 'pswp__share-modal--fade-in');
+  					}
+  				}, 30);
+  			} else {
+  				framework.removeClass(_shareModal, 'pswp__share-modal--fade-in');
+  				setTimeout(function() {
+  					if(_shareModalHidden) {
+  						_toggleShareModalClass();
+  					}
+  				}, 300);
+  			}
+  			
+  			if(!_shareModalHidden) {
+  				_updateShareURLs();
+  			}
+  			return false;
+  		},
+  
+  		_openWindowPopup = function(e) {
+  			e = e || window.event;
+  			var target = e.target || e.srcElement;
+  
+  			pswp.shout('shareLinkClick', e, target);
+  
+  			if(!target.href) {
+  				return false;
+  			}
+  
+  			if( target.hasAttribute('download') ) {
+  				return true;
+  			}
+  
+  			window.open(target.href, 'pswp_share', 'scrollbars=yes,resizable=yes,toolbar=no,'+
+  										'location=yes,width=550,height=420,top=100,left=' + 
+  										(window.screen ? Math.round(screen.width / 2 - 275) : 100)  );
+  
+  			if(!_shareModalHidden) {
+  				_toggleShareModal();
+  			}
+  			
+  			return false;
+  		},
+  		_updateShareURLs = function() {
+  			var shareButtonOut = '',
+  				shareButtonData,
+  				shareURL,
+  				image_url,
+  				page_url,
+  				share_text;
+  
+  			for(var i = 0; i < _options.shareButtons.length; i++) {
+  				shareButtonData = _options.shareButtons[i];
+  
+  				image_url = _options.getImageURLForShare(shareButtonData);
+  				page_url = _options.getPageURLForShare(shareButtonData);
+  				share_text = _options.getTextForShare(shareButtonData);
+  
+  				shareURL = shareButtonData.url.replace('{{url}}', encodeURIComponent(page_url) )
+  									.replace('{{image_url}}', encodeURIComponent(image_url) )
+  									.replace('{{raw_image_url}}', image_url )
+  									.replace('{{text}}', encodeURIComponent(share_text) );
+  
+  				shareButtonOut += '<a href="' + shareURL + '" target="_blank" '+
+  									'class="pswp__share--' + shareButtonData.id + '"' +
+  									(shareButtonData.download ? 'download' : '') + '>' + 
+  									shareButtonData.label + '</a>';
+  
+  				if(_options.parseShareButtonOut) {
+  					shareButtonOut = _options.parseShareButtonOut(shareButtonData, shareButtonOut);
+  				}
+  			}
+  			_shareModal.children[0].innerHTML = shareButtonOut;
+  			_shareModal.children[0].onclick = _openWindowPopup;
+  
+  		},
+  		_hasCloseClass = function(target) {
+  			for(var  i = 0; i < _options.closeElClasses.length; i++) {
+  				if( framework.hasClass(target, 'pswp__' + _options.closeElClasses[i]) ) {
+  					return true;
+  				}
+  			}
+  		},
+  		_idleInterval,
+  		_idleTimer,
+  		_idleIncrement = 0,
+  		_onIdleMouseMove = function() {
+  			clearTimeout(_idleTimer);
+  			_idleIncrement = 0;
+  			if(_isIdle) {
+  				ui.setIdle(false);
+  			}
+  		},
+  		_onMouseLeaveWindow = function(e) {
+  			e = e ? e : window.event;
+  			var from = e.relatedTarget || e.toElement;
+  			if (!from || from.nodeName === 'HTML') {
+  				clearTimeout(_idleTimer);
+  				_idleTimer = setTimeout(function() {
+  					ui.setIdle(true);
+  				}, _options.timeToIdleOutside);
+  			}
+  		},
+  		_setupFullscreenAPI = function() {
+  			if(_options.fullscreenEl && !framework.features.isOldAndroid) {
+  				if(!_fullscrenAPI) {
+  					_fullscrenAPI = ui.getFullscreenAPI();
+  				}
+  				if(_fullscrenAPI) {
+  					framework.bind(document, _fullscrenAPI.eventK, ui.updateFullscreen);
+  					ui.updateFullscreen();
+  					framework.addClass(pswp.template, 'pswp--supports-fs');
+  				} else {
+  					framework.removeClass(pswp.template, 'pswp--supports-fs');
+  				}
+  			}
+  		},
+  		_setupLoadingIndicator = function() {
+  			// Setup loading indicator
+  			if(_options.preloaderEl) {
+  			
+  				_toggleLoadingIndicator(true);
+  
+  				_listen('beforeChange', function() {
+  
+  					clearTimeout(_loadingIndicatorTimeout);
+  
+  					// display loading indicator with delay
+  					_loadingIndicatorTimeout = setTimeout(function() {
+  
+  						if(pswp.currItem && pswp.currItem.loading) {
+  
+  							if( !pswp.allowProgressiveImg() || (pswp.currItem.img && !pswp.currItem.img.naturalWidth)  ) {
+  								// show preloader if progressive loading is not enabled, 
+  								// or image width is not defined yet (because of slow connection)
+  								_toggleLoadingIndicator(false); 
+  								// items-controller.js function allowProgressiveImg
+  							}
+  							
+  						} else {
+  							_toggleLoadingIndicator(true); // hide preloader
+  						}
+  
+  					}, _options.loadingIndicatorDelay);
+  					
+  				});
+  				_listen('imageLoadComplete', function(index, item) {
+  					if(pswp.currItem === item) {
+  						_toggleLoadingIndicator(true);
+  					}
+  				});
+  
+  			}
+  		},
+  		_toggleLoadingIndicator = function(hide) {
+  			if( _loadingIndicatorHidden !== hide ) {
+  				_togglePswpClass(_loadingIndicator, 'preloader--active', !hide);
+  				_loadingIndicatorHidden = hide;
+  			}
+  		},
+  		_applyNavBarGaps = function(item) {
+  			var gap = item.vGap;
+  
+  			if( _fitControlsInViewport() ) {
+  				
+  				var bars = _options.barsSize; 
+  				if(_options.captionEl && bars.bottom === 'auto') {
+  					if(!_fakeCaptionContainer) {
+  						_fakeCaptionContainer = framework.createEl('pswp__caption pswp__caption--fake');
+  						_fakeCaptionContainer.appendChild( framework.createEl('pswp__caption__center') );
+  						_controls.insertBefore(_fakeCaptionContainer, _captionContainer);
+  						framework.addClass(_controls, 'pswp__ui--fit');
+  					}
+  					if( _options.addCaptionHTMLFn(item, _fakeCaptionContainer, true) ) {
+  
+  						var captionSize = _fakeCaptionContainer.clientHeight;
+  						gap.bottom = parseInt(captionSize,10) || 44;
+  					} else {
+  						gap.bottom = bars.top; // if no caption, set size of bottom gap to size of top
+  					}
+  				} else {
+  					gap.bottom = bars.bottom === 'auto' ? 0 : bars.bottom;
+  				}
+  				
+  				// height of top bar is static, no need to calculate it
+  				gap.top = bars.top;
+  			} else {
+  				gap.top = gap.bottom = 0;
+  			}
+  		},
+  		_setupIdle = function() {
+  			// Hide controls when mouse is used
+  			if(_options.timeToIdle) {
+  				_listen('mouseUsed', function() {
+  					
+  					framework.bind(document, 'mousemove', _onIdleMouseMove);
+  					framework.bind(document, 'mouseout', _onMouseLeaveWindow);
+  
+  					_idleInterval = setInterval(function() {
+  						_idleIncrement++;
+  						if(_idleIncrement === 2) {
+  							ui.setIdle(true);
+  						}
+  					}, _options.timeToIdle / 2);
+  				});
+  			}
+  		},
+  		_setupHidingControlsDuringGestures = function() {
+  
+  			// Hide controls on vertical drag
+  			_listen('onVerticalDrag', function(now) {
+  				if(_controlsVisible && now < 0.95) {
+  					ui.hideControls();
+  				} else if(!_controlsVisible && now >= 0.95) {
+  					ui.showControls();
+  				}
+  			});
+  
+  			// Hide controls when pinching to close
+  			var pinchControlsHidden;
+  			_listen('onPinchClose' , function(now) {
+  				if(_controlsVisible && now < 0.9) {
+  					ui.hideControls();
+  					pinchControlsHidden = true;
+  				} else if(pinchControlsHidden && !_controlsVisible && now > 0.9) {
+  					ui.showControls();
+  				}
+  			});
+  
+  			_listen('zoomGestureEnded', function() {
+  				pinchControlsHidden = false;
+  				if(pinchControlsHidden && !_controlsVisible) {
+  					ui.showControls();
+  				}
+  			});
+  
+  		};
+  
+  
+  
+  	var _uiElements = [
+  		{ 
+  			name: 'caption', 
+  			option: 'captionEl',
+  			onInit: function(el) {  
+  				_captionContainer = el; 
+  			} 
+  		},
+  		{ 
+  			name: 'share-modal', 
+  			option: 'shareEl',
+  			onInit: function(el) {  
+  				_shareModal = el;
+  			},
+  			onTap: function() {
+  				_toggleShareModal();
+  			} 
+  		},
+  		{ 
+  			name: 'button--share', 
+  			option: 'shareEl',
+  			onInit: function(el) { 
+  				_shareButton = el;
+  			},
+  			onTap: function() {
+  				_toggleShareModal();
+  			} 
+  		},
+  		{ 
+  			name: 'button--zoom', 
+  			option: 'zoomEl',
+  			onTap: pswp.toggleDesktopZoom
+  		},
+  		{ 
+  			name: 'counter', 
+  			option: 'counterEl',
+  			onInit: function(el) {  
+  				_indexIndicator = el;
+  			} 
+  		},
+  		{ 
+  			name: 'button--close', 
+  			option: 'closeEl',
+  			onTap: pswp.close
+  		},
+  		{ 
+  			name: 'button--arrow--left', 
+  			option: 'arrowEl',
+  			onTap: pswp.prev
+  		},
+  		{ 
+  			name: 'button--arrow--right', 
+  			option: 'arrowEl',
+  			onTap: pswp.next
+  		},
+  		{ 
+  			name: 'button--fs', 
+  			option: 'fullscreenEl',
+  			onTap: function() {  
+  				if(_fullscrenAPI.isFullscreen()) {
+  					_fullscrenAPI.exit();
+  				} else {
+  					_fullscrenAPI.enter();
+  				}
+  			} 
+  		},
+  		{ 
+  			name: 'preloader', 
+  			option: 'preloaderEl',
+  			onInit: function(el) {  
+  				_loadingIndicator = el;
+  			} 
+  		}
+  
+  	];
+  
+  	var _setupUIElements = function() {
+  		var item,
+  			classAttr,
+  			uiElement;
+  
+  		var loopThroughChildElements = function(sChildren) {
+  			if(!sChildren) {
+  				return;
+  			}
+  
+  			var l = sChildren.length;
+  			for(var i = 0; i < l; i++) {
+  				item = sChildren[i];
+  				classAttr = item.className;
+  
+  				for(var a = 0; a < _uiElements.length; a++) {
+  					uiElement = _uiElements[a];
+  
+  					if(classAttr.indexOf('pswp__' + uiElement.name) > -1  ) {
+  
+  						if( _options[uiElement.option] ) { // if element is not disabled from options
+  							
+  							framework.removeClass(item, 'pswp__element--disabled');
+  							if(uiElement.onInit) {
+  								uiElement.onInit(item);
+  							}
+  							
+  							//item.style.display = 'block';
+  						} else {
+  							framework.addClass(item, 'pswp__element--disabled');
+  							//item.style.display = 'none';
+  						}
+  					}
+  				}
+  			}
+  		};
+  		loopThroughChildElements(_controls.children);
+  
+  		var topBar =  framework.getChildByClass(_controls, 'pswp__top-bar');
+  		if(topBar) {
+  			loopThroughChildElements( topBar.children );
+  		}
+  	};
+  
+  
+  	
+  
+  	ui.init = function() {
+  
+  		// extend options
+  		framework.extend(pswp.options, _defaultUIOptions, true);
+  
+  		// create local link for fast access
+  		_options = pswp.options;
+  
+  		// find pswp__ui element
+  		_controls = framework.getChildByClass(pswp.scrollWrap, 'pswp__ui');
+  
+  		// create local link
+  		_listen = pswp.listen;
+  
+  
+  		_setupHidingControlsDuringGestures();
+  
+  		// update controls when slides change
+  		_listen('beforeChange', ui.update);
+  
+  		// toggle zoom on double-tap
+  		_listen('doubleTap', function(point) {
+  			var initialZoomLevel = pswp.currItem.initialZoomLevel;
+  			if(pswp.getZoomLevel() !== initialZoomLevel) {
+  				pswp.zoomTo(initialZoomLevel, point, 333);
+  			} else {
+  				pswp.zoomTo(_options.getDoubleTapZoom(false, pswp.currItem), point, 333);
+  			}
+  		});
+  
+  		// Allow text selection in caption
+  		_listen('preventDragEvent', function(e, isDown, preventObj) {
+  			var t = e.target || e.srcElement;
+  			if(
+  				t && 
+  				t.getAttribute('class') && e.type.indexOf('mouse') > -1 && 
+  				( t.getAttribute('class').indexOf('__caption') > 0 || (/(SMALL|STRONG|EM)/i).test(t.tagName) ) 
+  			) {
+  				preventObj.prevent = false;
+  			}
+  		});
+  
+  		// bind events for UI
+  		_listen('bindEvents', function() {
+  			framework.bind(_controls, 'pswpTap click', _onControlsTap);
+  			framework.bind(pswp.scrollWrap, 'pswpTap', ui.onGlobalTap);
+  
+  			if(!pswp.likelyTouchDevice) {
+  				framework.bind(pswp.scrollWrap, 'mouseover', ui.onMouseOver);
+  			}
+  		});
+  
+  		// unbind events for UI
+  		_listen('unbindEvents', function() {
+  			if(!_shareModalHidden) {
+  				_toggleShareModal();
+  			}
+  
+  			if(_idleInterval) {
+  				clearInterval(_idleInterval);
+  			}
+  			framework.unbind(document, 'mouseout', _onMouseLeaveWindow);
+  			framework.unbind(document, 'mousemove', _onIdleMouseMove);
+  			framework.unbind(_controls, 'pswpTap click', _onControlsTap);
+  			framework.unbind(pswp.scrollWrap, 'pswpTap', ui.onGlobalTap);
+  			framework.unbind(pswp.scrollWrap, 'mouseover', ui.onMouseOver);
+  
+  			if(_fullscrenAPI) {
+  				framework.unbind(document, _fullscrenAPI.eventK, ui.updateFullscreen);
+  				if(_fullscrenAPI.isFullscreen()) {
+  					_options.hideAnimationDuration = 0;
+  					_fullscrenAPI.exit();
+  				}
+  				_fullscrenAPI = null;
+  			}
+  		});
+  
+  
+  		// clean up things when gallery is destroyed
+  		_listen('destroy', function() {
+  			if(_options.captionEl) {
+  				if(_fakeCaptionContainer) {
+  					_controls.removeChild(_fakeCaptionContainer);
+  				}
+  				framework.removeClass(_captionContainer, 'pswp__caption--empty');
+  			}
+  
+  			if(_shareModal) {
+  				_shareModal.children[0].onclick = null;
+  			}
+  			framework.removeClass(_controls, 'pswp__ui--over-close');
+  			framework.addClass( _controls, 'pswp__ui--hidden');
+  			ui.setIdle(false);
+  		});
+  		
+  
+  		if(!_options.showAnimationDuration) {
+  			framework.removeClass( _controls, 'pswp__ui--hidden');
+  		}
+  		_listen('initialZoomIn', function() {
+  			if(_options.showAnimationDuration) {
+  				framework.removeClass( _controls, 'pswp__ui--hidden');
+  			}
+  		});
+  		_listen('initialZoomOut', function() {
+  			framework.addClass( _controls, 'pswp__ui--hidden');
+  		});
+  
+  		_listen('parseVerticalMargin', _applyNavBarGaps);
+  		
+  		_setupUIElements();
+  
+  		if(_options.shareEl && _shareButton && _shareModal) {
+  			_shareModalHidden = true;
+  		}
+  
+  		_countNumItems();
+  
+  		_setupIdle();
+  
+  		_setupFullscreenAPI();
+  
+  		_setupLoadingIndicator();
+  	};
+  
+  	ui.setIdle = function(isIdle) {
+  		_isIdle = isIdle;
+  		_togglePswpClass(_controls, 'ui--idle', isIdle);
+  	};
+  
+  	ui.update = function() {
+  		// Don't update UI if it's hidden
+  		if(_controlsVisible && pswp.currItem) {
+  			
+  			ui.updateIndexIndicator();
+  
+  			if(_options.captionEl) {
+  				_options.addCaptionHTMLFn(pswp.currItem, _captionContainer);
+  
+  				_togglePswpClass(_captionContainer, 'caption--empty', !pswp.currItem.title);
+  			}
+  
+  			_overlayUIUpdated = true;
+  
+  		} else {
+  			_overlayUIUpdated = false;
+  		}
+  
+  		if(!_shareModalHidden) {
+  			_toggleShareModal();
+  		}
+  
+  		_countNumItems();
+  	};
+  
+  	ui.updateFullscreen = function(e) {
+  
+  		if(e) {
+  			// some browsers change window scroll position during the fullscreen
+  			// so PhotoSwipe updates it just in case
+  			setTimeout(function() {
+  				pswp.setScrollOffset( 0, framework.getScrollY() );
+  			}, 50);
+  		}
+  		
+  		// toogle pswp--fs class on root element
+  		framework[ (_fullscrenAPI.isFullscreen() ? 'add' : 'remove') + 'Class' ](pswp.template, 'pswp--fs');
+  	};
+  
+  	ui.updateIndexIndicator = function() {
+  		if(_options.counterEl) {
+  			_indexIndicator.innerHTML = (pswp.getCurrentIndex()+1) + 
+  										_options.indexIndicatorSep + 
+  										_options.getNumItemsFn();
+  		}
+  	};
+  	
+  	ui.onGlobalTap = function(e) {
+  		e = e || window.event;
+  		var target = e.target || e.srcElement;
+  
+  		if(_blockControlsTap) {
+  			return;
+  		}
+  
+  		if(e.detail && e.detail.pointerType === 'mouse') {
+  
+  			// close gallery if clicked outside of the image
+  			if(_hasCloseClass(target)) {
+  				pswp.close();
+  				return;
+  			}
+  
+  			if(framework.hasClass(target, 'pswp__img')) {
+  				if(pswp.getZoomLevel() === 1 && pswp.getZoomLevel() <= pswp.currItem.fitRatio) {
+  					if(_options.clickToCloseNonZoomable) {
+  						pswp.close();
+  					}
+  				} else {
+  					pswp.toggleDesktopZoom(e.detail.releasePoint);
+  				}
+  			}
+  			
+  		} else {
+  
+  			// tap anywhere (except buttons) to toggle visibility of controls
+  			if(_options.tapToToggleControls) {
+  				if(_controlsVisible) {
+  					ui.hideControls();
+  				} else {
+  					ui.showControls();
+  				}
+  			}
+  
+  			// tap to close gallery
+  			if(_options.tapToClose && (framework.hasClass(target, 'pswp__img') || _hasCloseClass(target)) ) {
+  				pswp.close();
+  				return;
+  			}
+  			
+  		}
+  	};
+  	ui.onMouseOver = function(e) {
+  		e = e || window.event;
+  		var target = e.target || e.srcElement;
+  
+  		// add class when mouse is over an element that should close the gallery
+  		_togglePswpClass(_controls, 'ui--over-close', _hasCloseClass(target));
+  	};
+  
+  	ui.hideControls = function() {
+  		framework.addClass(_controls,'pswp__ui--hidden');
+  		_controlsVisible = false;
+  	};
+  
+  	ui.showControls = function() {
+  		_controlsVisible = true;
+  		if(!_overlayUIUpdated) {
+  			ui.update();
+  		}
+  		framework.removeClass(_controls,'pswp__ui--hidden');
+  	};
+  
+  	ui.supportsFullscreen = function() {
+  		var d = document;
+  		return !!(d.exitFullscreen || d.mozCancelFullScreen || d.webkitExitFullscreen || d.msExitFullscreen);
+  	};
+  
+  	ui.getFullscreenAPI = function() {
+  		var dE = document.documentElement,
+  			api,
+  			tF = 'fullscreenchange';
+  
+  		if (dE.requestFullscreen) {
+  			api = {
+  				enterK: 'requestFullscreen',
+  				exitK: 'exitFullscreen',
+  				elementK: 'fullscreenElement',
+  				eventK: tF
+  			};
+  
+  		} else if(dE.mozRequestFullScreen ) {
+  			api = {
+  				enterK: 'mozRequestFullScreen',
+  				exitK: 'mozCancelFullScreen',
+  				elementK: 'mozFullScreenElement',
+  				eventK: 'moz' + tF
+  			};
+  
+  			
+  
+  		} else if(dE.webkitRequestFullscreen) {
+  			api = {
+  				enterK: 'webkitRequestFullscreen',
+  				exitK: 'webkitExitFullscreen',
+  				elementK: 'webkitFullscreenElement',
+  				eventK: 'webkit' + tF
+  			};
+  
+  		} else if(dE.msRequestFullscreen) {
+  			api = {
+  				enterK: 'msRequestFullscreen',
+  				exitK: 'msExitFullscreen',
+  				elementK: 'msFullscreenElement',
+  				eventK: 'MSFullscreenChange'
+  			};
+  		}
+  
+  		if(api) {
+  			api.enter = function() { 
+  				// disable close-on-scroll in fullscreen
+  				_initalCloseOnScrollValue = _options.closeOnScroll; 
+  				_options.closeOnScroll = false; 
+  
+  				if(this.enterK === 'webkitRequestFullscreen') {
+  					pswp.template[this.enterK]( Element.ALLOW_KEYBOARD_INPUT );
+  				} else {
+  					return pswp.template[this.enterK](); 
+  				}
+  			};
+  			api.exit = function() { 
+  				_options.closeOnScroll = _initalCloseOnScrollValue;
+  
+  				return document[this.exitK](); 
+  
+  			};
+  			api.isFullscreen = function() { return document[this.elementK]; };
+  		}
+  
+  		return api;
+  	};
+  
+  
+  
+  };
+  return PhotoSwipeUI_Default;
+  
+  
+  });
+
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+  var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! PhotoSwipe - v4.1.2 - 2017-04-05
+  * http://photoswipe.com
+  * Copyright (c) 2017 Dmitry Semenov; */
+  (function (root, factory) { 
+  	if (true) {
+  		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  	} else if (typeof exports === 'object') {
+  		module.exports = factory();
+  	} else {
+  		root.PhotoSwipe = factory();
+  	}
+  })(this, function () {
+  
+  	'use strict';
+  	var PhotoSwipe = function(template, UiClass, items, options){
+  
+  /*>>framework-bridge*/
+  /**
+   *
+   * Set of generic functions used by gallery.
+   * 
+   * You're free to modify anything here as long as functionality is kept.
+   * 
+   */
+  var framework = {
+  	features: null,
+  	bind: function(target, type, listener, unbind) {
+  		var methodName = (unbind ? 'remove' : 'add') + 'EventListener';
+  		type = type.split(' ');
+  		for(var i = 0; i < type.length; i++) {
+  			if(type[i]) {
+  				target[methodName]( type[i], listener, false);
+  			}
+  		}
+  	},
+  	isArray: function(obj) {
+  		return (obj instanceof Array);
+  	},
+  	createEl: function(classes, tag) {
+  		var el = document.createElement(tag || 'div');
+  		if(classes) {
+  			el.className = classes;
+  		}
+  		return el;
+  	},
+  	getScrollY: function() {
+  		var yOffset = window.pageYOffset;
+  		return yOffset !== undefined ? yOffset : document.documentElement.scrollTop;
+  	},
+  	unbind: function(target, type, listener) {
+  		framework.bind(target,type,listener,true);
+  	},
+  	removeClass: function(el, className) {
+  		var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
+  		el.className = el.className.replace(reg, ' ').replace(/^\s\s*/, '').replace(/\s\s*$/, ''); 
+  	},
+  	addClass: function(el, className) {
+  		if( !framework.hasClass(el,className) ) {
+  			el.className += (el.className ? ' ' : '') + className;
+  		}
+  	},
+  	hasClass: function(el, className) {
+  		return el.className && new RegExp('(^|\\s)' + className + '(\\s|$)').test(el.className);
+  	},
+  	getChildByClass: function(parentEl, childClassName) {
+  		var node = parentEl.firstChild;
+  		while(node) {
+  			if( framework.hasClass(node, childClassName) ) {
+  				return node;
+  			}
+  			node = node.nextSibling;
+  		}
+  	},
+  	arraySearch: function(array, value, key) {
+  		var i = array.length;
+  		while(i--) {
+  			if(array[i][key] === value) {
+  				return i;
+  			} 
+  		}
+  		return -1;
+  	},
+  	extend: function(o1, o2, preventOverwrite) {
+  		for (var prop in o2) {
+  			if (o2.hasOwnProperty(prop)) {
+  				if(preventOverwrite && o1.hasOwnProperty(prop)) {
+  					continue;
+  				}
+  				o1[prop] = o2[prop];
+  			}
+  		}
+  	},
+  	easing: {
+  		sine: {
+  			out: function(k) {
+  				return Math.sin(k * (Math.PI / 2));
+  			},
+  			inOut: function(k) {
+  				return - (Math.cos(Math.PI * k) - 1) / 2;
+  			}
+  		},
+  		cubic: {
+  			out: function(k) {
+  				return --k * k * k + 1;
+  			}
+  		}
+  		/*
+  			elastic: {
+  				out: function ( k ) {
+  
+  					var s, a = 0.1, p = 0.4;
+  					if ( k === 0 ) return 0;
+  					if ( k === 1 ) return 1;
+  					if ( !a || a < 1 ) { a = 1; s = p / 4; }
+  					else s = p * Math.asin( 1 / a ) / ( 2 * Math.PI );
+  					return ( a * Math.pow( 2, - 10 * k) * Math.sin( ( k - s ) * ( 2 * Math.PI ) / p ) + 1 );
+  
+  				},
+  			},
+  			back: {
+  				out: function ( k ) {
+  					var s = 1.70158;
+  					return --k * k * ( ( s + 1 ) * k + s ) + 1;
+  				}
+  			}
+  		*/
+  	},
+  
+  	/**
+  	 * 
+  	 * @return {object}
+  	 * 
+  	 * {
+  	 *  raf : request animation frame function
+  	 *  caf : cancel animation frame function
+  	 *  transfrom : transform property key (with vendor), or null if not supported
+  	 *  oldIE : IE8 or below
+  	 * }
+  	 * 
+  	 */
+  	detectFeatures: function() {
+  		if(framework.features) {
+  			return framework.features;
+  		}
+  		var helperEl = framework.createEl(),
+  			helperStyle = helperEl.style,
+  			vendor = '',
+  			features = {};
+  
+  		// IE8 and below
+  		features.oldIE = document.all && !document.addEventListener;
+  
+  		features.touch = 'ontouchstart' in window;
+  
+  		if(window.requestAnimationFrame) {
+  			features.raf = window.requestAnimationFrame;
+  			features.caf = window.cancelAnimationFrame;
+  		}
+  
+  		features.pointerEvent = navigator.pointerEnabled || navigator.msPointerEnabled;
+  
+  		// fix false-positive detection of old Android in new IE
+  		// (IE11 ua string contains "Android 4.0")
+  		
+  		if(!features.pointerEvent) { 
+  
+  			var ua = navigator.userAgent;
+  
+  			// Detect if device is iPhone or iPod and if it's older than iOS 8
+  			// http://stackoverflow.com/a/14223920
+  			// 
+  			// This detection is made because of buggy top/bottom toolbars
+  			// that don't trigger window.resize event.
+  			// For more info refer to _isFixedPosition variable in core.js
+  
+  			if (/iP(hone|od)/.test(navigator.platform)) {
+  				var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+  				if(v && v.length > 0) {
+  					v = parseInt(v[1], 10);
+  					if(v >= 1 && v < 8 ) {
+  						features.isOldIOSPhone = true;
+  					}
+  				}
+  			}
+  
+  			// Detect old Android (before KitKat)
+  			// due to bugs related to position:fixed
+  			// http://stackoverflow.com/questions/7184573/pick-up-the-android-version-in-the-browser-by-javascript
+  			
+  			var match = ua.match(/Android\s([0-9\.]*)/);
+  			var androidversion =  match ? match[1] : 0;
+  			androidversion = parseFloat(androidversion);
+  			if(androidversion >= 1 ) {
+  				if(androidversion < 4.4) {
+  					features.isOldAndroid = true; // for fixed position bug & performance
+  				}
+  				features.androidVersion = androidversion; // for touchend bug
+  			}	
+  			features.isMobileOpera = /opera mini|opera mobi/i.test(ua);
+  
+  			// p.s. yes, yes, UA sniffing is bad, propose your solution for above bugs.
+  		}
+  		
+  		var styleChecks = ['transform', 'perspective', 'animationName'],
+  			vendors = ['', 'webkit','Moz','ms','O'],
+  			styleCheckItem,
+  			styleName;
+  
+  		for(var i = 0; i < 4; i++) {
+  			vendor = vendors[i];
+  
+  			for(var a = 0; a < 3; a++) {
+  				styleCheckItem = styleChecks[a];
+  
+  				// uppercase first letter of property name, if vendor is present
+  				styleName = vendor + (vendor ? 
+  										styleCheckItem.charAt(0).toUpperCase() + styleCheckItem.slice(1) : 
+  										styleCheckItem);
+  			
+  				if(!features[styleCheckItem] && styleName in helperStyle ) {
+  					features[styleCheckItem] = styleName;
+  				}
+  			}
+  
+  			if(vendor && !features.raf) {
+  				vendor = vendor.toLowerCase();
+  				features.raf = window[vendor+'RequestAnimationFrame'];
+  				if(features.raf) {
+  					features.caf = window[vendor+'CancelAnimationFrame'] || 
+  									window[vendor+'CancelRequestAnimationFrame'];
+  				}
+  			}
+  		}
+  			
+  		if(!features.raf) {
+  			var lastTime = 0;
+  			features.raf = function(fn) {
+  				var currTime = new Date().getTime();
+  				var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+  				var id = window.setTimeout(function() { fn(currTime + timeToCall); }, timeToCall);
+  				lastTime = currTime + timeToCall;
+  				return id;
+  			};
+  			features.caf = function(id) { clearTimeout(id); };
+  		}
+  
+  		// Detect SVG support
+  		features.svg = !!document.createElementNS && 
+  						!!document.createElementNS('http://www.w3.org/2000/svg', 'svg').createSVGRect;
+  
+  		framework.features = features;
+  
+  		return features;
+  	}
+  };
+  
+  framework.detectFeatures();
+  
+  // Override addEventListener for old versions of IE
+  if(framework.features.oldIE) {
+  
+  	framework.bind = function(target, type, listener, unbind) {
+  		
+  		type = type.split(' ');
+  
+  		var methodName = (unbind ? 'detach' : 'attach') + 'Event',
+  			evName,
+  			_handleEv = function() {
+  				listener.handleEvent.call(listener);
+  			};
+  
+  		for(var i = 0; i < type.length; i++) {
+  			evName = type[i];
+  			if(evName) {
+  
+  				if(typeof listener === 'object' && listener.handleEvent) {
+  					if(!unbind) {
+  						listener['oldIE' + evName] = _handleEv;
+  					} else {
+  						if(!listener['oldIE' + evName]) {
+  							return false;
+  						}
+  					}
+  
+  					target[methodName]( 'on' + evName, listener['oldIE' + evName]);
+  				} else {
+  					target[methodName]( 'on' + evName, listener);
+  				}
+  
+  			}
+  		}
+  	};
+  	
+  }
+  
+  /*>>framework-bridge*/
+  
+  /*>>core*/
+  //function(template, UiClass, items, options)
+  
+  var self = this;
+  
+  /**
+   * Static vars, don't change unless you know what you're doing.
+   */
+  var DOUBLE_TAP_RADIUS = 25, 
+  	NUM_HOLDERS = 3;
+  
+  /**
+   * Options
+   */
+  var _options = {
+  	allowPanToNext:true,
+  	spacing: 0.12,
+  	bgOpacity: 1,
+  	mouseUsed: false,
+  	loop: true,
+  	pinchToClose: true,
+  	closeOnScroll: true,
+  	closeOnVerticalDrag: true,
+  	verticalDragRange: 0.75,
+  	hideAnimationDuration: 333,
+  	showAnimationDuration: 333,
+  	showHideOpacity: false,
+  	focus: true,
+  	escKey: true,
+  	arrowKeys: true,
+  	mainScrollEndFriction: 0.35,
+  	panEndFriction: 0.35,
+  	isClickableElement: function(el) {
+          return el.tagName === 'A';
+      },
+      getDoubleTapZoom: function(isMouseClick, item) {
+      	if(isMouseClick) {
+      		return 1;
+      	} else {
+      		return item.initialZoomLevel < 0.7 ? 1 : 1.33;
+      	}
+      },
+      maxSpreadZoom: 1.33,
+  	modal: true,
+  
+  	// not fully implemented yet
+  	scaleMode: 'fit' // TODO
+  };
+  framework.extend(_options, options);
+  
+  
+  /**
+   * Private helper variables & functions
+   */
+  
+  var _getEmptyPoint = function() { 
+  		return {x:0,y:0}; 
+  	};
+  
+  var _isOpen,
+  	_isDestroying,
+  	_closedByScroll,
+  	_currentItemIndex,
+  	_containerStyle,
+  	_containerShiftIndex,
+  	_currPanDist = _getEmptyPoint(),
+  	_startPanOffset = _getEmptyPoint(),
+  	_panOffset = _getEmptyPoint(),
+  	_upMoveEvents, // drag move, drag end & drag cancel events array
+  	_downEvents, // drag start events array
+  	_globalEventHandlers,
+  	_viewportSize = {},
+  	_currZoomLevel,
+  	_startZoomLevel,
+  	_translatePrefix,
+  	_translateSufix,
+  	_updateSizeInterval,
+  	_itemsNeedUpdate,
+  	_currPositionIndex = 0,
+  	_offset = {},
+  	_slideSize = _getEmptyPoint(), // size of slide area, including spacing
+  	_itemHolders,
+  	_prevItemIndex,
+  	_indexDiff = 0, // difference of indexes since last content update
+  	_dragStartEvent,
+  	_dragMoveEvent,
+  	_dragEndEvent,
+  	_dragCancelEvent,
+  	_transformKey,
+  	_pointerEventEnabled,
+  	_isFixedPosition = true,
+  	_likelyTouchDevice,
+  	_modules = [],
+  	_requestAF,
+  	_cancelAF,
+  	_initalClassName,
+  	_initalWindowScrollY,
+  	_oldIE,
+  	_currentWindowScrollY,
+  	_features,
+  	_windowVisibleSize = {},
+  	_renderMaxResolution = false,
+  	_orientationChangeTimeout,
+  
+  
+  	// Registers PhotoSWipe module (History, Controller ...)
+  	_registerModule = function(name, module) {
+  		framework.extend(self, module.publicMethods);
+  		_modules.push(name);
+  	},
+  
+  	_getLoopedId = function(index) {
+  		var numSlides = _getNumItems();
+  		if(index > numSlides - 1) {
+  			return index - numSlides;
+  		} else  if(index < 0) {
+  			return numSlides + index;
+  		}
+  		return index;
+  	},
+  	
+  	// Micro bind/trigger
+  	_listeners = {},
+  	_listen = function(name, fn) {
+  		if(!_listeners[name]) {
+  			_listeners[name] = [];
+  		}
+  		return _listeners[name].push(fn);
+  	},
+  	_shout = function(name) {
+  		var listeners = _listeners[name];
+  
+  		if(listeners) {
+  			var args = Array.prototype.slice.call(arguments);
+  			args.shift();
+  
+  			for(var i = 0; i < listeners.length; i++) {
+  				listeners[i].apply(self, args);
+  			}
+  		}
+  	},
+  
+  	_getCurrentTime = function() {
+  		return new Date().getTime();
+  	},
+  	_applyBgOpacity = function(opacity) {
+  		_bgOpacity = opacity;
+  		self.bg.style.opacity = opacity * _options.bgOpacity;
+  	},
+  
+  	_applyZoomTransform = function(styleObj,x,y,zoom,item) {
+  		if(!_renderMaxResolution || (item && item !== self.currItem) ) {
+  			zoom = zoom / (item ? item.fitRatio : self.currItem.fitRatio);	
+  		}
+  			
+  		styleObj[_transformKey] = _translatePrefix + x + 'px, ' + y + 'px' + _translateSufix + ' scale(' + zoom + ')';
+  	},
+  	_applyCurrentZoomPan = function( allowRenderResolution ) {
+  		if(_currZoomElementStyle) {
+  
+  			if(allowRenderResolution) {
+  				if(_currZoomLevel > self.currItem.fitRatio) {
+  					if(!_renderMaxResolution) {
+  						_setImageSize(self.currItem, false, true);
+  						_renderMaxResolution = true;
+  					}
+  				} else {
+  					if(_renderMaxResolution) {
+  						_setImageSize(self.currItem);
+  						_renderMaxResolution = false;
+  					}
+  				}
+  			}
+  			
+  
+  			_applyZoomTransform(_currZoomElementStyle, _panOffset.x, _panOffset.y, _currZoomLevel);
+  		}
+  	},
+  	_applyZoomPanToItem = function(item) {
+  		if(item.container) {
+  
+  			_applyZoomTransform(item.container.style, 
+  								item.initialPosition.x, 
+  								item.initialPosition.y, 
+  								item.initialZoomLevel,
+  								item);
+  		}
+  	},
+  	_setTranslateX = function(x, elStyle) {
+  		elStyle[_transformKey] = _translatePrefix + x + 'px, 0px' + _translateSufix;
+  	},
+  	_moveMainScroll = function(x, dragging) {
+  
+  		if(!_options.loop && dragging) {
+  			var newSlideIndexOffset = _currentItemIndex + (_slideSize.x * _currPositionIndex - x) / _slideSize.x,
+  				delta = Math.round(x - _mainScrollPos.x);
+  
+  			if( (newSlideIndexOffset < 0 && delta > 0) || 
+  				(newSlideIndexOffset >= _getNumItems() - 1 && delta < 0) ) {
+  				x = _mainScrollPos.x + delta * _options.mainScrollEndFriction;
+  			} 
+  		}
+  		
+  		_mainScrollPos.x = x;
+  		_setTranslateX(x, _containerStyle);
+  	},
+  	_calculatePanOffset = function(axis, zoomLevel) {
+  		var m = _midZoomPoint[axis] - _offset[axis];
+  		return _startPanOffset[axis] + _currPanDist[axis] + m - m * ( zoomLevel / _startZoomLevel );
+  	},
+  	
+  	_equalizePoints = function(p1, p2) {
+  		p1.x = p2.x;
+  		p1.y = p2.y;
+  		if(p2.id) {
+  			p1.id = p2.id;
+  		}
+  	},
+  	_roundPoint = function(p) {
+  		p.x = Math.round(p.x);
+  		p.y = Math.round(p.y);
+  	},
+  
+  	_mouseMoveTimeout = null,
+  	_onFirstMouseMove = function() {
+  		// Wait until mouse move event is fired at least twice during 100ms
+  		// We do this, because some mobile browsers trigger it on touchstart
+  		if(_mouseMoveTimeout ) { 
+  			framework.unbind(document, 'mousemove', _onFirstMouseMove);
+  			framework.addClass(template, 'pswp--has_mouse');
+  			_options.mouseUsed = true;
+  			_shout('mouseUsed');
+  		}
+  		_mouseMoveTimeout = setTimeout(function() {
+  			_mouseMoveTimeout = null;
+  		}, 100);
+  	},
+  
+  	_bindEvents = function() {
+  		framework.bind(document, 'keydown', self);
+  
+  		if(_features.transform) {
+  			// don't bind click event in browsers that don't support transform (mostly IE8)
+  			framework.bind(self.scrollWrap, 'click', self);
+  		}
+  		
+  
+  		if(!_options.mouseUsed) {
+  			framework.bind(document, 'mousemove', _onFirstMouseMove);
+  		}
+  
+  		framework.bind(window, 'resize scroll orientationchange', self);
+  
+  		_shout('bindEvents');
+  	},
+  
+  	_unbindEvents = function() {
+  		framework.unbind(window, 'resize scroll orientationchange', self);
+  		framework.unbind(window, 'scroll', _globalEventHandlers.scroll);
+  		framework.unbind(document, 'keydown', self);
+  		framework.unbind(document, 'mousemove', _onFirstMouseMove);
+  
+  		if(_features.transform) {
+  			framework.unbind(self.scrollWrap, 'click', self);
+  		}
+  
+  		if(_isDragging) {
+  			framework.unbind(window, _upMoveEvents, self);
+  		}
+  
+  		clearTimeout(_orientationChangeTimeout);
+  
+  		_shout('unbindEvents');
+  	},
+  	
+  	_calculatePanBounds = function(zoomLevel, update) {
+  		var bounds = _calculateItemSize( self.currItem, _viewportSize, zoomLevel );
+  		if(update) {
+  			_currPanBounds = bounds;
+  		}
+  		return bounds;
+  	},
+  	
+  	_getMinZoomLevel = function(item) {
+  		if(!item) {
+  			item = self.currItem;
+  		}
+  		return item.initialZoomLevel;
+  	},
+  	_getMaxZoomLevel = function(item) {
+  		if(!item) {
+  			item = self.currItem;
+  		}
+  		return item.w > 0 ? _options.maxSpreadZoom : 1;
+  	},
+  
+  	// Return true if offset is out of the bounds
+  	_modifyDestPanOffset = function(axis, destPanBounds, destPanOffset, destZoomLevel) {
+  		if(destZoomLevel === self.currItem.initialZoomLevel) {
+  			destPanOffset[axis] = self.currItem.initialPosition[axis];
+  			return true;
+  		} else {
+  			destPanOffset[axis] = _calculatePanOffset(axis, destZoomLevel); 
+  
+  			if(destPanOffset[axis] > destPanBounds.min[axis]) {
+  				destPanOffset[axis] = destPanBounds.min[axis];
+  				return true;
+  			} else if(destPanOffset[axis] < destPanBounds.max[axis] ) {
+  				destPanOffset[axis] = destPanBounds.max[axis];
+  				return true;
+  			}
+  		}
+  		return false;
+  	},
+  
+  	_setupTransforms = function() {
+  
+  		if(_transformKey) {
+  			// setup 3d transforms
+  			var allow3dTransform = _features.perspective && !_likelyTouchDevice;
+  			_translatePrefix = 'translate' + (allow3dTransform ? '3d(' : '(');
+  			_translateSufix = _features.perspective ? ', 0px)' : ')';	
+  			return;
+  		}
+  
+  		// Override zoom/pan/move functions in case old browser is used (most likely IE)
+  		// (so they use left/top/width/height, instead of CSS transform)
+  	
+  		_transformKey = 'left';
+  		framework.addClass(template, 'pswp--ie');
+  
+  		_setTranslateX = function(x, elStyle) {
+  			elStyle.left = x + 'px';
+  		};
+  		_applyZoomPanToItem = function(item) {
+  
+  			var zoomRatio = item.fitRatio > 1 ? 1 : item.fitRatio,
+  				s = item.container.style,
+  				w = zoomRatio * item.w,
+  				h = zoomRatio * item.h;
+  
+  			s.width = w + 'px';
+  			s.height = h + 'px';
+  			s.left = item.initialPosition.x + 'px';
+  			s.top = item.initialPosition.y + 'px';
+  
+  		};
+  		_applyCurrentZoomPan = function() {
+  			if(_currZoomElementStyle) {
+  
+  				var s = _currZoomElementStyle,
+  					item = self.currItem,
+  					zoomRatio = item.fitRatio > 1 ? 1 : item.fitRatio,
+  					w = zoomRatio * item.w,
+  					h = zoomRatio * item.h;
+  
+  				s.width = w + 'px';
+  				s.height = h + 'px';
+  
+  
+  				s.left = _panOffset.x + 'px';
+  				s.top = _panOffset.y + 'px';
+  			}
+  			
+  		};
+  	},
+  
+  	_onKeyDown = function(e) {
+  		var keydownAction = '';
+  		if(_options.escKey && e.keyCode === 27) { 
+  			keydownAction = 'close';
+  		} else if(_options.arrowKeys) {
+  			if(e.keyCode === 37) {
+  				keydownAction = 'prev';
+  			} else if(e.keyCode === 39) { 
+  				keydownAction = 'next';
+  			}
+  		}
+  
+  		if(keydownAction) {
+  			// don't do anything if special key pressed to prevent from overriding default browser actions
+  			// e.g. in Chrome on Mac cmd+arrow-left returns to previous page
+  			if( !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey ) {
+  				if(e.preventDefault) {
+  					e.preventDefault();
+  				} else {
+  					e.returnValue = false;
+  				} 
+  				self[keydownAction]();
+  			}
+  		}
+  	},
+  
+  	_onGlobalClick = function(e) {
+  		if(!e) {
+  			return;
+  		}
+  
+  		// don't allow click event to pass through when triggering after drag or some other gesture
+  		if(_moved || _zoomStarted || _mainScrollAnimating || _verticalDragInitiated) {
+  			e.preventDefault();
+  			e.stopPropagation();
+  		}
+  	},
+  
+  	_updatePageScrollOffset = function() {
+  		self.setScrollOffset(0, framework.getScrollY());		
+  	};
+  	
+  
+  
+  	
+  
+  
+  
+  // Micro animation engine
+  var _animations = {},
+  	_numAnimations = 0,
+  	_stopAnimation = function(name) {
+  		if(_animations[name]) {
+  			if(_animations[name].raf) {
+  				_cancelAF( _animations[name].raf );
+  			}
+  			_numAnimations--;
+  			delete _animations[name];
+  		}
+  	},
+  	_registerStartAnimation = function(name) {
+  		if(_animations[name]) {
+  			_stopAnimation(name);
+  		}
+  		if(!_animations[name]) {
+  			_numAnimations++;
+  			_animations[name] = {};
+  		}
+  	},
+  	_stopAllAnimations = function() {
+  		for (var prop in _animations) {
+  
+  			if( _animations.hasOwnProperty( prop ) ) {
+  				_stopAnimation(prop);
+  			} 
+  			
+  		}
+  	},
+  	_animateProp = function(name, b, endProp, d, easingFn, onUpdate, onComplete) {
+  		var startAnimTime = _getCurrentTime(), t;
+  		_registerStartAnimation(name);
+  
+  		var animloop = function(){
+  			if ( _animations[name] ) {
+  				
+  				t = _getCurrentTime() - startAnimTime; // time diff
+  				//b - beginning (start prop)
+  				//d - anim duration
+  
+  				if ( t >= d ) {
+  					_stopAnimation(name);
+  					onUpdate(endProp);
+  					if(onComplete) {
+  						onComplete();
+  					}
+  					return;
+  				}
+  				onUpdate( (endProp - b) * easingFn(t/d) + b );
+  
+  				_animations[name].raf = _requestAF(animloop);
+  			}
+  		};
+  		animloop();
+  	};
+  	
+  
+  
+  var publicMethods = {
+  
+  	// make a few local variables and functions public
+  	shout: _shout,
+  	listen: _listen,
+  	viewportSize: _viewportSize,
+  	options: _options,
+  
+  	isMainScrollAnimating: function() {
+  		return _mainScrollAnimating;
+  	},
+  	getZoomLevel: function() {
+  		return _currZoomLevel;
+  	},
+  	getCurrentIndex: function() {
+  		return _currentItemIndex;
+  	},
+  	isDragging: function() {
+  		return _isDragging;
+  	},	
+  	isZooming: function() {
+  		return _isZooming;
+  	},
+  	setScrollOffset: function(x,y) {
+  		_offset.x = x;
+  		_currentWindowScrollY = _offset.y = y;
+  		_shout('updateScrollOffset', _offset);
+  	},
+  	applyZoomPan: function(zoomLevel,panX,panY,allowRenderResolution) {
+  		_panOffset.x = panX;
+  		_panOffset.y = panY;
+  		_currZoomLevel = zoomLevel;
+  		_applyCurrentZoomPan( allowRenderResolution );
+  	},
+  
+  	init: function() {
+  
+  		if(_isOpen || _isDestroying) {
+  			return;
+  		}
+  
+  		var i;
+  
+  		self.framework = framework; // basic functionality
+  		self.template = template; // root DOM element of PhotoSwipe
+  		self.bg = framework.getChildByClass(template, 'pswp__bg');
+  
+  		_initalClassName = template.className;
+  		_isOpen = true;
+  				
+  		_features = framework.detectFeatures();
+  		_requestAF = _features.raf;
+  		_cancelAF = _features.caf;
+  		_transformKey = _features.transform;
+  		_oldIE = _features.oldIE;
+  		
+  		self.scrollWrap = framework.getChildByClass(template, 'pswp__scroll-wrap');
+  		self.container = framework.getChildByClass(self.scrollWrap, 'pswp__container');
+  
+  		_containerStyle = self.container.style; // for fast access
+  
+  		// Objects that hold slides (there are only 3 in DOM)
+  		self.itemHolders = _itemHolders = [
+  			{el:self.container.children[0] , wrap:0, index: -1},
+  			{el:self.container.children[1] , wrap:0, index: -1},
+  			{el:self.container.children[2] , wrap:0, index: -1}
+  		];
+  
+  		// hide nearby item holders until initial zoom animation finishes (to avoid extra Paints)
+  		_itemHolders[0].el.style.display = _itemHolders[2].el.style.display = 'none';
+  
+  		_setupTransforms();
+  
+  		// Setup global events
+  		_globalEventHandlers = {
+  			resize: self.updateSize,
+  
+  			// Fixes: iOS 10.3 resize event
+  			// does not update scrollWrap.clientWidth instantly after resize
+  			// https://github.com/dimsemenov/PhotoSwipe/issues/1315
+  			orientationchange: function() {
+  				clearTimeout(_orientationChangeTimeout);
+  				_orientationChangeTimeout = setTimeout(function() {
+  					if(_viewportSize.x !== self.scrollWrap.clientWidth) {
+  						self.updateSize();
+  					}
+  				}, 500);
+  			},
+  			scroll: _updatePageScrollOffset,
+  			keydown: _onKeyDown,
+  			click: _onGlobalClick
+  		};
+  
+  		// disable show/hide effects on old browsers that don't support CSS animations or transforms, 
+  		// old IOS, Android and Opera mobile. Blackberry seems to work fine, even older models.
+  		var oldPhone = _features.isOldIOSPhone || _features.isOldAndroid || _features.isMobileOpera;
+  		if(!_features.animationName || !_features.transform || oldPhone) {
+  			_options.showAnimationDuration = _options.hideAnimationDuration = 0;
+  		}
+  
+  		// init modules
+  		for(i = 0; i < _modules.length; i++) {
+  			self['init' + _modules[i]]();
+  		}
+  		
+  		// init
+  		if(UiClass) {
+  			var ui = self.ui = new UiClass(self, framework);
+  			ui.init();
+  		}
+  
+  		_shout('firstUpdate');
+  		_currentItemIndex = _currentItemIndex || _options.index || 0;
+  		// validate index
+  		if( isNaN(_currentItemIndex) || _currentItemIndex < 0 || _currentItemIndex >= _getNumItems() ) {
+  			_currentItemIndex = 0;
+  		}
+  		self.currItem = _getItemAt( _currentItemIndex );
+  
+  		
+  		if(_features.isOldIOSPhone || _features.isOldAndroid) {
+  			_isFixedPosition = false;
+  		}
+  		
+  		template.setAttribute('aria-hidden', 'false');
+  		if(_options.modal) {
+  			if(!_isFixedPosition) {
+  				template.style.position = 'absolute';
+  				template.style.top = framework.getScrollY() + 'px';
+  			} else {
+  				template.style.position = 'fixed';
+  			}
+  		}
+  
+  		if(_currentWindowScrollY === undefined) {
+  			_shout('initialLayout');
+  			_currentWindowScrollY = _initalWindowScrollY = framework.getScrollY();
+  		}
+  		
+  		// add classes to root element of PhotoSwipe
+  		var rootClasses = 'pswp--open ';
+  		if(_options.mainClass) {
+  			rootClasses += _options.mainClass + ' ';
+  		}
+  		if(_options.showHideOpacity) {
+  			rootClasses += 'pswp--animate_opacity ';
+  		}
+  		rootClasses += _likelyTouchDevice ? 'pswp--touch' : 'pswp--notouch';
+  		rootClasses += _features.animationName ? ' pswp--css_animation' : '';
+  		rootClasses += _features.svg ? ' pswp--svg' : '';
+  		framework.addClass(template, rootClasses);
+  
+  		self.updateSize();
+  
+  		// initial update
+  		_containerShiftIndex = -1;
+  		_indexDiff = null;
+  		for(i = 0; i < NUM_HOLDERS; i++) {
+  			_setTranslateX( (i+_containerShiftIndex) * _slideSize.x, _itemHolders[i].el.style);
+  		}
+  
+  		if(!_oldIE) {
+  			framework.bind(self.scrollWrap, _downEvents, self); // no dragging for old IE
+  		}	
+  
+  		_listen('initialZoomInEnd', function() {
+  			self.setContent(_itemHolders[0], _currentItemIndex-1);
+  			self.setContent(_itemHolders[2], _currentItemIndex+1);
+  
+  			_itemHolders[0].el.style.display = _itemHolders[2].el.style.display = 'block';
+  
+  			if(_options.focus) {
+  				// focus causes layout, 
+  				// which causes lag during the animation, 
+  				// that's why we delay it untill the initial zoom transition ends
+  				template.focus();
+  			}
+  			 
+  
+  			_bindEvents();
+  		});
+  
+  		// set content for center slide (first time)
+  		self.setContent(_itemHolders[1], _currentItemIndex);
+  		
+  		self.updateCurrItem();
+  
+  		_shout('afterInit');
+  
+  		if(!_isFixedPosition) {
+  
+  			// On all versions of iOS lower than 8.0, we check size of viewport every second.
+  			// 
+  			// This is done to detect when Safari top & bottom bars appear, 
+  			// as this action doesn't trigger any events (like resize). 
+  			// 
+  			// On iOS8 they fixed this.
+  			// 
+  			// 10 Nov 2014: iOS 7 usage ~40%. iOS 8 usage 56%.
+  			
+  			_updateSizeInterval = setInterval(function() {
+  				if(!_numAnimations && !_isDragging && !_isZooming && (_currZoomLevel === self.currItem.initialZoomLevel)  ) {
+  					self.updateSize();
+  				}
+  			}, 1000);
+  		}
+  
+  		framework.addClass(template, 'pswp--visible');
+  	},
+  
+  	// Close the gallery, then destroy it
+  	close: function() {
+  		if(!_isOpen) {
+  			return;
+  		}
+  
+  		_isOpen = false;
+  		_isDestroying = true;
+  		_shout('close');
+  		_unbindEvents();
+  
+  		_showOrHide(self.currItem, null, true, self.destroy);
+  	},
+  
+  	// destroys the gallery (unbinds events, cleans up intervals and timeouts to avoid memory leaks)
+  	destroy: function() {
+  		_shout('destroy');
+  
+  		if(_showOrHideTimeout) {
+  			clearTimeout(_showOrHideTimeout);
+  		}
+  		
+  		template.setAttribute('aria-hidden', 'true');
+  		template.className = _initalClassName;
+  
+  		if(_updateSizeInterval) {
+  			clearInterval(_updateSizeInterval);
+  		}
+  
+  		framework.unbind(self.scrollWrap, _downEvents, self);
+  
+  		// we unbind scroll event at the end, as closing animation may depend on it
+  		framework.unbind(window, 'scroll', self);
+  
+  		_stopDragUpdateLoop();
+  
+  		_stopAllAnimations();
+  
+  		_listeners = null;
+  	},
+  
+  	/**
+  	 * Pan image to position
+  	 * @param {Number} x     
+  	 * @param {Number} y     
+  	 * @param {Boolean} force Will ignore bounds if set to true.
+  	 */
+  	panTo: function(x,y,force) {
+  		if(!force) {
+  			if(x > _currPanBounds.min.x) {
+  				x = _currPanBounds.min.x;
+  			} else if(x < _currPanBounds.max.x) {
+  				x = _currPanBounds.max.x;
+  			}
+  
+  			if(y > _currPanBounds.min.y) {
+  				y = _currPanBounds.min.y;
+  			} else if(y < _currPanBounds.max.y) {
+  				y = _currPanBounds.max.y;
+  			}
+  		}
+  		
+  		_panOffset.x = x;
+  		_panOffset.y = y;
+  		_applyCurrentZoomPan();
+  	},
+  	
+  	handleEvent: function (e) {
+  		e = e || window.event;
+  		if(_globalEventHandlers[e.type]) {
+  			_globalEventHandlers[e.type](e);
+  		}
+  	},
+  
+  
+  	goTo: function(index) {
+  
+  		index = _getLoopedId(index);
+  
+  		var diff = index - _currentItemIndex;
+  		_indexDiff = diff;
+  
+  		_currentItemIndex = index;
+  		self.currItem = _getItemAt( _currentItemIndex );
+  		_currPositionIndex -= diff;
+  		
+  		_moveMainScroll(_slideSize.x * _currPositionIndex);
+  		
+  
+  		_stopAllAnimations();
+  		_mainScrollAnimating = false;
+  
+  		self.updateCurrItem();
+  	},
+  	next: function() {
+  		self.goTo( _currentItemIndex + 1);
+  	},
+  	prev: function() {
+  		self.goTo( _currentItemIndex - 1);
+  	},
+  
+  	// update current zoom/pan objects
+  	updateCurrZoomItem: function(emulateSetContent) {
+  		if(emulateSetContent) {
+  			_shout('beforeChange', 0);
+  		}
+  
+  		// itemHolder[1] is middle (current) item
+  		if(_itemHolders[1].el.children.length) {
+  			var zoomElement = _itemHolders[1].el.children[0];
+  			if( framework.hasClass(zoomElement, 'pswp__zoom-wrap') ) {
+  				_currZoomElementStyle = zoomElement.style;
+  			} else {
+  				_currZoomElementStyle = null;
+  			}
+  		} else {
+  			_currZoomElementStyle = null;
+  		}
+  		
+  		_currPanBounds = self.currItem.bounds;	
+  		_startZoomLevel = _currZoomLevel = self.currItem.initialZoomLevel;
+  
+  		_panOffset.x = _currPanBounds.center.x;
+  		_panOffset.y = _currPanBounds.center.y;
+  
+  		if(emulateSetContent) {
+  			_shout('afterChange');
+  		}
+  	},
+  
+  
+  	invalidateCurrItems: function() {
+  		_itemsNeedUpdate = true;
+  		for(var i = 0; i < NUM_HOLDERS; i++) {
+  			if( _itemHolders[i].item ) {
+  				_itemHolders[i].item.needsUpdate = true;
+  			}
+  		}
+  	},
+  
+  	updateCurrItem: function(beforeAnimation) {
+  
+  		if(_indexDiff === 0) {
+  			return;
+  		}
+  
+  		var diffAbs = Math.abs(_indexDiff),
+  			tempHolder;
+  
+  		if(beforeAnimation && diffAbs < 2) {
+  			return;
+  		}
+  
+  
+  		self.currItem = _getItemAt( _currentItemIndex );
+  		_renderMaxResolution = false;
+  		
+  		_shout('beforeChange', _indexDiff);
+  
+  		if(diffAbs >= NUM_HOLDERS) {
+  			_containerShiftIndex += _indexDiff + (_indexDiff > 0 ? -NUM_HOLDERS : NUM_HOLDERS);
+  			diffAbs = NUM_HOLDERS;
+  		}
+  		for(var i = 0; i < diffAbs; i++) {
+  			if(_indexDiff > 0) {
+  				tempHolder = _itemHolders.shift();
+  				_itemHolders[NUM_HOLDERS-1] = tempHolder; // move first to last
+  
+  				_containerShiftIndex++;
+  				_setTranslateX( (_containerShiftIndex+2) * _slideSize.x, tempHolder.el.style);
+  				self.setContent(tempHolder, _currentItemIndex - diffAbs + i + 1 + 1);
+  			} else {
+  				tempHolder = _itemHolders.pop();
+  				_itemHolders.unshift( tempHolder ); // move last to first
+  
+  				_containerShiftIndex--;
+  				_setTranslateX( _containerShiftIndex * _slideSize.x, tempHolder.el.style);
+  				self.setContent(tempHolder, _currentItemIndex + diffAbs - i - 1 - 1);
+  			}
+  			
+  		}
+  
+  		// reset zoom/pan on previous item
+  		if(_currZoomElementStyle && Math.abs(_indexDiff) === 1) {
+  
+  			var prevItem = _getItemAt(_prevItemIndex);
+  			if(prevItem.initialZoomLevel !== _currZoomLevel) {
+  				_calculateItemSize(prevItem , _viewportSize );
+  				_setImageSize(prevItem);
+  				_applyZoomPanToItem( prevItem ); 				
+  			}
+  
+  		}
+  
+  		// reset diff after update
+  		_indexDiff = 0;
+  
+  		self.updateCurrZoomItem();
+  
+  		_prevItemIndex = _currentItemIndex;
+  
+  		_shout('afterChange');
+  		
+  	},
+  
+  
+  
+  	updateSize: function(force) {
+  		
+  		if(!_isFixedPosition && _options.modal) {
+  			var windowScrollY = framework.getScrollY();
+  			if(_currentWindowScrollY !== windowScrollY) {
+  				template.style.top = windowScrollY + 'px';
+  				_currentWindowScrollY = windowScrollY;
+  			}
+  			if(!force && _windowVisibleSize.x === window.innerWidth && _windowVisibleSize.y === window.innerHeight) {
+  				return;
+  			}
+  			_windowVisibleSize.x = window.innerWidth;
+  			_windowVisibleSize.y = window.innerHeight;
+  
+  			//template.style.width = _windowVisibleSize.x + 'px';
+  			template.style.height = _windowVisibleSize.y + 'px';
+  		}
+  
+  
+  
+  		_viewportSize.x = self.scrollWrap.clientWidth;
+  		_viewportSize.y = self.scrollWrap.clientHeight;
+  
+  		_updatePageScrollOffset();
+  
+  		_slideSize.x = _viewportSize.x + Math.round(_viewportSize.x * _options.spacing);
+  		_slideSize.y = _viewportSize.y;
+  
+  		_moveMainScroll(_slideSize.x * _currPositionIndex);
+  
+  		_shout('beforeResize'); // even may be used for example to switch image sources
+  
+  
+  		// don't re-calculate size on inital size update
+  		if(_containerShiftIndex !== undefined) {
+  
+  			var holder,
+  				item,
+  				hIndex;
+  
+  			for(var i = 0; i < NUM_HOLDERS; i++) {
+  				holder = _itemHolders[i];
+  				_setTranslateX( (i+_containerShiftIndex) * _slideSize.x, holder.el.style);
+  
+  				hIndex = _currentItemIndex+i-1;
+  
+  				if(_options.loop && _getNumItems() > 2) {
+  					hIndex = _getLoopedId(hIndex);
+  				}
+  
+  				// update zoom level on items and refresh source (if needsUpdate)
+  				item = _getItemAt( hIndex );
+  
+  				// re-render gallery item if `needsUpdate`,
+  				// or doesn't have `bounds` (entirely new slide object)
+  				if( item && (_itemsNeedUpdate || item.needsUpdate || !item.bounds) ) {
+  
+  					self.cleanSlide( item );
+  					
+  					self.setContent( holder, hIndex );
+  
+  					// if "center" slide
+  					if(i === 1) {
+  						self.currItem = item;
+  						self.updateCurrZoomItem(true);
+  					}
+  
+  					item.needsUpdate = false;
+  
+  				} else if(holder.index === -1 && hIndex >= 0) {
+  					// add content first time
+  					self.setContent( holder, hIndex );
+  				}
+  				if(item && item.container) {
+  					_calculateItemSize(item, _viewportSize);
+  					_setImageSize(item);
+  					_applyZoomPanToItem( item );
+  				}
+  				
+  			}
+  			_itemsNeedUpdate = false;
+  		}	
+  
+  		_startZoomLevel = _currZoomLevel = self.currItem.initialZoomLevel;
+  		_currPanBounds = self.currItem.bounds;
+  
+  		if(_currPanBounds) {
+  			_panOffset.x = _currPanBounds.center.x;
+  			_panOffset.y = _currPanBounds.center.y;
+  			_applyCurrentZoomPan( true );
+  		}
+  		
+  		_shout('resize');
+  	},
+  	
+  	// Zoom current item to
+  	zoomTo: function(destZoomLevel, centerPoint, speed, easingFn, updateFn) {
+  		/*
+  			if(destZoomLevel === 'fit') {
+  				destZoomLevel = self.currItem.fitRatio;
+  			} else if(destZoomLevel === 'fill') {
+  				destZoomLevel = self.currItem.fillRatio;
+  			}
+  		*/
+  
+  		if(centerPoint) {
+  			_startZoomLevel = _currZoomLevel;
+  			_midZoomPoint.x = Math.abs(centerPoint.x) - _panOffset.x ;
+  			_midZoomPoint.y = Math.abs(centerPoint.y) - _panOffset.y ;
+  			_equalizePoints(_startPanOffset, _panOffset);
+  		}
+  
+  		var destPanBounds = _calculatePanBounds(destZoomLevel, false),
+  			destPanOffset = {};
+  
+  		_modifyDestPanOffset('x', destPanBounds, destPanOffset, destZoomLevel);
+  		_modifyDestPanOffset('y', destPanBounds, destPanOffset, destZoomLevel);
+  
+  		var initialZoomLevel = _currZoomLevel;
+  		var initialPanOffset = {
+  			x: _panOffset.x,
+  			y: _panOffset.y
+  		};
+  
+  		_roundPoint(destPanOffset);
+  
+  		var onUpdate = function(now) {
+  			if(now === 1) {
+  				_currZoomLevel = destZoomLevel;
+  				_panOffset.x = destPanOffset.x;
+  				_panOffset.y = destPanOffset.y;
+  			} else {
+  				_currZoomLevel = (destZoomLevel - initialZoomLevel) * now + initialZoomLevel;
+  				_panOffset.x = (destPanOffset.x - initialPanOffset.x) * now + initialPanOffset.x;
+  				_panOffset.y = (destPanOffset.y - initialPanOffset.y) * now + initialPanOffset.y;
+  			}
+  
+  			if(updateFn) {
+  				updateFn(now);
+  			}
+  
+  			_applyCurrentZoomPan( now === 1 );
+  		};
+  
+  		if(speed) {
+  			_animateProp('customZoomTo', 0, 1, speed, easingFn || framework.easing.sine.inOut, onUpdate);
+  		} else {
+  			onUpdate(1);
+  		}
+  	}
+  
+  
+  };
+  
+  
+  /*>>core*/
+  
+  /*>>gestures*/
+  /**
+   * Mouse/touch/pointer event handlers.
+   * 
+   * separated from @core.js for readability
+   */
+  
+  var MIN_SWIPE_DISTANCE = 30,
+  	DIRECTION_CHECK_OFFSET = 10; // amount of pixels to drag to determine direction of swipe
+  
+  var _gestureStartTime,
+  	_gestureCheckSpeedTime,
+  
+  	// pool of objects that are used during dragging of zooming
+  	p = {}, // first point
+  	p2 = {}, // second point (for zoom gesture)
+  	delta = {},
+  	_currPoint = {},
+  	_startPoint = {},
+  	_currPointers = [],
+  	_startMainScrollPos = {},
+  	_releaseAnimData,
+  	_posPoints = [], // array of points during dragging, used to determine type of gesture
+  	_tempPoint = {},
+  
+  	_isZoomingIn,
+  	_verticalDragInitiated,
+  	_oldAndroidTouchEndTimeout,
+  	_currZoomedItemIndex = 0,
+  	_centerPoint = _getEmptyPoint(),
+  	_lastReleaseTime = 0,
+  	_isDragging, // at least one pointer is down
+  	_isMultitouch, // at least two _pointers are down
+  	_zoomStarted, // zoom level changed during zoom gesture
+  	_moved,
+  	_dragAnimFrame,
+  	_mainScrollShifted,
+  	_currentPoints, // array of current touch points
+  	_isZooming,
+  	_currPointsDistance,
+  	_startPointsDistance,
+  	_currPanBounds,
+  	_mainScrollPos = _getEmptyPoint(),
+  	_currZoomElementStyle,
+  	_mainScrollAnimating, // true, if animation after swipe gesture is running
+  	_midZoomPoint = _getEmptyPoint(),
+  	_currCenterPoint = _getEmptyPoint(),
+  	_direction,
+  	_isFirstMove,
+  	_opacityChanged,
+  	_bgOpacity,
+  	_wasOverInitialZoom,
+  
+  	_isEqualPoints = function(p1, p2) {
+  		return p1.x === p2.x && p1.y === p2.y;
+  	},
+  	_isNearbyPoints = function(touch0, touch1) {
+  		return Math.abs(touch0.x - touch1.x) < DOUBLE_TAP_RADIUS && Math.abs(touch0.y - touch1.y) < DOUBLE_TAP_RADIUS;
+  	},
+  	_calculatePointsDistance = function(p1, p2) {
+  		_tempPoint.x = Math.abs( p1.x - p2.x );
+  		_tempPoint.y = Math.abs( p1.y - p2.y );
+  		return Math.sqrt(_tempPoint.x * _tempPoint.x + _tempPoint.y * _tempPoint.y);
+  	},
+  	_stopDragUpdateLoop = function() {
+  		if(_dragAnimFrame) {
+  			_cancelAF(_dragAnimFrame);
+  			_dragAnimFrame = null;
+  		}
+  	},
+  	_dragUpdateLoop = function() {
+  		if(_isDragging) {
+  			_dragAnimFrame = _requestAF(_dragUpdateLoop);
+  			_renderMovement();
+  		}
+  	},
+  	_canPan = function() {
+  		return !(_options.scaleMode === 'fit' && _currZoomLevel ===  self.currItem.initialZoomLevel);
+  	},
+  	
+  	// find the closest parent DOM element
+  	_closestElement = function(el, fn) {
+  	  	if(!el || el === document) {
+  	  		return false;
+  	  	}
+  
+  	  	// don't search elements above pswp__scroll-wrap
+  	  	if(el.getAttribute('class') && el.getAttribute('class').indexOf('pswp__scroll-wrap') > -1 ) {
+  	  		return false;
+  	  	}
+  
+  	  	if( fn(el) ) {
+  	  		return el;
+  	  	}
+  
+  	  	return _closestElement(el.parentNode, fn);
+  	},
+  
+  	_preventObj = {},
+  	_preventDefaultEventBehaviour = function(e, isDown) {
+  	    _preventObj.prevent = !_closestElement(e.target, _options.isClickableElement);
+  
+  		_shout('preventDragEvent', e, isDown, _preventObj);
+  		return _preventObj.prevent;
+  
+  	},
+  	_convertTouchToPoint = function(touch, p) {
+  		p.x = touch.pageX;
+  		p.y = touch.pageY;
+  		p.id = touch.identifier;
+  		return p;
+  	},
+  	_findCenterOfPoints = function(p1, p2, pCenter) {
+  		pCenter.x = (p1.x + p2.x) * 0.5;
+  		pCenter.y = (p1.y + p2.y) * 0.5;
+  	},
+  	_pushPosPoint = function(time, x, y) {
+  		if(time - _gestureCheckSpeedTime > 50) {
+  			var o = _posPoints.length > 2 ? _posPoints.shift() : {};
+  			o.x = x;
+  			o.y = y; 
+  			_posPoints.push(o);
+  			_gestureCheckSpeedTime = time;
+  		}
+  	},
+  
+  	_calculateVerticalDragOpacityRatio = function() {
+  		var yOffset = _panOffset.y - self.currItem.initialPosition.y; // difference between initial and current position
+  		return 1 -  Math.abs( yOffset / (_viewportSize.y / 2)  );
+  	},
+  
+  	
+  	// points pool, reused during touch events
+  	_ePoint1 = {},
+  	_ePoint2 = {},
+  	_tempPointsArr = [],
+  	_tempCounter,
+  	_getTouchPoints = function(e) {
+  		// clean up previous points, without recreating array
+  		while(_tempPointsArr.length > 0) {
+  			_tempPointsArr.pop();
+  		}
+  
+  		if(!_pointerEventEnabled) {
+  			if(e.type.indexOf('touch') > -1) {
+  
+  				if(e.touches && e.touches.length > 0) {
+  					_tempPointsArr[0] = _convertTouchToPoint(e.touches[0], _ePoint1);
+  					if(e.touches.length > 1) {
+  						_tempPointsArr[1] = _convertTouchToPoint(e.touches[1], _ePoint2);
+  					}
+  				}
+  				
+  			} else {
+  				_ePoint1.x = e.pageX;
+  				_ePoint1.y = e.pageY;
+  				_ePoint1.id = '';
+  				_tempPointsArr[0] = _ePoint1;//_ePoint1;
+  			}
+  		} else {
+  			_tempCounter = 0;
+  			// we can use forEach, as pointer events are supported only in modern browsers
+  			_currPointers.forEach(function(p) {
+  				if(_tempCounter === 0) {
+  					_tempPointsArr[0] = p;
+  				} else if(_tempCounter === 1) {
+  					_tempPointsArr[1] = p;
+  				}
+  				_tempCounter++;
+  
+  			});
+  		}
+  		return _tempPointsArr;
+  	},
+  
+  	_panOrMoveMainScroll = function(axis, delta) {
+  
+  		var panFriction,
+  			overDiff = 0,
+  			newOffset = _panOffset[axis] + delta[axis],
+  			startOverDiff,
+  			dir = delta[axis] > 0,
+  			newMainScrollPosition = _mainScrollPos.x + delta.x,
+  			mainScrollDiff = _mainScrollPos.x - _startMainScrollPos.x,
+  			newPanPos,
+  			newMainScrollPos;
+  
+  		// calculate fdistance over the bounds and friction
+  		if(newOffset > _currPanBounds.min[axis] || newOffset < _currPanBounds.max[axis]) {
+  			panFriction = _options.panEndFriction;
+  			// Linear increasing of friction, so at 1/4 of viewport it's at max value. 
+  			// Looks not as nice as was expected. Left for history.
+  			// panFriction = (1 - (_panOffset[axis] + delta[axis] + panBounds.min[axis]) / (_viewportSize[axis] / 4) );
+  		} else {
+  			panFriction = 1;
+  		}
+  		
+  		newOffset = _panOffset[axis] + delta[axis] * panFriction;
+  
+  		// move main scroll or start panning
+  		if(_options.allowPanToNext || _currZoomLevel === self.currItem.initialZoomLevel) {
+  
+  
+  			if(!_currZoomElementStyle) {
+  				
+  				newMainScrollPos = newMainScrollPosition;
+  
+  			} else if(_direction === 'h' && axis === 'x' && !_zoomStarted ) {
+  				
+  				if(dir) {
+  					if(newOffset > _currPanBounds.min[axis]) {
+  						panFriction = _options.panEndFriction;
+  						overDiff = _currPanBounds.min[axis] - newOffset;
+  						startOverDiff = _currPanBounds.min[axis] - _startPanOffset[axis];
+  					}
+  					
+  					// drag right
+  					if( (startOverDiff <= 0 || mainScrollDiff < 0) && _getNumItems() > 1 ) {
+  						newMainScrollPos = newMainScrollPosition;
+  						if(mainScrollDiff < 0 && newMainScrollPosition > _startMainScrollPos.x) {
+  							newMainScrollPos = _startMainScrollPos.x;
+  						}
+  					} else {
+  						if(_currPanBounds.min.x !== _currPanBounds.max.x) {
+  							newPanPos = newOffset;
+  						}
+  						
+  					}
+  
+  				} else {
+  
+  					if(newOffset < _currPanBounds.max[axis] ) {
+  						panFriction =_options.panEndFriction;
+  						overDiff = newOffset - _currPanBounds.max[axis];
+  						startOverDiff = _startPanOffset[axis] - _currPanBounds.max[axis];
+  					}
+  
+  					if( (startOverDiff <= 0 || mainScrollDiff > 0) && _getNumItems() > 1 ) {
+  						newMainScrollPos = newMainScrollPosition;
+  
+  						if(mainScrollDiff > 0 && newMainScrollPosition < _startMainScrollPos.x) {
+  							newMainScrollPos = _startMainScrollPos.x;
+  						}
+  
+  					} else {
+  						if(_currPanBounds.min.x !== _currPanBounds.max.x) {
+  							newPanPos = newOffset;
+  						}
+  					}
+  
+  				}
+  
+  
+  				//
+  			}
+  
+  			if(axis === 'x') {
+  
+  				if(newMainScrollPos !== undefined) {
+  					_moveMainScroll(newMainScrollPos, true);
+  					if(newMainScrollPos === _startMainScrollPos.x) {
+  						_mainScrollShifted = false;
+  					} else {
+  						_mainScrollShifted = true;
+  					}
+  				}
+  
+  				if(_currPanBounds.min.x !== _currPanBounds.max.x) {
+  					if(newPanPos !== undefined) {
+  						_panOffset.x = newPanPos;
+  					} else if(!_mainScrollShifted) {
+  						_panOffset.x += delta.x * panFriction;
+  					}
+  				}
+  
+  				return newMainScrollPos !== undefined;
+  			}
+  
+  		}
+  
+  		if(!_mainScrollAnimating) {
+  			
+  			if(!_mainScrollShifted) {
+  				if(_currZoomLevel > self.currItem.fitRatio) {
+  					_panOffset[axis] += delta[axis] * panFriction;
+  				
+  				}
+  			}
+  
+  			
+  		}
+  		
+  	},
+  
+  	// Pointerdown/touchstart/mousedown handler
+  	_onDragStart = function(e) {
+  
+  		// Allow dragging only via left mouse button.
+  		// As this handler is not added in IE8 - we ignore e.which
+  		// 
+  		// http://www.quirksmode.org/js/events_properties.html
+  		// https://developer.mozilla.org/en-US/docs/Web/API/event.button
+  		if(e.type === 'mousedown' && e.button > 0  ) {
+  			return;
+  		}
+  
+  		if(_initialZoomRunning) {
+  			e.preventDefault();
+  			return;
+  		}
+  
+  		if(_oldAndroidTouchEndTimeout && e.type === 'mousedown') {
+  			return;
+  		}
+  
+  		if(_preventDefaultEventBehaviour(e, true)) {
+  			e.preventDefault();
+  		}
+  
+  
+  
+  		_shout('pointerDown');
+  
+  		if(_pointerEventEnabled) {
+  			var pointerIndex = framework.arraySearch(_currPointers, e.pointerId, 'id');
+  			if(pointerIndex < 0) {
+  				pointerIndex = _currPointers.length;
+  			}
+  			_currPointers[pointerIndex] = {x:e.pageX, y:e.pageY, id: e.pointerId};
+  		}
+  		
+  
+  
+  		var startPointsList = _getTouchPoints(e),
+  			numPoints = startPointsList.length;
+  
+  		_currentPoints = null;
+  
+  		_stopAllAnimations();
+  
+  		// init drag
+  		if(!_isDragging || numPoints === 1) {
+  
+  			
+  
+  			_isDragging = _isFirstMove = true;
+  			framework.bind(window, _upMoveEvents, self);
+  
+  			_isZoomingIn = 
+  				_wasOverInitialZoom = 
+  				_opacityChanged = 
+  				_verticalDragInitiated = 
+  				_mainScrollShifted = 
+  				_moved = 
+  				_isMultitouch = 
+  				_zoomStarted = false;
+  
+  			_direction = null;
+  
+  			_shout('firstTouchStart', startPointsList);
+  
+  			_equalizePoints(_startPanOffset, _panOffset);
+  
+  			_currPanDist.x = _currPanDist.y = 0;
+  			_equalizePoints(_currPoint, startPointsList[0]);
+  			_equalizePoints(_startPoint, _currPoint);
+  
+  			//_equalizePoints(_startMainScrollPos, _mainScrollPos);
+  			_startMainScrollPos.x = _slideSize.x * _currPositionIndex;
+  
+  			_posPoints = [{
+  				x: _currPoint.x,
+  				y: _currPoint.y
+  			}];
+  
+  			_gestureCheckSpeedTime = _gestureStartTime = _getCurrentTime();
+  
+  			//_mainScrollAnimationEnd(true);
+  			_calculatePanBounds( _currZoomLevel, true );
+  			
+  			// Start rendering
+  			_stopDragUpdateLoop();
+  			_dragUpdateLoop();
+  			
+  		}
+  
+  		// init zoom
+  		if(!_isZooming && numPoints > 1 && !_mainScrollAnimating && !_mainScrollShifted) {
+  			_startZoomLevel = _currZoomLevel;
+  			_zoomStarted = false; // true if zoom changed at least once
+  
+  			_isZooming = _isMultitouch = true;
+  			_currPanDist.y = _currPanDist.x = 0;
+  
+  			_equalizePoints(_startPanOffset, _panOffset);
+  
+  			_equalizePoints(p, startPointsList[0]);
+  			_equalizePoints(p2, startPointsList[1]);
+  
+  			_findCenterOfPoints(p, p2, _currCenterPoint);
+  
+  			_midZoomPoint.x = Math.abs(_currCenterPoint.x) - _panOffset.x;
+  			_midZoomPoint.y = Math.abs(_currCenterPoint.y) - _panOffset.y;
+  			_currPointsDistance = _startPointsDistance = _calculatePointsDistance(p, p2);
+  		}
+  
+  
+  	},
+  
+  	// Pointermove/touchmove/mousemove handler
+  	_onDragMove = function(e) {
+  
+  		e.preventDefault();
+  
+  		if(_pointerEventEnabled) {
+  			var pointerIndex = framework.arraySearch(_currPointers, e.pointerId, 'id');
+  			if(pointerIndex > -1) {
+  				var p = _currPointers[pointerIndex];
+  				p.x = e.pageX;
+  				p.y = e.pageY; 
+  			}
+  		}
+  
+  		if(_isDragging) {
+  			var touchesList = _getTouchPoints(e);
+  			if(!_direction && !_moved && !_isZooming) {
+  
+  				if(_mainScrollPos.x !== _slideSize.x * _currPositionIndex) {
+  					// if main scroll position is shifted – direction is always horizontal
+  					_direction = 'h';
+  				} else {
+  					var diff = Math.abs(touchesList[0].x - _currPoint.x) - Math.abs(touchesList[0].y - _currPoint.y);
+  					// check the direction of movement
+  					if(Math.abs(diff) >= DIRECTION_CHECK_OFFSET) {
+  						_direction = diff > 0 ? 'h' : 'v';
+  						_currentPoints = touchesList;
+  					}
+  				}
+  				
+  			} else {
+  				_currentPoints = touchesList;
+  			}
+  		}	
+  	},
+  	// 
+  	_renderMovement =  function() {
+  
+  		if(!_currentPoints) {
+  			return;
+  		}
+  
+  		var numPoints = _currentPoints.length;
+  
+  		if(numPoints === 0) {
+  			return;
+  		}
+  
+  		_equalizePoints(p, _currentPoints[0]);
+  
+  		delta.x = p.x - _currPoint.x;
+  		delta.y = p.y - _currPoint.y;
+  
+  		if(_isZooming && numPoints > 1) {
+  			// Handle behaviour for more than 1 point
+  
+  			_currPoint.x = p.x;
+  			_currPoint.y = p.y;
+  		
+  			// check if one of two points changed
+  			if( !delta.x && !delta.y && _isEqualPoints(_currentPoints[1], p2) ) {
+  				return;
+  			}
+  
+  			_equalizePoints(p2, _currentPoints[1]);
+  
+  
+  			if(!_zoomStarted) {
+  				_zoomStarted = true;
+  				_shout('zoomGestureStarted');
+  			}
+  			
+  			// Distance between two points
+  			var pointsDistance = _calculatePointsDistance(p,p2);
+  
+  			var zoomLevel = _calculateZoomLevel(pointsDistance);
+  
+  			// slightly over the of initial zoom level
+  			if(zoomLevel > self.currItem.initialZoomLevel + self.currItem.initialZoomLevel / 15) {
+  				_wasOverInitialZoom = true;
+  			}
+  
+  			// Apply the friction if zoom level is out of the bounds
+  			var zoomFriction = 1,
+  				minZoomLevel = _getMinZoomLevel(),
+  				maxZoomLevel = _getMaxZoomLevel();
+  
+  			if ( zoomLevel < minZoomLevel ) {
+  				
+  				if(_options.pinchToClose && !_wasOverInitialZoom && _startZoomLevel <= self.currItem.initialZoomLevel) {
+  					// fade out background if zooming out
+  					var minusDiff = minZoomLevel - zoomLevel;
+  					var percent = 1 - minusDiff / (minZoomLevel / 1.2);
+  
+  					_applyBgOpacity(percent);
+  					_shout('onPinchClose', percent);
+  					_opacityChanged = true;
+  				} else {
+  					zoomFriction = (minZoomLevel - zoomLevel) / minZoomLevel;
+  					if(zoomFriction > 1) {
+  						zoomFriction = 1;
+  					}
+  					zoomLevel = minZoomLevel - zoomFriction * (minZoomLevel / 3);
+  				}
+  				
+  			} else if ( zoomLevel > maxZoomLevel ) {
+  				// 1.5 - extra zoom level above the max. E.g. if max is x6, real max 6 + 1.5 = 7.5
+  				zoomFriction = (zoomLevel - maxZoomLevel) / ( minZoomLevel * 6 );
+  				if(zoomFriction > 1) {
+  					zoomFriction = 1;
+  				}
+  				zoomLevel = maxZoomLevel + zoomFriction * minZoomLevel;
+  			}
+  
+  			if(zoomFriction < 0) {
+  				zoomFriction = 0;
+  			}
+  
+  			// distance between touch points after friction is applied
+  			_currPointsDistance = pointsDistance;
+  
+  			// _centerPoint - The point in the middle of two pointers
+  			_findCenterOfPoints(p, p2, _centerPoint);
+  		
+  			// paning with two pointers pressed
+  			_currPanDist.x += _centerPoint.x - _currCenterPoint.x;
+  			_currPanDist.y += _centerPoint.y - _currCenterPoint.y;
+  			_equalizePoints(_currCenterPoint, _centerPoint);
+  
+  			_panOffset.x = _calculatePanOffset('x', zoomLevel);
+  			_panOffset.y = _calculatePanOffset('y', zoomLevel);
+  
+  			_isZoomingIn = zoomLevel > _currZoomLevel;
+  			_currZoomLevel = zoomLevel;
+  			_applyCurrentZoomPan();
+  
+  		} else {
+  
+  			// handle behaviour for one point (dragging or panning)
+  
+  			if(!_direction) {
+  				return;
+  			}
+  
+  			if(_isFirstMove) {
+  				_isFirstMove = false;
+  
+  				// subtract drag distance that was used during the detection direction  
+  
+  				if( Math.abs(delta.x) >= DIRECTION_CHECK_OFFSET) {
+  					delta.x -= _currentPoints[0].x - _startPoint.x;
+  				}
+  				
+  				if( Math.abs(delta.y) >= DIRECTION_CHECK_OFFSET) {
+  					delta.y -= _currentPoints[0].y - _startPoint.y;
+  				}
+  			}
+  
+  			_currPoint.x = p.x;
+  			_currPoint.y = p.y;
+  
+  			// do nothing if pointers position hasn't changed
+  			if(delta.x === 0 && delta.y === 0) {
+  				return;
+  			}
+  
+  			if(_direction === 'v' && _options.closeOnVerticalDrag) {
+  				if(!_canPan()) {
+  					_currPanDist.y += delta.y;
+  					_panOffset.y += delta.y;
+  
+  					var opacityRatio = _calculateVerticalDragOpacityRatio();
+  
+  					_verticalDragInitiated = true;
+  					_shout('onVerticalDrag', opacityRatio);
+  
+  					_applyBgOpacity(opacityRatio);
+  					_applyCurrentZoomPan();
+  					return ;
+  				}
+  			}
+  
+  			_pushPosPoint(_getCurrentTime(), p.x, p.y);
+  
+  			_moved = true;
+  			_currPanBounds = self.currItem.bounds;
+  			
+  			var mainScrollChanged = _panOrMoveMainScroll('x', delta);
+  			if(!mainScrollChanged) {
+  				_panOrMoveMainScroll('y', delta);
+  
+  				_roundPoint(_panOffset);
+  				_applyCurrentZoomPan();
+  			}
+  
+  		}
+  
+  	},
+  	
+  	// Pointerup/pointercancel/touchend/touchcancel/mouseup event handler
+  	_onDragRelease = function(e) {
+  
+  		if(_features.isOldAndroid ) {
+  
+  			if(_oldAndroidTouchEndTimeout && e.type === 'mouseup') {
+  				return;
+  			}
+  
+  			// on Android (v4.1, 4.2, 4.3 & possibly older) 
+  			// ghost mousedown/up event isn't preventable via e.preventDefault,
+  			// which causes fake mousedown event
+  			// so we block mousedown/up for 600ms
+  			if( e.type.indexOf('touch') > -1 ) {
+  				clearTimeout(_oldAndroidTouchEndTimeout);
+  				_oldAndroidTouchEndTimeout = setTimeout(function() {
+  					_oldAndroidTouchEndTimeout = 0;
+  				}, 600);
+  			}
+  			
+  		}
+  
+  		_shout('pointerUp');
+  
+  		if(_preventDefaultEventBehaviour(e, false)) {
+  			e.preventDefault();
+  		}
+  
+  		var releasePoint;
+  
+  		if(_pointerEventEnabled) {
+  			var pointerIndex = framework.arraySearch(_currPointers, e.pointerId, 'id');
+  			
+  			if(pointerIndex > -1) {
+  				releasePoint = _currPointers.splice(pointerIndex, 1)[0];
+  
+  				if(navigator.pointerEnabled) {
+  					releasePoint.type = e.pointerType || 'mouse';
+  				} else {
+  					var MSPOINTER_TYPES = {
+  						4: 'mouse', // event.MSPOINTER_TYPE_MOUSE
+  						2: 'touch', // event.MSPOINTER_TYPE_TOUCH 
+  						3: 'pen' // event.MSPOINTER_TYPE_PEN
+  					};
+  					releasePoint.type = MSPOINTER_TYPES[e.pointerType];
+  
+  					if(!releasePoint.type) {
+  						releasePoint.type = e.pointerType || 'mouse';
+  					}
+  				}
+  
+  			}
+  		}
+  
+  		var touchList = _getTouchPoints(e),
+  			gestureType,
+  			numPoints = touchList.length;
+  
+  		if(e.type === 'mouseup') {
+  			numPoints = 0;
+  		}
+  
+  		// Do nothing if there were 3 touch points or more
+  		if(numPoints === 2) {
+  			_currentPoints = null;
+  			return true;
+  		}
+  
+  		// if second pointer released
+  		if(numPoints === 1) {
+  			_equalizePoints(_startPoint, touchList[0]);
+  		}				
+  
+  
+  		// pointer hasn't moved, send "tap release" point
+  		if(numPoints === 0 && !_direction && !_mainScrollAnimating) {
+  			if(!releasePoint) {
+  				if(e.type === 'mouseup') {
+  					releasePoint = {x: e.pageX, y: e.pageY, type:'mouse'};
+  				} else if(e.changedTouches && e.changedTouches[0]) {
+  					releasePoint = {x: e.changedTouches[0].pageX, y: e.changedTouches[0].pageY, type:'touch'};
+  				}		
+  			}
+  
+  			_shout('touchRelease', e, releasePoint);
+  		}
+  
+  		// Difference in time between releasing of two last touch points (zoom gesture)
+  		var releaseTimeDiff = -1;
+  
+  		// Gesture completed, no pointers left
+  		if(numPoints === 0) {
+  			_isDragging = false;
+  			framework.unbind(window, _upMoveEvents, self);
+  
+  			_stopDragUpdateLoop();
+  
+  			if(_isZooming) {
+  				// Two points released at the same time
+  				releaseTimeDiff = 0;
+  			} else if(_lastReleaseTime !== -1) {
+  				releaseTimeDiff = _getCurrentTime() - _lastReleaseTime;
+  			}
+  		}
+  		_lastReleaseTime = numPoints === 1 ? _getCurrentTime() : -1;
+  		
+  		if(releaseTimeDiff !== -1 && releaseTimeDiff < 150) {
+  			gestureType = 'zoom';
+  		} else {
+  			gestureType = 'swipe';
+  		}
+  
+  		if(_isZooming && numPoints < 2) {
+  			_isZooming = false;
+  
+  			// Only second point released
+  			if(numPoints === 1) {
+  				gestureType = 'zoomPointerUp';
+  			}
+  			_shout('zoomGestureEnded');
+  		}
+  
+  		_currentPoints = null;
+  		if(!_moved && !_zoomStarted && !_mainScrollAnimating && !_verticalDragInitiated) {
+  			// nothing to animate
+  			return;
+  		}
+  	
+  		_stopAllAnimations();
+  
+  		
+  		if(!_releaseAnimData) {
+  			_releaseAnimData = _initDragReleaseAnimationData();
+  		}
+  		
+  		_releaseAnimData.calculateSwipeSpeed('x');
+  
+  
+  		if(_verticalDragInitiated) {
+  
+  			var opacityRatio = _calculateVerticalDragOpacityRatio();
+  
+  			if(opacityRatio < _options.verticalDragRange) {
+  				self.close();
+  			} else {
+  				var initalPanY = _panOffset.y,
+  					initialBgOpacity = _bgOpacity;
+  
+  				_animateProp('verticalDrag', 0, 1, 300, framework.easing.cubic.out, function(now) {
+  					
+  					_panOffset.y = (self.currItem.initialPosition.y - initalPanY) * now + initalPanY;
+  
+  					_applyBgOpacity(  (1 - initialBgOpacity) * now + initialBgOpacity );
+  					_applyCurrentZoomPan();
+  				});
+  
+  				_shout('onVerticalDrag', 1);
+  			}
+  
+  			return;
+  		}
+  
+  
+  		// main scroll 
+  		if(  (_mainScrollShifted || _mainScrollAnimating) && numPoints === 0) {
+  			var itemChanged = _finishSwipeMainScrollGesture(gestureType, _releaseAnimData);
+  			if(itemChanged) {
+  				return;
+  			}
+  			gestureType = 'zoomPointerUp';
+  		}
+  
+  		// prevent zoom/pan animation when main scroll animation runs
+  		if(_mainScrollAnimating) {
+  			return;
+  		}
+  		
+  		// Complete simple zoom gesture (reset zoom level if it's out of the bounds)  
+  		if(gestureType !== 'swipe') {
+  			_completeZoomGesture();
+  			return;
+  		}
+  	
+  		// Complete pan gesture if main scroll is not shifted, and it's possible to pan current image
+  		if(!_mainScrollShifted && _currZoomLevel > self.currItem.fitRatio) {
+  			_completePanGesture(_releaseAnimData);
+  		}
+  	},
+  
+  
+  	// Returns object with data about gesture
+  	// It's created only once and then reused
+  	_initDragReleaseAnimationData  = function() {
+  		// temp local vars
+  		var lastFlickDuration,
+  			tempReleasePos;
+  
+  		// s = this
+  		var s = {
+  			lastFlickOffset: {},
+  			lastFlickDist: {},
+  			lastFlickSpeed: {},
+  			slowDownRatio:  {},
+  			slowDownRatioReverse:  {},
+  			speedDecelerationRatio:  {},
+  			speedDecelerationRatioAbs:  {},
+  			distanceOffset:  {},
+  			backAnimDestination: {},
+  			backAnimStarted: {},
+  			calculateSwipeSpeed: function(axis) {
+  				
+  
+  				if( _posPoints.length > 1) {
+  					lastFlickDuration = _getCurrentTime() - _gestureCheckSpeedTime + 50;
+  					tempReleasePos = _posPoints[_posPoints.length-2][axis];
+  				} else {
+  					lastFlickDuration = _getCurrentTime() - _gestureStartTime; // total gesture duration
+  					tempReleasePos = _startPoint[axis];
+  				}
+  				s.lastFlickOffset[axis] = _currPoint[axis] - tempReleasePos;
+  				s.lastFlickDist[axis] = Math.abs(s.lastFlickOffset[axis]);
+  				if(s.lastFlickDist[axis] > 20) {
+  					s.lastFlickSpeed[axis] = s.lastFlickOffset[axis] / lastFlickDuration;
+  				} else {
+  					s.lastFlickSpeed[axis] = 0;
+  				}
+  				if( Math.abs(s.lastFlickSpeed[axis]) < 0.1 ) {
+  					s.lastFlickSpeed[axis] = 0;
+  				}
+  				
+  				s.slowDownRatio[axis] = 0.95;
+  				s.slowDownRatioReverse[axis] = 1 - s.slowDownRatio[axis];
+  				s.speedDecelerationRatio[axis] = 1;
+  			},
+  
+  			calculateOverBoundsAnimOffset: function(axis, speed) {
+  				if(!s.backAnimStarted[axis]) {
+  
+  					if(_panOffset[axis] > _currPanBounds.min[axis]) {
+  						s.backAnimDestination[axis] = _currPanBounds.min[axis];
+  						
+  					} else if(_panOffset[axis] < _currPanBounds.max[axis]) {
+  						s.backAnimDestination[axis] = _currPanBounds.max[axis];
+  					}
+  
+  					if(s.backAnimDestination[axis] !== undefined) {
+  						s.slowDownRatio[axis] = 0.7;
+  						s.slowDownRatioReverse[axis] = 1 - s.slowDownRatio[axis];
+  						if(s.speedDecelerationRatioAbs[axis] < 0.05) {
+  
+  							s.lastFlickSpeed[axis] = 0;
+  							s.backAnimStarted[axis] = true;
+  
+  							_animateProp('bounceZoomPan'+axis,_panOffset[axis], 
+  								s.backAnimDestination[axis], 
+  								speed || 300, 
+  								framework.easing.sine.out, 
+  								function(pos) {
+  									_panOffset[axis] = pos;
+  									_applyCurrentZoomPan();
+  								}
+  							);
+  
+  						}
+  					}
+  				}
+  			},
+  
+  			// Reduces the speed by slowDownRatio (per 10ms)
+  			calculateAnimOffset: function(axis) {
+  				if(!s.backAnimStarted[axis]) {
+  					s.speedDecelerationRatio[axis] = s.speedDecelerationRatio[axis] * (s.slowDownRatio[axis] + 
+  												s.slowDownRatioReverse[axis] - 
+  												s.slowDownRatioReverse[axis] * s.timeDiff / 10);
+  
+  					s.speedDecelerationRatioAbs[axis] = Math.abs(s.lastFlickSpeed[axis] * s.speedDecelerationRatio[axis]);
+  					s.distanceOffset[axis] = s.lastFlickSpeed[axis] * s.speedDecelerationRatio[axis] * s.timeDiff;
+  					_panOffset[axis] += s.distanceOffset[axis];
+  
+  				}
+  			},
+  
+  			panAnimLoop: function() {
+  				if ( _animations.zoomPan ) {
+  					_animations.zoomPan.raf = _requestAF(s.panAnimLoop);
+  
+  					s.now = _getCurrentTime();
+  					s.timeDiff = s.now - s.lastNow;
+  					s.lastNow = s.now;
+  					
+  					s.calculateAnimOffset('x');
+  					s.calculateAnimOffset('y');
+  
+  					_applyCurrentZoomPan();
+  					
+  					s.calculateOverBoundsAnimOffset('x');
+  					s.calculateOverBoundsAnimOffset('y');
+  
+  
+  					if (s.speedDecelerationRatioAbs.x < 0.05 && s.speedDecelerationRatioAbs.y < 0.05) {
+  
+  						// round pan position
+  						_panOffset.x = Math.round(_panOffset.x);
+  						_panOffset.y = Math.round(_panOffset.y);
+  						_applyCurrentZoomPan();
+  						
+  						_stopAnimation('zoomPan');
+  						return;
+  					}
+  				}
+  
+  			}
+  		};
+  		return s;
+  	},
+  
+  	_completePanGesture = function(animData) {
+  		// calculate swipe speed for Y axis (paanning)
+  		animData.calculateSwipeSpeed('y');
+  
+  		_currPanBounds = self.currItem.bounds;
+  		
+  		animData.backAnimDestination = {};
+  		animData.backAnimStarted = {};
+  
+  		// Avoid acceleration animation if speed is too low
+  		if(Math.abs(animData.lastFlickSpeed.x) <= 0.05 && Math.abs(animData.lastFlickSpeed.y) <= 0.05 ) {
+  			animData.speedDecelerationRatioAbs.x = animData.speedDecelerationRatioAbs.y = 0;
+  
+  			// Run pan drag release animation. E.g. if you drag image and release finger without momentum.
+  			animData.calculateOverBoundsAnimOffset('x');
+  			animData.calculateOverBoundsAnimOffset('y');
+  			return true;
+  		}
+  
+  		// Animation loop that controls the acceleration after pan gesture ends
+  		_registerStartAnimation('zoomPan');
+  		animData.lastNow = _getCurrentTime();
+  		animData.panAnimLoop();
+  	},
+  
+  
+  	_finishSwipeMainScrollGesture = function(gestureType, _releaseAnimData) {
+  		var itemChanged;
+  		if(!_mainScrollAnimating) {
+  			_currZoomedItemIndex = _currentItemIndex;
+  		}
+  
+  
+  		
+  		var itemsDiff;
+  
+  		if(gestureType === 'swipe') {
+  			var totalShiftDist = _currPoint.x - _startPoint.x,
+  				isFastLastFlick = _releaseAnimData.lastFlickDist.x < 10;
+  
+  			// if container is shifted for more than MIN_SWIPE_DISTANCE, 
+  			// and last flick gesture was in right direction
+  			if(totalShiftDist > MIN_SWIPE_DISTANCE && 
+  				(isFastLastFlick || _releaseAnimData.lastFlickOffset.x > 20) ) {
+  				// go to prev item
+  				itemsDiff = -1;
+  			} else if(totalShiftDist < -MIN_SWIPE_DISTANCE && 
+  				(isFastLastFlick || _releaseAnimData.lastFlickOffset.x < -20) ) {
+  				// go to next item
+  				itemsDiff = 1;
+  			}
+  		}
+  
+  		var nextCircle;
+  
+  		if(itemsDiff) {
+  			
+  			_currentItemIndex += itemsDiff;
+  
+  			if(_currentItemIndex < 0) {
+  				_currentItemIndex = _options.loop ? _getNumItems()-1 : 0;
+  				nextCircle = true;
+  			} else if(_currentItemIndex >= _getNumItems()) {
+  				_currentItemIndex = _options.loop ? 0 : _getNumItems()-1;
+  				nextCircle = true;
+  			}
+  
+  			if(!nextCircle || _options.loop) {
+  				_indexDiff += itemsDiff;
+  				_currPositionIndex -= itemsDiff;
+  				itemChanged = true;
+  			}
+  			
+  
+  			
+  		}
+  
+  		var animateToX = _slideSize.x * _currPositionIndex;
+  		var animateToDist = Math.abs( animateToX - _mainScrollPos.x );
+  		var finishAnimDuration;
+  
+  
+  		if(!itemChanged && animateToX > _mainScrollPos.x !== _releaseAnimData.lastFlickSpeed.x > 0) {
+  			// "return to current" duration, e.g. when dragging from slide 0 to -1
+  			finishAnimDuration = 333; 
+  		} else {
+  			finishAnimDuration = Math.abs(_releaseAnimData.lastFlickSpeed.x) > 0 ? 
+  									animateToDist / Math.abs(_releaseAnimData.lastFlickSpeed.x) : 
+  									333;
+  
+  			finishAnimDuration = Math.min(finishAnimDuration, 400);
+  			finishAnimDuration = Math.max(finishAnimDuration, 250);
+  		}
+  
+  		if(_currZoomedItemIndex === _currentItemIndex) {
+  			itemChanged = false;
+  		}
+  		
+  		_mainScrollAnimating = true;
+  		
+  		_shout('mainScrollAnimStart');
+  
+  		_animateProp('mainScroll', _mainScrollPos.x, animateToX, finishAnimDuration, framework.easing.cubic.out, 
+  			_moveMainScroll,
+  			function() {
+  				_stopAllAnimations();
+  				_mainScrollAnimating = false;
+  				_currZoomedItemIndex = -1;
+  				
+  				if(itemChanged || _currZoomedItemIndex !== _currentItemIndex) {
+  					self.updateCurrItem();
+  				}
+  				
+  				_shout('mainScrollAnimComplete');
+  			}
+  		);
+  
+  		if(itemChanged) {
+  			self.updateCurrItem(true);
+  		}
+  
+  		return itemChanged;
+  	},
+  
+  	_calculateZoomLevel = function(touchesDistance) {
+  		return  1 / _startPointsDistance * touchesDistance * _startZoomLevel;
+  	},
+  
+  	// Resets zoom if it's out of bounds
+  	_completeZoomGesture = function() {
+  		var destZoomLevel = _currZoomLevel,
+  			minZoomLevel = _getMinZoomLevel(),
+  			maxZoomLevel = _getMaxZoomLevel();
+  
+  		if ( _currZoomLevel < minZoomLevel ) {
+  			destZoomLevel = minZoomLevel;
+  		} else if ( _currZoomLevel > maxZoomLevel ) {
+  			destZoomLevel = maxZoomLevel;
+  		}
+  
+  		var destOpacity = 1,
+  			onUpdate,
+  			initialOpacity = _bgOpacity;
+  
+  		if(_opacityChanged && !_isZoomingIn && !_wasOverInitialZoom && _currZoomLevel < minZoomLevel) {
+  			//_closedByScroll = true;
+  			self.close();
+  			return true;
+  		}
+  
+  		if(_opacityChanged) {
+  			onUpdate = function(now) {
+  				_applyBgOpacity(  (destOpacity - initialOpacity) * now + initialOpacity );
+  			};
+  		}
+  
+  		self.zoomTo(destZoomLevel, 0, 200,  framework.easing.cubic.out, onUpdate);
+  		return true;
+  	};
+  
+  
+  _registerModule('Gestures', {
+  	publicMethods: {
+  
+  		initGestures: function() {
+  
+  			// helper function that builds touch/pointer/mouse events
+  			var addEventNames = function(pref, down, move, up, cancel) {
+  				_dragStartEvent = pref + down;
+  				_dragMoveEvent = pref + move;
+  				_dragEndEvent = pref + up;
+  				if(cancel) {
+  					_dragCancelEvent = pref + cancel;
+  				} else {
+  					_dragCancelEvent = '';
+  				}
+  			};
+  
+  			_pointerEventEnabled = _features.pointerEvent;
+  			if(_pointerEventEnabled && _features.touch) {
+  				// we don't need touch events, if browser supports pointer events
+  				_features.touch = false;
+  			}
+  
+  			if(_pointerEventEnabled) {
+  				if(navigator.pointerEnabled) {
+  					addEventNames('pointer', 'down', 'move', 'up', 'cancel');
+  				} else {
+  					// IE10 pointer events are case-sensitive
+  					addEventNames('MSPointer', 'Down', 'Move', 'Up', 'Cancel');
+  				}
+  			} else if(_features.touch) {
+  				addEventNames('touch', 'start', 'move', 'end', 'cancel');
+  				_likelyTouchDevice = true;
+  			} else {
+  				addEventNames('mouse', 'down', 'move', 'up');	
+  			}
+  
+  			_upMoveEvents = _dragMoveEvent + ' ' + _dragEndEvent  + ' ' +  _dragCancelEvent;
+  			_downEvents = _dragStartEvent;
+  
+  			if(_pointerEventEnabled && !_likelyTouchDevice) {
+  				_likelyTouchDevice = (navigator.maxTouchPoints > 1) || (navigator.msMaxTouchPoints > 1);
+  			}
+  			// make variable public
+  			self.likelyTouchDevice = _likelyTouchDevice; 
+  			
+  			_globalEventHandlers[_dragStartEvent] = _onDragStart;
+  			_globalEventHandlers[_dragMoveEvent] = _onDragMove;
+  			_globalEventHandlers[_dragEndEvent] = _onDragRelease; // the Kraken
+  
+  			if(_dragCancelEvent) {
+  				_globalEventHandlers[_dragCancelEvent] = _globalEventHandlers[_dragEndEvent];
+  			}
+  
+  			// Bind mouse events on device with detected hardware touch support, in case it supports multiple types of input.
+  			if(_features.touch) {
+  				_downEvents += ' mousedown';
+  				_upMoveEvents += ' mousemove mouseup';
+  				_globalEventHandlers.mousedown = _globalEventHandlers[_dragStartEvent];
+  				_globalEventHandlers.mousemove = _globalEventHandlers[_dragMoveEvent];
+  				_globalEventHandlers.mouseup = _globalEventHandlers[_dragEndEvent];
+  			}
+  
+  			if(!_likelyTouchDevice) {
+  				// don't allow pan to next slide from zoomed state on Desktop
+  				_options.allowPanToNext = false;
+  			}
+  		}
+  
+  	}
+  });
+  
+  
+  /*>>gestures*/
+  
+  /*>>show-hide-transition*/
+  /**
+   * show-hide-transition.js:
+   *
+   * Manages initial opening or closing transition.
+   *
+   * If you're not planning to use transition for gallery at all,
+   * you may set options hideAnimationDuration and showAnimationDuration to 0,
+   * and just delete startAnimation function.
+   * 
+   */
+  
+  
+  var _showOrHideTimeout,
+  	_showOrHide = function(item, img, out, completeFn) {
+  
+  		if(_showOrHideTimeout) {
+  			clearTimeout(_showOrHideTimeout);
+  		}
+  
+  		_initialZoomRunning = true;
+  		_initialContentSet = true;
+  		
+  		// dimensions of small thumbnail {x:,y:,w:}.
+  		// Height is optional, as calculated based on large image.
+  		var thumbBounds; 
+  		if(item.initialLayout) {
+  			thumbBounds = item.initialLayout;
+  			item.initialLayout = null;
+  		} else {
+  			thumbBounds = _options.getThumbBoundsFn && _options.getThumbBoundsFn(_currentItemIndex);
+  		}
+  
+  		var duration = out ? _options.hideAnimationDuration : _options.showAnimationDuration;
+  
+  		var onComplete = function() {
+  			_stopAnimation('initialZoom');
+  			if(!out) {
+  				_applyBgOpacity(1);
+  				if(img) {
+  					img.style.display = 'block';
+  				}
+  				framework.addClass(template, 'pswp--animated-in');
+  				_shout('initialZoom' + (out ? 'OutEnd' : 'InEnd'));
+  			} else {
+  				self.template.removeAttribute('style');
+  				self.bg.removeAttribute('style');
+  			}
+  
+  			if(completeFn) {
+  				completeFn();
+  			}
+  			_initialZoomRunning = false;
+  		};
+  
+  		// if bounds aren't provided, just open gallery without animation
+  		if(!duration || !thumbBounds || thumbBounds.x === undefined) {
+  
+  			_shout('initialZoom' + (out ? 'Out' : 'In') );
+  
+  			_currZoomLevel = item.initialZoomLevel;
+  			_equalizePoints(_panOffset,  item.initialPosition );
+  			_applyCurrentZoomPan();
+  
+  			template.style.opacity = out ? 0 : 1;
+  			_applyBgOpacity(1);
+  
+  			if(duration) {
+  				setTimeout(function() {
+  					onComplete();
+  				}, duration);
+  			} else {
+  				onComplete();
+  			}
+  
+  			return;
+  		}
+  
+  		var startAnimation = function() {
+  			var closeWithRaf = _closedByScroll,
+  				fadeEverything = !self.currItem.src || self.currItem.loadError || _options.showHideOpacity;
+  			
+  			// apply hw-acceleration to image
+  			if(item.miniImg) {
+  				item.miniImg.style.webkitBackfaceVisibility = 'hidden';
+  			}
+  
+  			if(!out) {
+  				_currZoomLevel = thumbBounds.w / item.w;
+  				_panOffset.x = thumbBounds.x;
+  				_panOffset.y = thumbBounds.y - _initalWindowScrollY;
+  
+  				self[fadeEverything ? 'template' : 'bg'].style.opacity = 0.001;
+  				_applyCurrentZoomPan();
+  			}
+  
+  			_registerStartAnimation('initialZoom');
+  			
+  			if(out && !closeWithRaf) {
+  				framework.removeClass(template, 'pswp--animated-in');
+  			}
+  
+  			if(fadeEverything) {
+  				if(out) {
+  					framework[ (closeWithRaf ? 'remove' : 'add') + 'Class' ](template, 'pswp--animate_opacity');
+  				} else {
+  					setTimeout(function() {
+  						framework.addClass(template, 'pswp--animate_opacity');
+  					}, 30);
+  				}
+  			}
+  
+  			_showOrHideTimeout = setTimeout(function() {
+  
+  				_shout('initialZoom' + (out ? 'Out' : 'In') );
+  				
+  
+  				if(!out) {
+  
+  					// "in" animation always uses CSS transitions (instead of rAF).
+  					// CSS transition work faster here, 
+  					// as developer may also want to animate other things, 
+  					// like ui on top of sliding area, which can be animated just via CSS
+  					
+  					_currZoomLevel = item.initialZoomLevel;
+  					_equalizePoints(_panOffset,  item.initialPosition );
+  					_applyCurrentZoomPan();
+  					_applyBgOpacity(1);
+  
+  					if(fadeEverything) {
+  						template.style.opacity = 1;
+  					} else {
+  						_applyBgOpacity(1);
+  					}
+  
+  					_showOrHideTimeout = setTimeout(onComplete, duration + 20);
+  				} else {
+  
+  					// "out" animation uses rAF only when PhotoSwipe is closed by browser scroll, to recalculate position
+  					var destZoomLevel = thumbBounds.w / item.w,
+  						initialPanOffset = {
+  							x: _panOffset.x,
+  							y: _panOffset.y
+  						},
+  						initialZoomLevel = _currZoomLevel,
+  						initalBgOpacity = _bgOpacity,
+  						onUpdate = function(now) {
+  							
+  							if(now === 1) {
+  								_currZoomLevel = destZoomLevel;
+  								_panOffset.x = thumbBounds.x;
+  								_panOffset.y = thumbBounds.y  - _currentWindowScrollY;
+  							} else {
+  								_currZoomLevel = (destZoomLevel - initialZoomLevel) * now + initialZoomLevel;
+  								_panOffset.x = (thumbBounds.x - initialPanOffset.x) * now + initialPanOffset.x;
+  								_panOffset.y = (thumbBounds.y - _currentWindowScrollY - initialPanOffset.y) * now + initialPanOffset.y;
+  							}
+  							
+  							_applyCurrentZoomPan();
+  							if(fadeEverything) {
+  								template.style.opacity = 1 - now;
+  							} else {
+  								_applyBgOpacity( initalBgOpacity - now * initalBgOpacity );
+  							}
+  						};
+  
+  					if(closeWithRaf) {
+  						_animateProp('initialZoom', 0, 1, duration, framework.easing.cubic.out, onUpdate, onComplete);
+  					} else {
+  						onUpdate(1);
+  						_showOrHideTimeout = setTimeout(onComplete, duration + 20);
+  					}
+  				}
+  			
+  			}, out ? 25 : 90); // Main purpose of this delay is to give browser time to paint and
+  					// create composite layers of PhotoSwipe UI parts (background, controls, caption, arrows).
+  					// Which avoids lag at the beginning of scale transition.
+  		};
+  		startAnimation();
+  
+  		
+  	};
+  
+  /*>>show-hide-transition*/
+  
+  /*>>items-controller*/
+  /**
+  *
+  * Controller manages gallery items, their dimensions, and their content.
+  * 
+  */
+  
+  var _items,
+  	_tempPanAreaSize = {},
+  	_imagesToAppendPool = [],
+  	_initialContentSet,
+  	_initialZoomRunning,
+  	_controllerDefaultOptions = {
+  		index: 0,
+  		errorMsg: '<div class="pswp__error-msg"><a href="%url%" target="_blank">The image</a> could not be loaded.</div>',
+  		forceProgressiveLoading: false, // TODO
+  		preload: [1,1],
+  		getNumItemsFn: function() {
+  			return _items.length;
+  		}
+  	};
+  
+  
+  var _getItemAt,
+  	_getNumItems,
+  	_initialIsLoop,
+  	_getZeroBounds = function() {
+  		return {
+  			center:{x:0,y:0}, 
+  			max:{x:0,y:0}, 
+  			min:{x:0,y:0}
+  		};
+  	},
+  	_calculateSingleItemPanBounds = function(item, realPanElementW, realPanElementH ) {
+  		var bounds = item.bounds;
+  
+  		// position of element when it's centered
+  		bounds.center.x = Math.round((_tempPanAreaSize.x - realPanElementW) / 2);
+  		bounds.center.y = Math.round((_tempPanAreaSize.y - realPanElementH) / 2) + item.vGap.top;
+  
+  		// maximum pan position
+  		bounds.max.x = (realPanElementW > _tempPanAreaSize.x) ? 
+  							Math.round(_tempPanAreaSize.x - realPanElementW) : 
+  							bounds.center.x;
+  		
+  		bounds.max.y = (realPanElementH > _tempPanAreaSize.y) ? 
+  							Math.round(_tempPanAreaSize.y - realPanElementH) + item.vGap.top : 
+  							bounds.center.y;
+  		
+  		// minimum pan position
+  		bounds.min.x = (realPanElementW > _tempPanAreaSize.x) ? 0 : bounds.center.x;
+  		bounds.min.y = (realPanElementH > _tempPanAreaSize.y) ? item.vGap.top : bounds.center.y;
+  	},
+  	_calculateItemSize = function(item, viewportSize, zoomLevel) {
+  
+  		if (item.src && !item.loadError) {
+  			var isInitial = !zoomLevel;
+  			
+  			if(isInitial) {
+  				if(!item.vGap) {
+  					item.vGap = {top:0,bottom:0};
+  				}
+  				// allows overriding vertical margin for individual items
+  				_shout('parseVerticalMargin', item);
+  			}
+  
+  
+  			_tempPanAreaSize.x = viewportSize.x;
+  			_tempPanAreaSize.y = viewportSize.y - item.vGap.top - item.vGap.bottom;
+  
+  			if (isInitial) {
+  				var hRatio = _tempPanAreaSize.x / item.w;
+  				var vRatio = _tempPanAreaSize.y / item.h;
+  
+  				item.fitRatio = hRatio < vRatio ? hRatio : vRatio;
+  				//item.fillRatio = hRatio > vRatio ? hRatio : vRatio;
+  
+  				var scaleMode = _options.scaleMode;
+  
+  				if (scaleMode === 'orig') {
+  					zoomLevel = 1;
+  				} else if (scaleMode === 'fit') {
+  					zoomLevel = item.fitRatio;
+  				}
+  
+  				if (zoomLevel > 1) {
+  					zoomLevel = 1;
+  				}
+  
+  				item.initialZoomLevel = zoomLevel;
+  				
+  				if(!item.bounds) {
+  					// reuse bounds object
+  					item.bounds = _getZeroBounds(); 
+  				}
+  			}
+  
+  			if(!zoomLevel) {
+  				return;
+  			}
+  
+  			_calculateSingleItemPanBounds(item, item.w * zoomLevel, item.h * zoomLevel);
+  
+  			if (isInitial && zoomLevel === item.initialZoomLevel) {
+  				item.initialPosition = item.bounds.center;
+  			}
+  
+  			return item.bounds;
+  		} else {
+  			item.w = item.h = 0;
+  			item.initialZoomLevel = item.fitRatio = 1;
+  			item.bounds = _getZeroBounds();
+  			item.initialPosition = item.bounds.center;
+  
+  			// if it's not image, we return zero bounds (content is not zoomable)
+  			return item.bounds;
+  		}
+  		
+  	},
+  
+  	
+  
+  
+  	_appendImage = function(index, item, baseDiv, img, preventAnimation, keepPlaceholder) {
+  		
+  
+  		if(item.loadError) {
+  			return;
+  		}
+  
+  		if(img) {
+  
+  			item.imageAppended = true;
+  			_setImageSize(item, img, (item === self.currItem && _renderMaxResolution) );
+  			
+  			baseDiv.appendChild(img);
+  
+  			if(keepPlaceholder) {
+  				setTimeout(function() {
+  					if(item && item.loaded && item.placeholder) {
+  						item.placeholder.style.display = 'none';
+  						item.placeholder = null;
+  					}
+  				}, 500);
+  			}
+  		}
+  	},
+  	
+  
+  
+  	_preloadImage = function(item) {
+  		item.loading = true;
+  		item.loaded = false;
+  		var img = item.img = framework.createEl('pswp__img', 'img');
+  		var onComplete = function() {
+  			item.loading = false;
+  			item.loaded = true;
+  
+  			if(item.loadComplete) {
+  				item.loadComplete(item);
+  			} else {
+  				item.img = null; // no need to store image object
+  			}
+  			img.onload = img.onerror = null;
+  			img = null;
+  		};
+  		img.onload = onComplete;
+  		img.onerror = function() {
+  			item.loadError = true;
+  			onComplete();
+  		};		
+  
+  		img.src = item.src;// + '?a=' + Math.random();
+  
+  		return img;
+  	},
+  	_checkForError = function(item, cleanUp) {
+  		if(item.src && item.loadError && item.container) {
+  
+  			if(cleanUp) {
+  				item.container.innerHTML = '';
+  			}
+  
+  			item.container.innerHTML = _options.errorMsg.replace('%url%',  item.src );
+  			return true;
+  			
+  		}
+  	},
+  	_setImageSize = function(item, img, maxRes) {
+  		if(!item.src) {
+  			return;
+  		}
+  
+  		if(!img) {
+  			img = item.container.lastChild;
+  		}
+  
+  		var w = maxRes ? item.w : Math.round(item.w * item.fitRatio),
+  			h = maxRes ? item.h : Math.round(item.h * item.fitRatio);
+  		
+  		if(item.placeholder && !item.loaded) {
+  			item.placeholder.style.width = w + 'px';
+  			item.placeholder.style.height = h + 'px';
+  		}
+  
+  		img.style.width = w + 'px';
+  		img.style.height = h + 'px';
+  	},
+  	_appendImagesPool = function() {
+  
+  		if(_imagesToAppendPool.length) {
+  			var poolItem;
+  
+  			for(var i = 0; i < _imagesToAppendPool.length; i++) {
+  				poolItem = _imagesToAppendPool[i];
+  				if( poolItem.holder.index === poolItem.index ) {
+  					_appendImage(poolItem.index, poolItem.item, poolItem.baseDiv, poolItem.img, false, poolItem.clearPlaceholder);
+  				}
+  			}
+  			_imagesToAppendPool = [];
+  		}
+  	};
+  	
+  
+  
+  _registerModule('Controller', {
+  
+  	publicMethods: {
+  
+  		lazyLoadItem: function(index) {
+  			index = _getLoopedId(index);
+  			var item = _getItemAt(index);
+  
+  			if(!item || ((item.loaded || item.loading) && !_itemsNeedUpdate)) {
+  				return;
+  			}
+  
+  			_shout('gettingData', index, item);
+  
+  			if (!item.src) {
+  				return;
+  			}
+  
+  			_preloadImage(item);
+  		},
+  		initController: function() {
+  			framework.extend(_options, _controllerDefaultOptions, true);
+  			self.items = _items = items;
+  			_getItemAt = self.getItemAt;
+  			_getNumItems = _options.getNumItemsFn; //self.getNumItems;
+  
+  
+  
+  			_initialIsLoop = _options.loop;
+  			if(_getNumItems() < 3) {
+  				_options.loop = false; // disable loop if less then 3 items
+  			}
+  
+  			_listen('beforeChange', function(diff) {
+  
+  				var p = _options.preload,
+  					isNext = diff === null ? true : (diff >= 0),
+  					preloadBefore = Math.min(p[0], _getNumItems() ),
+  					preloadAfter = Math.min(p[1], _getNumItems() ),
+  					i;
+  
+  
+  				for(i = 1; i <= (isNext ? preloadAfter : preloadBefore); i++) {
+  					self.lazyLoadItem(_currentItemIndex+i);
+  				}
+  				for(i = 1; i <= (isNext ? preloadBefore : preloadAfter); i++) {
+  					self.lazyLoadItem(_currentItemIndex-i);
+  				}
+  			});
+  
+  			_listen('initialLayout', function() {
+  				self.currItem.initialLayout = _options.getThumbBoundsFn && _options.getThumbBoundsFn(_currentItemIndex);
+  			});
+  
+  			_listen('mainScrollAnimComplete', _appendImagesPool);
+  			_listen('initialZoomInEnd', _appendImagesPool);
+  
+  
+  
+  			_listen('destroy', function() {
+  				var item;
+  				for(var i = 0; i < _items.length; i++) {
+  					item = _items[i];
+  					// remove reference to DOM elements, for GC
+  					if(item.container) {
+  						item.container = null; 
+  					}
+  					if(item.placeholder) {
+  						item.placeholder = null;
+  					}
+  					if(item.img) {
+  						item.img = null;
+  					}
+  					if(item.preloader) {
+  						item.preloader = null;
+  					}
+  					if(item.loadError) {
+  						item.loaded = item.loadError = false;
+  					}
+  				}
+  				_imagesToAppendPool = null;
+  			});
+  		},
+  
+  
+  		getItemAt: function(index) {
+  			if (index >= 0) {
+  				return _items[index] !== undefined ? _items[index] : false;
+  			}
+  			return false;
+  		},
+  
+  		allowProgressiveImg: function() {
+  			// 1. Progressive image loading isn't working on webkit/blink 
+  			//    when hw-acceleration (e.g. translateZ) is applied to IMG element.
+  			//    That's why in PhotoSwipe parent element gets zoom transform, not image itself.
+  			//    
+  			// 2. Progressive image loading sometimes blinks in webkit/blink when applying animation to parent element.
+  			//    That's why it's disabled on touch devices (mainly because of swipe transition)
+  			//    
+  			// 3. Progressive image loading sometimes doesn't work in IE (up to 11).
+  
+  			// Don't allow progressive loading on non-large touch devices
+  			return _options.forceProgressiveLoading || !_likelyTouchDevice || _options.mouseUsed || screen.width > 1200; 
+  			// 1200 - to eliminate touch devices with large screen (like Chromebook Pixel)
+  		},
+  
+  		setContent: function(holder, index) {
+  
+  			if(_options.loop) {
+  				index = _getLoopedId(index);
+  			}
+  
+  			var prevItem = self.getItemAt(holder.index);
+  			if(prevItem) {
+  				prevItem.container = null;
+  			}
+  	
+  			var item = self.getItemAt(index),
+  				img;
+  			
+  			if(!item) {
+  				holder.el.innerHTML = '';
+  				return;
+  			}
+  
+  			// allow to override data
+  			_shout('gettingData', index, item);
+  
+  			holder.index = index;
+  			holder.item = item;
+  
+  			// base container DIV is created only once for each of 3 holders
+  			var baseDiv = item.container = framework.createEl('pswp__zoom-wrap'); 
+  
+  			
+  
+  			if(!item.src && item.html) {
+  				if(item.html.tagName) {
+  					baseDiv.appendChild(item.html);
+  				} else {
+  					baseDiv.innerHTML = item.html;
+  				}
+  			}
+  
+  			_checkForError(item);
+  
+  			_calculateItemSize(item, _viewportSize);
+  			
+  			if(item.src && !item.loadError && !item.loaded) {
+  
+  				item.loadComplete = function(item) {
+  
+  					// gallery closed before image finished loading
+  					if(!_isOpen) {
+  						return;
+  					}
+  
+  					// check if holder hasn't changed while image was loading
+  					if(holder && holder.index === index ) {
+  						if( _checkForError(item, true) ) {
+  							item.loadComplete = item.img = null;
+  							_calculateItemSize(item, _viewportSize);
+  							_applyZoomPanToItem(item);
+  
+  							if(holder.index === _currentItemIndex) {
+  								// recalculate dimensions
+  								self.updateCurrZoomItem();
+  							}
+  							return;
+  						}
+  						if( !item.imageAppended ) {
+  							if(_features.transform && (_mainScrollAnimating || _initialZoomRunning) ) {
+  								_imagesToAppendPool.push({
+  									item:item,
+  									baseDiv:baseDiv,
+  									img:item.img,
+  									index:index,
+  									holder:holder,
+  									clearPlaceholder:true
+  								});
+  							} else {
+  								_appendImage(index, item, baseDiv, item.img, _mainScrollAnimating || _initialZoomRunning, true);
+  							}
+  						} else {
+  							// remove preloader & mini-img
+  							if(!_initialZoomRunning && item.placeholder) {
+  								item.placeholder.style.display = 'none';
+  								item.placeholder = null;
+  							}
+  						}
+  					}
+  
+  					item.loadComplete = null;
+  					item.img = null; // no need to store image element after it's added
+  
+  					_shout('imageLoadComplete', index, item);
+  				};
+  
+  				if(framework.features.transform) {
+  					
+  					var placeholderClassName = 'pswp__img pswp__img--placeholder'; 
+  					placeholderClassName += (item.msrc ? '' : ' pswp__img--placeholder--blank');
+  
+  					var placeholder = framework.createEl(placeholderClassName, item.msrc ? 'img' : '');
+  					if(item.msrc) {
+  						placeholder.src = item.msrc;
+  					}
+  					
+  					_setImageSize(item, placeholder);
+  
+  					baseDiv.appendChild(placeholder);
+  					item.placeholder = placeholder;
+  
+  				}
+  				
+  
+  				
+  
+  				if(!item.loading) {
+  					_preloadImage(item);
+  				}
+  
+  
+  				if( self.allowProgressiveImg() ) {
+  					// just append image
+  					if(!_initialContentSet && _features.transform) {
+  						_imagesToAppendPool.push({
+  							item:item, 
+  							baseDiv:baseDiv, 
+  							img:item.img, 
+  							index:index, 
+  							holder:holder
+  						});
+  					} else {
+  						_appendImage(index, item, baseDiv, item.img, true, true);
+  					}
+  				}
+  				
+  			} else if(item.src && !item.loadError) {
+  				// image object is created every time, due to bugs of image loading & delay when switching images
+  				img = framework.createEl('pswp__img', 'img');
+  				img.style.opacity = 1;
+  				img.src = item.src;
+  				_setImageSize(item, img);
+  				_appendImage(index, item, baseDiv, img, true);
+  			}
+  			
+  
+  			if(!_initialContentSet && index === _currentItemIndex) {
+  				_currZoomElementStyle = baseDiv.style;
+  				_showOrHide(item, (img ||item.img) );
+  			} else {
+  				_applyZoomPanToItem(item);
+  			}
+  
+  			holder.el.innerHTML = '';
+  			holder.el.appendChild(baseDiv);
+  		},
+  
+  		cleanSlide: function( item ) {
+  			if(item.img ) {
+  				item.img.onload = item.img.onerror = null;
+  			}
+  			item.loaded = item.loading = item.img = item.imageAppended = false;
+  		}
+  
+  	}
+  });
+  
+  /*>>items-controller*/
+  
+  /*>>tap*/
+  /**
+   * tap.js:
+   *
+   * Displatches tap and double-tap events.
+   * 
+   */
+  
+  var tapTimer,
+  	tapReleasePoint = {},
+  	_dispatchTapEvent = function(origEvent, releasePoint, pointerType) {		
+  		var e = document.createEvent( 'CustomEvent' ),
+  			eDetail = {
+  				origEvent:origEvent, 
+  				target:origEvent.target, 
+  				releasePoint: releasePoint, 
+  				pointerType:pointerType || 'touch'
+  			};
+  
+  		e.initCustomEvent( 'pswpTap', true, true, eDetail );
+  		origEvent.target.dispatchEvent(e);
+  	};
+  
+  _registerModule('Tap', {
+  	publicMethods: {
+  		initTap: function() {
+  			_listen('firstTouchStart', self.onTapStart);
+  			_listen('touchRelease', self.onTapRelease);
+  			_listen('destroy', function() {
+  				tapReleasePoint = {};
+  				tapTimer = null;
+  			});
+  		},
+  		onTapStart: function(touchList) {
+  			if(touchList.length > 1) {
+  				clearTimeout(tapTimer);
+  				tapTimer = null;
+  			}
+  		},
+  		onTapRelease: function(e, releasePoint) {
+  			if(!releasePoint) {
+  				return;
+  			}
+  
+  			if(!_moved && !_isMultitouch && !_numAnimations) {
+  				var p0 = releasePoint;
+  				if(tapTimer) {
+  					clearTimeout(tapTimer);
+  					tapTimer = null;
+  
+  					// Check if taped on the same place
+  					if ( _isNearbyPoints(p0, tapReleasePoint) ) {
+  						_shout('doubleTap', p0);
+  						return;
+  					}
+  				}
+  
+  				if(releasePoint.type === 'mouse') {
+  					_dispatchTapEvent(e, releasePoint, 'mouse');
+  					return;
+  				}
+  
+  				var clickedTagName = e.target.tagName.toUpperCase();
+  				// avoid double tap delay on buttons and elements that have class pswp__single-tap
+  				if(clickedTagName === 'BUTTON' || framework.hasClass(e.target, 'pswp__single-tap') ) {
+  					_dispatchTapEvent(e, releasePoint);
+  					return;
+  				}
+  
+  				_equalizePoints(tapReleasePoint, p0);
+  
+  				tapTimer = setTimeout(function() {
+  					_dispatchTapEvent(e, releasePoint);
+  					tapTimer = null;
+  				}, 300);
+  			}
+  		}
+  	}
+  });
+  
+  /*>>tap*/
+  
+  /*>>desktop-zoom*/
+  /**
+   *
+   * desktop-zoom.js:
+   *
+   * - Binds mousewheel event for paning zoomed image.
+   * - Manages "dragging", "zoomed-in", "zoom-out" classes.
+   *   (which are used for cursors and zoom icon)
+   * - Adds toggleDesktopZoom function.
+   * 
+   */
+  
+  var _wheelDelta;
+  	
+  _registerModule('DesktopZoom', {
+  
+  	publicMethods: {
+  
+  		initDesktopZoom: function() {
+  
+  			if(_oldIE) {
+  				// no zoom for old IE (<=8)
+  				return;
+  			}
+  
+  			if(_likelyTouchDevice) {
+  				// if detected hardware touch support, we wait until mouse is used,
+  				// and only then apply desktop-zoom features
+  				_listen('mouseUsed', function() {
+  					self.setupDesktopZoom();
+  				});
+  			} else {
+  				self.setupDesktopZoom(true);
+  			}
+  
+  		},
+  
+  		setupDesktopZoom: function(onInit) {
+  
+  			_wheelDelta = {};
+  
+  			var events = 'wheel mousewheel DOMMouseScroll';
+  			
+  			_listen('bindEvents', function() {
+  				framework.bind(template, events,  self.handleMouseWheel);
+  			});
+  
+  			_listen('unbindEvents', function() {
+  				if(_wheelDelta) {
+  					framework.unbind(template, events, self.handleMouseWheel);
+  				}
+  			});
+  
+  			self.mouseZoomedIn = false;
+  
+  			var hasDraggingClass,
+  				updateZoomable = function() {
+  					if(self.mouseZoomedIn) {
+  						framework.removeClass(template, 'pswp--zoomed-in');
+  						self.mouseZoomedIn = false;
+  					}
+  					if(_currZoomLevel < 1) {
+  						framework.addClass(template, 'pswp--zoom-allowed');
+  					} else {
+  						framework.removeClass(template, 'pswp--zoom-allowed');
+  					}
+  					removeDraggingClass();
+  				},
+  				removeDraggingClass = function() {
+  					if(hasDraggingClass) {
+  						framework.removeClass(template, 'pswp--dragging');
+  						hasDraggingClass = false;
+  					}
+  				};
+  
+  			_listen('resize' , updateZoomable);
+  			_listen('afterChange' , updateZoomable);
+  			_listen('pointerDown', function() {
+  				if(self.mouseZoomedIn) {
+  					hasDraggingClass = true;
+  					framework.addClass(template, 'pswp--dragging');
+  				}
+  			});
+  			_listen('pointerUp', removeDraggingClass);
+  
+  			if(!onInit) {
+  				updateZoomable();
+  			}
+  			
+  		},
+  
+  		handleMouseWheel: function(e) {
+  
+  			if(_currZoomLevel <= self.currItem.fitRatio) {
+  				if( _options.modal ) {
+  
+  					if (!_options.closeOnScroll || _numAnimations || _isDragging) {
+  						e.preventDefault();
+  					} else if(_transformKey && Math.abs(e.deltaY) > 2) {
+  						// close PhotoSwipe
+  						// if browser supports transforms & scroll changed enough
+  						_closedByScroll = true;
+  						self.close();
+  					}
+  
+  				}
+  				return true;
+  			}
+  
+  			// allow just one event to fire
+  			e.stopPropagation();
+  
+  			// https://developer.mozilla.org/en-US/docs/Web/Events/wheel
+  			_wheelDelta.x = 0;
+  
+  			if('deltaX' in e) {
+  				if(e.deltaMode === 1 /* DOM_DELTA_LINE */) {
+  					// 18 - average line height
+  					_wheelDelta.x = e.deltaX * 18;
+  					_wheelDelta.y = e.deltaY * 18;
+  				} else {
+  					_wheelDelta.x = e.deltaX;
+  					_wheelDelta.y = e.deltaY;
+  				}
+  			} else if('wheelDelta' in e) {
+  				if(e.wheelDeltaX) {
+  					_wheelDelta.x = -0.16 * e.wheelDeltaX;
+  				}
+  				if(e.wheelDeltaY) {
+  					_wheelDelta.y = -0.16 * e.wheelDeltaY;
+  				} else {
+  					_wheelDelta.y = -0.16 * e.wheelDelta;
+  				}
+  			} else if('detail' in e) {
+  				_wheelDelta.y = e.detail;
+  			} else {
+  				return;
+  			}
+  
+  			_calculatePanBounds(_currZoomLevel, true);
+  
+  			var newPanX = _panOffset.x - _wheelDelta.x,
+  				newPanY = _panOffset.y - _wheelDelta.y;
+  
+  			// only prevent scrolling in nonmodal mode when not at edges
+  			if (_options.modal ||
+  				(
+  				newPanX <= _currPanBounds.min.x && newPanX >= _currPanBounds.max.x &&
+  				newPanY <= _currPanBounds.min.y && newPanY >= _currPanBounds.max.y
+  				) ) {
+  				e.preventDefault();
+  			}
+  
+  			// TODO: use rAF instead of mousewheel?
+  			self.panTo(newPanX, newPanY);
+  		},
+  
+  		toggleDesktopZoom: function(centerPoint) {
+  			centerPoint = centerPoint || {x:_viewportSize.x/2 + _offset.x, y:_viewportSize.y/2 + _offset.y };
+  
+  			var doubleTapZoomLevel = _options.getDoubleTapZoom(true, self.currItem);
+  			var zoomOut = _currZoomLevel === doubleTapZoomLevel;
+  			
+  			self.mouseZoomedIn = !zoomOut;
+  
+  			self.zoomTo(zoomOut ? self.currItem.initialZoomLevel : doubleTapZoomLevel, centerPoint, 333);
+  			framework[ (!zoomOut ? 'add' : 'remove') + 'Class'](template, 'pswp--zoomed-in');
+  		}
+  
+  	}
+  });
+  
+  
+  /*>>desktop-zoom*/
+  
+  /*>>history*/
+  /**
+   *
+   * history.js:
+   *
+   * - Back button to close gallery.
+   * 
+   * - Unique URL for each slide: example.com/&pid=1&gid=3
+   *   (where PID is picture index, and GID and gallery index)
+   *   
+   * - Switch URL when slides change.
+   * 
+   */
+  
+  
+  var _historyDefaultOptions = {
+  	history: true,
+  	galleryUID: 1
+  };
+  
+  var _historyUpdateTimeout,
+  	_hashChangeTimeout,
+  	_hashAnimCheckTimeout,
+  	_hashChangedByScript,
+  	_hashChangedByHistory,
+  	_hashReseted,
+  	_initialHash,
+  	_historyChanged,
+  	_closedFromURL,
+  	_urlChangedOnce,
+  	_windowLoc,
+  
+  	_supportsPushState,
+  
+  	_getHash = function() {
+  		return _windowLoc.hash.substring(1);
+  	},
+  	_cleanHistoryTimeouts = function() {
+  
+  		if(_historyUpdateTimeout) {
+  			clearTimeout(_historyUpdateTimeout);
+  		}
+  
+  		if(_hashAnimCheckTimeout) {
+  			clearTimeout(_hashAnimCheckTimeout);
+  		}
+  	},
+  
+  	// pid - Picture index
+  	// gid - Gallery index
+  	_parseItemIndexFromURL = function() {
+  		var hash = _getHash(),
+  			params = {};
+  
+  		if(hash.length < 5) { // pid=1
+  			return params;
+  		}
+  
+  		var i, vars = hash.split('&');
+  		for (i = 0; i < vars.length; i++) {
+  			if(!vars[i]) {
+  				continue;
+  			}
+  			var pair = vars[i].split('=');	
+  			if(pair.length < 2) {
+  				continue;
+  			}
+  			params[pair[0]] = pair[1];
+  		}
+  		if(_options.galleryPIDs) {
+  			// detect custom pid in hash and search for it among the items collection
+  			var searchfor = params.pid;
+  			params.pid = 0; // if custom pid cannot be found, fallback to the first item
+  			for(i = 0; i < _items.length; i++) {
+  				if(_items[i].pid === searchfor) {
+  					params.pid = i;
+  					break;
+  				}
+  			}
+  		} else {
+  			params.pid = parseInt(params.pid,10)-1;
+  		}
+  		if( params.pid < 0 ) {
+  			params.pid = 0;
+  		}
+  		return params;
+  	},
+  	_updateHash = function() {
+  
+  		if(_hashAnimCheckTimeout) {
+  			clearTimeout(_hashAnimCheckTimeout);
+  		}
+  
+  
+  		if(_numAnimations || _isDragging) {
+  			// changing browser URL forces layout/paint in some browsers, which causes noticable lag during animation
+  			// that's why we update hash only when no animations running
+  			_hashAnimCheckTimeout = setTimeout(_updateHash, 500);
+  			return;
+  		}
+  		
+  		if(_hashChangedByScript) {
+  			clearTimeout(_hashChangeTimeout);
+  		} else {
+  			_hashChangedByScript = true;
+  		}
+  
+  
+  		var pid = (_currentItemIndex + 1);
+  		var item = _getItemAt( _currentItemIndex );
+  		if(item.hasOwnProperty('pid')) {
+  			// carry forward any custom pid assigned to the item
+  			pid = item.pid;
+  		}
+  		var newHash = _initialHash + '&'  +  'gid=' + _options.galleryUID + '&' + 'pid=' + pid;
+  
+  		if(!_historyChanged) {
+  			if(_windowLoc.hash.indexOf(newHash) === -1) {
+  				_urlChangedOnce = true;
+  			}
+  			// first time - add new hisory record, then just replace
+  		}
+  
+  		var newURL = _windowLoc.href.split('#')[0] + '#' +  newHash;
+  
+  		if( _supportsPushState ) {
+  
+  			if('#' + newHash !== window.location.hash) {
+  				history[_historyChanged ? 'replaceState' : 'pushState']('', document.title, newURL);
+  			}
+  
+  		} else {
+  			if(_historyChanged) {
+  				_windowLoc.replace( newURL );
+  			} else {
+  				_windowLoc.hash = newHash;
+  			}
+  		}
+  		
+  		
+  
+  		_historyChanged = true;
+  		_hashChangeTimeout = setTimeout(function() {
+  			_hashChangedByScript = false;
+  		}, 60);
+  	};
+  
+  
+  
+  	
+  
+  _registerModule('History', {
+  
+  	
+  
+  	publicMethods: {
+  		initHistory: function() {
+  
+  			framework.extend(_options, _historyDefaultOptions, true);
+  
+  			if( !_options.history ) {
+  				return;
+  			}
+  
+  
+  			_windowLoc = window.location;
+  			_urlChangedOnce = false;
+  			_closedFromURL = false;
+  			_historyChanged = false;
+  			_initialHash = _getHash();
+  			_supportsPushState = ('pushState' in history);
+  
+  
+  			if(_initialHash.indexOf('gid=') > -1) {
+  				_initialHash = _initialHash.split('&gid=')[0];
+  				_initialHash = _initialHash.split('?gid=')[0];
+  			}
+  			
+  
+  			_listen('afterChange', self.updateURL);
+  			_listen('unbindEvents', function() {
+  				framework.unbind(window, 'hashchange', self.onHashChange);
+  			});
+  
+  
+  			var returnToOriginal = function() {
+  				_hashReseted = true;
+  				if(!_closedFromURL) {
+  
+  					if(_urlChangedOnce) {
+  						history.back();
+  					} else {
+  
+  						if(_initialHash) {
+  							_windowLoc.hash = _initialHash;
+  						} else {
+  							if (_supportsPushState) {
+  
+  								// remove hash from url without refreshing it or scrolling to top
+  								history.pushState('', document.title,  _windowLoc.pathname + _windowLoc.search );
+  							} else {
+  								_windowLoc.hash = '';
+  							}
+  						}
+  					}
+  					
+  				}
+  
+  				_cleanHistoryTimeouts();
+  			};
+  
+  
+  			_listen('unbindEvents', function() {
+  				if(_closedByScroll) {
+  					// if PhotoSwipe is closed by scroll, we go "back" before the closing animation starts
+  					// this is done to keep the scroll position
+  					returnToOriginal();
+  				}
+  			});
+  			_listen('destroy', function() {
+  				if(!_hashReseted) {
+  					returnToOriginal();
+  				}
+  			});
+  			_listen('firstUpdate', function() {
+  				_currentItemIndex = _parseItemIndexFromURL().pid;
+  			});
+  
+  			
+  
+  			
+  			var index = _initialHash.indexOf('pid=');
+  			if(index > -1) {
+  				_initialHash = _initialHash.substring(0, index);
+  				if(_initialHash.slice(-1) === '&') {
+  					_initialHash = _initialHash.slice(0, -1);
+  				}
+  			}
+  			
+  
+  			setTimeout(function() {
+  				if(_isOpen) { // hasn't destroyed yet
+  					framework.bind(window, 'hashchange', self.onHashChange);
+  				}
+  			}, 40);
+  			
+  		},
+  		onHashChange: function() {
+  
+  			if(_getHash() === _initialHash) {
+  
+  				_closedFromURL = true;
+  				self.close();
+  				return;
+  			}
+  			if(!_hashChangedByScript) {
+  
+  				_hashChangedByHistory = true;
+  				self.goTo( _parseItemIndexFromURL().pid );
+  				_hashChangedByHistory = false;
+  			}
+  			
+  		},
+  		updateURL: function() {
+  
+  			// Delay the update of URL, to avoid lag during transition, 
+  			// and to not to trigger actions like "refresh page sound" or "blinking favicon" to often
+  			
+  			_cleanHistoryTimeouts();
+  			
+  
+  			if(_hashChangedByHistory) {
+  				return;
+  			}
+  
+  			if(!_historyChanged) {
+  				_updateHash(); // first time
+  			} else {
+  				_historyUpdateTimeout = setTimeout(_updateHash, 800);
+  			}
+  		}
+  	
+  	}
+  });
+  
+  
+  /*>>history*/
+  	framework.extend(self, publicMethods); };
+  	return PhotoSwipe;
+  });
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+  /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
+  
+    // Store setTimeout reference so promise-polyfill will be unaffected by
+    // other code modifying setTimeout (like sinon.useFakeTimers())
+    var setTimeoutFunc = setTimeout;
+  
+    function noop() {}
+    
+    // Polyfill for Function.prototype.bind
+    function bind(fn, thisArg) {
+      return function () {
+        fn.apply(thisArg, arguments);
+      };
+    }
+  
+    function Promise(fn) {
+      if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
+      if (typeof fn !== 'function') throw new TypeError('not a function');
+      this._state = 0;
+      this._handled = false;
+      this._value = undefined;
+      this._deferreds = [];
+  
+      doResolve(fn, this);
+    }
+  
+    function handle(self, deferred) {
+      while (self._state === 3) {
+        self = self._value;
+      }
+      if (self._state === 0) {
+        self._deferreds.push(deferred);
+        return;
+      }
+      self._handled = true;
+      Promise._immediateFn(function () {
+        var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
+        if (cb === null) {
+          (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
+          return;
+        }
+        var ret;
+        try {
+          ret = cb(self._value);
+        } catch (e) {
+          reject(deferred.promise, e);
+          return;
+        }
+        resolve(deferred.promise, ret);
+      });
+    }
+  
+    function resolve(self, newValue) {
+      try {
+        // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
+        if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
+        if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
+          var then = newValue.then;
+          if (newValue instanceof Promise) {
+            self._state = 3;
+            self._value = newValue;
+            finale(self);
+            return;
+          } else if (typeof then === 'function') {
+            doResolve(bind(then, newValue), self);
+            return;
+          }
+        }
+        self._state = 1;
+        self._value = newValue;
+        finale(self);
+      } catch (e) {
+        reject(self, e);
+      }
+    }
+  
+    function reject(self, newValue) {
+      self._state = 2;
+      self._value = newValue;
+      finale(self);
+    }
+  
+    function finale(self) {
+      if (self._state === 2 && self._deferreds.length === 0) {
+        Promise._immediateFn(function() {
+          if (!self._handled) {
+            Promise._unhandledRejectionFn(self._value);
+          }
+        });
+      }
+  
+      for (var i = 0, len = self._deferreds.length; i < len; i++) {
+        handle(self, self._deferreds[i]);
+      }
+      self._deferreds = null;
+    }
+  
+    function Handler(onFulfilled, onRejected, promise) {
+      this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
+      this.onRejected = typeof onRejected === 'function' ? onRejected : null;
+      this.promise = promise;
+    }
+  
+    /**
+     * Take a potentially misbehaving resolver function and make sure
+     * onFulfilled and onRejected are only called once.
+     *
+     * Makes no guarantees about asynchrony.
+     */
+    function doResolve(fn, self) {
+      var done = false;
+      try {
+        fn(function (value) {
+          if (done) return;
+          done = true;
+          resolve(self, value);
+        }, function (reason) {
+          if (done) return;
+          done = true;
+          reject(self, reason);
+        });
+      } catch (ex) {
+        if (done) return;
+        done = true;
+        reject(self, ex);
+      }
+    }
+  
+    Promise.prototype['catch'] = function (onRejected) {
+      return this.then(null, onRejected);
+    };
+  
+    Promise.prototype.then = function (onFulfilled, onRejected) {
+      var prom = new (this.constructor)(noop);
+  
+      handle(this, new Handler(onFulfilled, onRejected, prom));
+      return prom;
+    };
+  
+    Promise.all = function (arr) {
+      var args = Array.prototype.slice.call(arr);
+  
+      return new Promise(function (resolve, reject) {
+        if (args.length === 0) return resolve([]);
+        var remaining = args.length;
+  
+        function res(i, val) {
+          try {
+            if (val && (typeof val === 'object' || typeof val === 'function')) {
+              var then = val.then;
+              if (typeof then === 'function') {
+                then.call(val, function (val) {
+                  res(i, val);
+                }, reject);
+                return;
+              }
+            }
+            args[i] = val;
+            if (--remaining === 0) {
+              resolve(args);
+            }
+          } catch (ex) {
+            reject(ex);
+          }
+        }
+  
+        for (var i = 0; i < args.length; i++) {
+          res(i, args[i]);
+        }
+      });
+    };
+  
+    Promise.resolve = function (value) {
+      if (value && typeof value === 'object' && value.constructor === Promise) {
+        return value;
+      }
+  
+      return new Promise(function (resolve) {
+        resolve(value);
+      });
+    };
+  
+    Promise.reject = function (value) {
+      return new Promise(function (resolve, reject) {
+        reject(value);
+      });
+    };
+  
+    Promise.race = function (values) {
+      return new Promise(function (resolve, reject) {
+        for (var i = 0, len = values.length; i < len; i++) {
+          values[i].then(resolve, reject);
+        }
+      });
+    };
+  
+    // Use polyfill for setImmediate for performance gains
+    Promise._immediateFn = (typeof setImmediate === 'function' && function (fn) { setImmediate(fn); }) ||
+      function (fn) {
+        setTimeoutFunc(fn, 0);
+      };
+  
+    Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
+      if (typeof console !== 'undefined' && console) {
+        console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
+      }
+    };
+  
+    /**
+     * Set the immediate function to execute callbacks
+     * @param fn {function} Function to execute
+     * @deprecated
+     */
+    Promise._setImmediateFn = function _setImmediateFn(fn) {
+      Promise._immediateFn = fn;
+    };
+  
+    /**
+     * Change the function to execute on unhandled rejection
+     * @param {function} fn Function to execute on unhandled rejection
+     * @deprecated
+     */
+    Promise._setUnhandledRejectionFn = function _setUnhandledRejectionFn(fn) {
+      Promise._unhandledRejectionFn = fn;
+    };
+    
+    if (typeof module !== 'undefined' && module.exports) {
+      module.exports = Promise;
+    } else if (!root.Promise) {
+      root.Promise = Promise;
+    }
+  
+  })(this);
+  
+  /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(52).setImmediate))
+
+/***/ },
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -1330,9 +7566,9 @@
   
   'use strict';
   
-  var emptyFunction = __webpack_require__(8);
-  var invariant = __webpack_require__(9);
-  var ReactPropTypesSecret = __webpack_require__(7);
+  var emptyFunction = __webpack_require__(3);
+  var invariant = __webpack_require__(4);
+  var ReactPropTypesSecret = __webpack_require__(12);
   
   module.exports = function() {
     function shim(props, propName, componentName, location, propFullName, secret) {
@@ -1382,7 +7618,7 @@
 
 
 /***/ },
-/* 31 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
   /* WEBPACK VAR INJECTION */(function(process) {/**
@@ -1394,13 +7630,13 @@
   
   'use strict';
   
-  var emptyFunction = __webpack_require__(8);
-  var invariant = __webpack_require__(9);
-  var warning = __webpack_require__(15);
-  var assign = __webpack_require__(3);
+  var emptyFunction = __webpack_require__(3);
+  var invariant = __webpack_require__(4);
+  var warning = __webpack_require__(8);
+  var assign = __webpack_require__(5);
   
-  var ReactPropTypesSecret = __webpack_require__(7);
-  var checkPropTypes = __webpack_require__(6);
+  var ReactPropTypesSecret = __webpack_require__(12);
+  var checkPropTypes = __webpack_require__(11);
   
   module.exports = function(isValidElement, throwOnDirectAccess) {
     /* global Symbol */
@@ -1931,7 +8167,7 @@
   /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 32 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
   /* WEBPACK VAR INJECTION */(function(process) {/** @license React v16.0.0
@@ -1951,22 +8187,22 @@
   'use strict';
   
   var react = __webpack_require__(2);
-  var invariant = __webpack_require__(22);
+  var invariant = __webpack_require__(4);
   var ExecutionEnvironment = __webpack_require__(10);
-  var _assign = __webpack_require__(3);
+  var _assign = __webpack_require__(5);
   var EventListener = __webpack_require__(17);
-  var require$$0 = __webpack_require__(42);
-  var hyphenateStyleName = __webpack_require__(37);
-  var emptyFunction = __webpack_require__(5);
-  var camelizeStyleName = __webpack_require__(35);
-  var performanceNow = __webpack_require__(41);
-  var propTypes = __webpack_require__(4);
-  var emptyObject = __webpack_require__(19);
-  var checkPropTypes = __webpack_require__(6);
-  var shallowEqual = __webpack_require__(23);
+  var require$$0 = __webpack_require__(8);
+  var hyphenateStyleName = __webpack_require__(34);
+  var emptyFunction = __webpack_require__(3);
+  var camelizeStyleName = __webpack_require__(32);
+  var performanceNow = __webpack_require__(38);
+  var propTypes = __webpack_require__(6);
+  var emptyObject = __webpack_require__(7);
+  var checkPropTypes = __webpack_require__(11);
+  var shallowEqual = __webpack_require__(21);
   var containsNode = __webpack_require__(18);
-  var focusNode = __webpack_require__(20);
-  var getActiveElement = __webpack_require__(21);
+  var focusNode = __webpack_require__(19);
+  var getActiveElement = __webpack_require__(20);
   
   /**
    * Copyright (c) 2013-present, Facebook, Inc.
@@ -19159,7 +25395,7 @@
   /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 33 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
   /*
@@ -19172,7 +25408,7 @@
    LICENSE file in the root directory of this source tree.
    Modernizr 3.0.0pre (Custom Build) | MIT
   */
-  'use strict';var aa=__webpack_require__(2);__webpack_require__(22);var l=__webpack_require__(10),n=__webpack_require__(3),ba=__webpack_require__(17),ca=__webpack_require__(5),da=__webpack_require__(19),ea=__webpack_require__(23),fa=__webpack_require__(18),ha=__webpack_require__(20),ia=__webpack_require__(21);
+  'use strict';var aa=__webpack_require__(2);__webpack_require__(4);var l=__webpack_require__(10),n=__webpack_require__(5),ba=__webpack_require__(17),ca=__webpack_require__(3),da=__webpack_require__(7),ea=__webpack_require__(21),fa=__webpack_require__(18),ha=__webpack_require__(19),ia=__webpack_require__(20);
   function w(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:w("227");
   function ja(a){switch(a){case "svg":return"http://www.w3.org/2000/svg";case "math":return"http://www.w3.org/1998/Math/MathML";default:return"http://www.w3.org/1999/xhtml"}}
   var ka={Namespaces:{html:"http://www.w3.org/1999/xhtml",mathml:"http://www.w3.org/1998/Math/MathML",svg:"http://www.w3.org/2000/svg"},getIntrinsicNamespace:ja,getChildNamespace:function(a,b){return null==a||"http://www.w3.org/1999/xhtml"===a?ja(b):"http://www.w3.org/2000/svg"===a&&"foreignObject"===b?"http://www.w3.org/1999/xhtml":a}},la=null,oa={};
@@ -19421,276 +25657,230 @@
 
 
 /***/ },
-/* 34 */
-/***/ function(module, exports) {
-
-  "use strict";
-  
-  /**
-   * Copyright (c) 2013-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   *
-   * @typechecks
-   */
-  
-  var _hyphenPattern = /-(.)/g;
-  
-  /**
-   * Camelcases a hyphenated string, for example:
-   *
-   *   > camelize('background-color')
-   *   < "backgroundColor"
-   *
-   * @param {string} string
-   * @return {string}
-   */
-  function camelize(string) {
-    return string.replace(_hyphenPattern, function (_, character) {
-      return character.toUpperCase();
-    });
-  }
-  
-  module.exports = camelize;
-
-/***/ },
-/* 35 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
-  /**
-   * Copyright (c) 2013-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   *
-   * @typechecks
-   */
+  /* WEBPACK VAR INJECTION */(function(process) {'use strict';
   
-  'use strict';
-  
-  var camelize = __webpack_require__(34);
-  
-  var msPattern = /^-ms-/;
-  
-  /**
-   * Camelcases a hyphenated CSS property name, for example:
-   *
-   *   > camelizeStyleName('background-color')
-   *   < "backgroundColor"
-   *   > camelizeStyleName('-moz-transition')
-   *   < "MozTransition"
-   *   > camelizeStyleName('-ms-transition')
-   *   < "msTransition"
-   *
-   * As Andi Smith suggests
-   * (http://www.andismith.com/blog/2012/02/modernizr-prefixed/), an `-ms` prefix
-   * is converted to lowercase `ms`.
-   *
-   * @param {string} string
-   * @return {string}
-   */
-  function camelizeStyleName(string) {
-    return camelize(string.replace(msPattern, 'ms-'));
+  function checkDCE() {
+    /* global __REACT_DEVTOOLS_GLOBAL_HOOK__ */
+    if (
+      typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ === 'undefined' ||
+      typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE !== 'function'
+    ) {
+      return;
+    }
+    if (process.env.NODE_ENV !== 'production') {
+      // This branch is unreachable because this function is only called
+      // in production, but the condition is true only in development.
+      // Therefore if the branch is still here, dead code elimination wasn't
+      // properly applied.
+      // Don't change the message. React DevTools relies on it. Also make sure
+      // this message doesn't occur elsewhere in this function, or it will cause
+      // a false positive.
+      throw new Error('^_^');
+    }
+    try {
+      // Verify that the code above has been dead code eliminated (DCE'd).
+      __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(checkDCE);
+    } catch (err) {
+      // DevTools shouldn't crash React, no matter what.
+      // We should still report in case we break this code.
+      console.error(err);
+    }
   }
   
-  module.exports = camelizeStyleName;
-
-/***/ },
-/* 36 */
-/***/ function(module, exports) {
-
-  'use strict';
-  
-  /**
-   * Copyright (c) 2013-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   *
-   * @typechecks
-   */
-  
-  var _uppercasePattern = /([A-Z])/g;
-  
-  /**
-   * Hyphenates a camelcased string, for example:
-   *
-   *   > hyphenate('backgroundColor')
-   *   < "background-color"
-   *
-   * For CSS style names, use `hyphenateStyleName` instead which works properly
-   * with all vendor prefixes, including `ms`.
-   *
-   * @param {string} string
-   * @return {string}
-   */
-  function hyphenate(string) {
-    return string.replace(_uppercasePattern, '-$1').toLowerCase();
-  }
-  
-  module.exports = hyphenate;
-
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-  /**
-   * Copyright (c) 2013-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   *
-   * @typechecks
-   */
-  
-  'use strict';
-  
-  var hyphenate = __webpack_require__(36);
-  
-  var msPattern = /^ms-/;
-  
-  /**
-   * Hyphenates a camelcased CSS property name, for example:
-   *
-   *   > hyphenateStyleName('backgroundColor')
-   *   < "background-color"
-   *   > hyphenateStyleName('MozTransition')
-   *   < "-moz-transition"
-   *   > hyphenateStyleName('msTransition')
-   *   < "-ms-transition"
-   *
-   * As Modernizr suggests (http://modernizr.com/docs/#prefixed), an `ms` prefix
-   * is converted to `-ms-`.
-   *
-   * @param {string} string
-   * @return {string}
-   */
-  function hyphenateStyleName(string) {
-    return hyphenate(string).replace(msPattern, '-ms-');
-  }
-  
-  module.exports = hyphenateStyleName;
-
-/***/ },
-/* 38 */
-/***/ function(module, exports) {
-
-  'use strict';
-  
-  /**
-   * Copyright (c) 2013-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   *
-   * @typechecks
-   */
-  
-  /**
-   * @param {*} object The object to check.
-   * @return {boolean} Whether or not the object is a DOM node.
-   */
-  function isNode(object) {
-    var doc = object ? object.ownerDocument || object : document;
-    var defaultView = doc.defaultView || window;
-    return !!(object && (typeof defaultView.Node === 'function' ? object instanceof defaultView.Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
-  }
-  
-  module.exports = isNode;
-
-/***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  /**
-   * Copyright (c) 2013-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   *
-   * @typechecks
-   */
-  
-  var isNode = __webpack_require__(38);
-  
-  /**
-   * @param {*} object The object to check.
-   * @return {boolean} Whether or not the object is a DOM text node.
-   */
-  function isTextNode(object) {
-    return isNode(object) && object.nodeType == 3;
-  }
-  
-  module.exports = isTextNode;
-
-/***/ },
-/* 40 */
-/***/ function(module, exports, __webpack_require__) {
-
-  /**
-   * Copyright (c) 2013-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   *
-   * @typechecks
-   */
-  
-  'use strict';
-  
-  var ExecutionEnvironment = __webpack_require__(10);
-  
-  var performance;
-  
-  if (ExecutionEnvironment.canUseDOM) {
-    performance = window.performance || window.msPerformance || window.webkitPerformance;
-  }
-  
-  module.exports = performance || {};
-
-/***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  /**
-   * Copyright (c) 2013-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   *
-   * @typechecks
-   */
-  
-  var performance = __webpack_require__(40);
-  
-  var performanceNow;
-  
-  /**
-   * Detect if we can use `window.performance.now()` and gracefully fallback to
-   * `Date.now()` if it doesn't exist. We need to support Firefox < 15 for now
-   * because of Facebook's testing infrastructure.
-   */
-  if (performance.now) {
-    performanceNow = function performanceNow() {
-      return performance.now();
-    };
+  if (process.env.NODE_ENV === 'production') {
+    // DCE check should happen before ReactDOM bundle executes so that
+    // DevTools can report bad minification during injection.
+    checkDCE();
+    module.exports = __webpack_require__(46);
   } else {
-    performanceNow = function performanceNow() {
-      return Date.now();
-    };
+    module.exports = __webpack_require__(45);
   }
   
-  module.exports = performanceNow;
+  /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 42 */
-[46, 5],
-/* 43 */
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+  
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+  
+  var _react = __webpack_require__(2);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _propTypes = __webpack_require__(6);
+  
+  var _propTypes2 = _interopRequireDefault(_propTypes);
+  
+  var _classnames = __webpack_require__(16);
+  
+  var _classnames2 = _interopRequireDefault(_classnames);
+  
+  var _lodash = __webpack_require__(39);
+  
+  var _lodash2 = _interopRequireDefault(_lodash);
+  
+  var _PhotoSwipe = __webpack_require__(22);
+  
+  var _PhotoSwipe2 = _interopRequireDefault(_PhotoSwipe);
+  
+  var _events = __webpack_require__(23);
+  
+  var _events2 = _interopRequireDefault(_events);
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+  
+  function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+  
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var PhotoSwipeGallery = function (_React$Component) {
+    _inherits(PhotoSwipeGallery, _React$Component);
+  
+    function PhotoSwipeGallery() {
+      var _ref;
+  
+      var _temp, _this, _ret;
+  
+      _classCallCheck(this, PhotoSwipeGallery);
+  
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+  
+      return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PhotoSwipeGallery.__proto__ || Object.getPrototypeOf(PhotoSwipeGallery)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+        isOpen: _this.props.isOpen,
+        options: _this.props.options
+      }, _this.componentWillReceiveProps = function (nextProps) {
+        var isOpen = _this.state.isOpen;
+  
+        if (nextProps.isOpen) {
+          if (!isOpen) {
+            _this.setState({ isOpen: true });
+          }
+        } else if (isOpen) {
+          _this.setState({ isOpen: false });
+        }
+      }, _this.showPhotoSwipe = function (itemIndex) {
+        return function (e) {
+          e.preventDefault();
+          var getThumbBoundsFn = function getThumbBoundsFn(index) {
+            var thumbnail = _this.thumbnails[index];
+            var img = thumbnail.getElementsByTagName('img')[0];
+            var pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+            var rect = img.getBoundingClientRect();
+            return { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
+          };
+          var options = _this.state.options;
+  
+          options.index = itemIndex;
+          options.getThumbBoundsFn = options.getThumbBoundsFn || getThumbBoundsFn;
+          _this.setState({
+            isOpen: true,
+            options: options
+          });
+        };
+      }, _this.handleClose = function () {
+        _this.setState({
+          isOpen: false
+        });
+        _this.props.onClose();
+      }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+  
+    _createClass(PhotoSwipeGallery, [{
+      key: 'render',
+      value: function render() {
+        var _this2 = this;
+  
+        var _props = this.props,
+            id = _props.id,
+            items = _props.items,
+            thumbnailContent = _props.thumbnailContent,
+            other = _objectWithoutProperties(_props, ['id', 'items', 'thumbnailContent']);
+  
+        var className = this.props.className;
+  
+        className = (0, _classnames2.default)(['pswp-gallery', className]).trim();
+        var eventProps = (0, _lodash2.default)(other, _events2.default);
+        var _state = this.state,
+            isOpen = _state.isOpen,
+            options = _state.options;
+  
+        return _react2.default.createElement(
+          'div',
+          { id: id, className: className },
+          _react2.default.createElement(
+            'div',
+            { className: 'pswp-thumbnails' },
+            items.map(function (item, index) {
+              return _react2.default.createElement(
+                'div',
+                {
+                  key: index,
+                  ref: function ref(node) {
+                    _this2.thumbnails = _this2.thumbnails || [];
+                    _this2.thumbnails[index] = node;
+                  },
+                  className: 'pswp-thumbnail',
+                  onClick: _this2.showPhotoSwipe(index)
+                },
+                thumbnailContent(item)
+              );
+            })
+          ),
+          _react2.default.createElement(_PhotoSwipe2.default, _extends({}, eventProps, {
+            isOpen: isOpen,
+            items: items,
+            options: options,
+            onClose: this.handleClose
+          }))
+        );
+      }
+    }]);
+  
+    return PhotoSwipeGallery;
+  }(_react2.default.Component);
+  
+  PhotoSwipeGallery.propTypes = {
+    items: _propTypes2.default.array.isRequired,
+    options: _propTypes2.default.object,
+    thumbnailContent: _propTypes2.default.func,
+    id: _propTypes2.default.string,
+    className: _propTypes2.default.string,
+    isOpen: _propTypes2.default.bool,
+    onClose: _propTypes2.default.func
+  };
+  PhotoSwipeGallery.defaultProps = {
+    options: {},
+    thumbnailContent: function thumbnailContent(item) {
+      return _react2.default.createElement('img', { src: item.src, width: '100', height: '100', alt: '' });
+    },
+    id: '',
+    className: '',
+    isOpen: false,
+    onClose: function onClose() {}
+  };
+  exports.default = PhotoSwipeGallery;
+  module.exports = exports['default'];
+
+/***/ },
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
   /* WEBPACK VAR INJECTION */(function(process) {/** @license React v16.0.0
@@ -19709,12 +25899,12 @@
   
   'use strict';
   
-  var objectAssign$1 = __webpack_require__(3);
-  var require$$0 = __webpack_require__(45);
-  var emptyObject = __webpack_require__(24);
-  var invariant = __webpack_require__(25);
-  var emptyFunction = __webpack_require__(11);
-  var checkPropTypes = __webpack_require__(6);
+  var objectAssign$1 = __webpack_require__(5);
+  var require$$0 = __webpack_require__(8);
+  var emptyObject = __webpack_require__(7);
+  var invariant = __webpack_require__(4);
+  var emptyFunction = __webpack_require__(3);
+  var checkPropTypes = __webpack_require__(11);
   
   /**
    * Copyright (c) 2013-present, Facebook, Inc.
@@ -21395,7 +27585,7 @@
   /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 44 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
   /*
@@ -21407,7 +27597,7 @@
    This source code is licensed under the MIT license found in the
    LICENSE file in the root directory of this source tree.
   */
-  'use strict';var f=__webpack_require__(3),p=__webpack_require__(24);__webpack_require__(25);var r=__webpack_require__(11);
+  'use strict';var f=__webpack_require__(5),p=__webpack_require__(7);__webpack_require__(4);var r=__webpack_require__(3);
   function t(a){for(var b=arguments.length-1,d="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,e=0;e<b;e++)d+="\x26args[]\x3d"+encodeURIComponent(arguments[e+1]);b=Error(d+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}
   var u={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};function v(a,b,d){this.props=a;this.context=b;this.refs=p;this.updater=d||u}v.prototype.isReactComponent={};v.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?t("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};v.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};
   function w(a,b,d){this.props=a;this.context=b;this.refs=p;this.updater=d||u}function x(){}x.prototype=v.prototype;var y=w.prototype=new x;y.constructor=w;f(y,v.prototype);y.isPureReactComponent=!0;function z(a,b,d){this.props=a;this.context=b;this.refs=p;this.updater=d||u}var A=z.prototype=new x;A.constructor=z;f(A,v.prototype);A.unstable_isAsyncReactComponent=!0;A.render=function(){return this.props.children};
@@ -21424,75 +27614,257 @@
 
 
 /***/ },
-/* 45 */
-[46, 11],
-/* 46 */
-/***/ function(module, exports, __webpack_require__, __webpack_module_template_argument_0__) {
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
 
-  /* WEBPACK VAR INJECTION */(function(process) {/**
-   * Copyright (c) 2014-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   *
-   */
+  /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
+      "use strict";
   
-  'use strict';
-  
-  var emptyFunction = __webpack_require__(__webpack_module_template_argument_0__);
-  
-  /**
-   * Similar to invariant but only logs a warning if the condition is not met.
-   * This can be used to log issues in development environments in critical
-   * paths. Removing the logging code for production environments will keep the
-   * same logic and follow the same code paths.
-   */
-  
-  var warning = emptyFunction;
-  
-  if (process.env.NODE_ENV !== 'production') {
-    var printWarning = function printWarning(format) {
-      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        args[_key - 1] = arguments[_key];
+      if (global.setImmediate) {
+          return;
       }
   
-      var argIndex = 0;
-      var message = 'Warning: ' + format.replace(/%s/g, function () {
-        return args[argIndex++];
-      });
-      if (typeof console !== 'undefined') {
-        console.error(message);
-      }
-      try {
-        // --- Welcome to debugging React ---
-        // This error was thrown as a convenience so that you can use this stack
-        // to find the callsite that caused this warning to fire.
-        throw new Error(message);
-      } catch (x) {}
-    };
+      var nextHandle = 1; // Spec says greater than zero
+      var tasksByHandle = {};
+      var currentlyRunningATask = false;
+      var doc = global.document;
+      var registerImmediate;
   
-    warning = function warning(condition, format) {
-      if (format === undefined) {
-        throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-      }
-  
-      if (format.indexOf('Failed Composite propType: ') === 0) {
-        return; // Ignore CompositeComponent proptype check.
-      }
-  
-      if (!condition) {
-        for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-          args[_key2 - 2] = arguments[_key2];
+      function setImmediate(callback) {
+        // Callback can either be a function or a string
+        if (typeof callback !== "function") {
+          callback = new Function("" + callback);
         }
-  
-        printWarning.apply(undefined, [format].concat(args));
+        // Copy function arguments
+        var args = new Array(arguments.length - 1);
+        for (var i = 0; i < args.length; i++) {
+            args[i] = arguments[i + 1];
+        }
+        // Store and register the task
+        var task = { callback: callback, args: args };
+        tasksByHandle[nextHandle] = task;
+        registerImmediate(nextHandle);
+        return nextHandle++;
       }
-    };
-  }
   
-  module.exports = warning;
-  /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+      function clearImmediate(handle) {
+          delete tasksByHandle[handle];
+      }
+  
+      function run(task) {
+          var callback = task.callback;
+          var args = task.args;
+          switch (args.length) {
+          case 0:
+              callback();
+              break;
+          case 1:
+              callback(args[0]);
+              break;
+          case 2:
+              callback(args[0], args[1]);
+              break;
+          case 3:
+              callback(args[0], args[1], args[2]);
+              break;
+          default:
+              callback.apply(undefined, args);
+              break;
+          }
+      }
+  
+      function runIfPresent(handle) {
+          // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
+          // So if we're currently running a task, we'll need to delay this invocation.
+          if (currentlyRunningATask) {
+              // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+              // "too much recursion" error.
+              setTimeout(runIfPresent, 0, handle);
+          } else {
+              var task = tasksByHandle[handle];
+              if (task) {
+                  currentlyRunningATask = true;
+                  try {
+                      run(task);
+                  } finally {
+                      clearImmediate(handle);
+                      currentlyRunningATask = false;
+                  }
+              }
+          }
+      }
+  
+      function installNextTickImplementation() {
+          registerImmediate = function(handle) {
+              process.nextTick(function () { runIfPresent(handle); });
+          };
+      }
+  
+      function canUsePostMessage() {
+          // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+          // where `global.postMessage` means something completely different and can't be used for this purpose.
+          if (global.postMessage && !global.importScripts) {
+              var postMessageIsAsynchronous = true;
+              var oldOnMessage = global.onmessage;
+              global.onmessage = function() {
+                  postMessageIsAsynchronous = false;
+              };
+              global.postMessage("", "*");
+              global.onmessage = oldOnMessage;
+              return postMessageIsAsynchronous;
+          }
+      }
+  
+      function installPostMessageImplementation() {
+          // Installs an event handler on `global` for the `message` event: see
+          // * https://developer.mozilla.org/en/DOM/window.postMessage
+          // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+  
+          var messagePrefix = "setImmediate$" + Math.random() + "$";
+          var onGlobalMessage = function(event) {
+              if (event.source === global &&
+                  typeof event.data === "string" &&
+                  event.data.indexOf(messagePrefix) === 0) {
+                  runIfPresent(+event.data.slice(messagePrefix.length));
+              }
+          };
+  
+          if (global.addEventListener) {
+              global.addEventListener("message", onGlobalMessage, false);
+          } else {
+              global.attachEvent("onmessage", onGlobalMessage);
+          }
+  
+          registerImmediate = function(handle) {
+              global.postMessage(messagePrefix + handle, "*");
+          };
+      }
+  
+      function installMessageChannelImplementation() {
+          var channel = new MessageChannel();
+          channel.port1.onmessage = function(event) {
+              var handle = event.data;
+              runIfPresent(handle);
+          };
+  
+          registerImmediate = function(handle) {
+              channel.port2.postMessage(handle);
+          };
+      }
+  
+      function installReadyStateChangeImplementation() {
+          var html = doc.documentElement;
+          registerImmediate = function(handle) {
+              // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+              // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+              var script = doc.createElement("script");
+              script.onreadystatechange = function () {
+                  runIfPresent(handle);
+                  script.onreadystatechange = null;
+                  html.removeChild(script);
+                  script = null;
+              };
+              html.appendChild(script);
+          };
+      }
+  
+      function installSetTimeoutImplementation() {
+          registerImmediate = function(handle) {
+              setTimeout(runIfPresent, 0, handle);
+          };
+      }
+  
+      // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
+      var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
+      attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
+  
+      // Don't get fooled by e.g. browserify environments.
+      if ({}.toString.call(global.process) === "[object process]") {
+          // For Node.js before 0.9
+          installNextTickImplementation();
+  
+      } else if (canUsePostMessage()) {
+          // For non-IE10 modern browsers
+          installPostMessageImplementation();
+  
+      } else if (global.MessageChannel) {
+          // For web workers, where supported
+          installMessageChannelImplementation();
+  
+      } else if (doc && "onreadystatechange" in doc.createElement("script")) {
+          // For IE 6–8
+          installReadyStateChangeImplementation();
+  
+      } else {
+          // For older browsers
+          installSetTimeoutImplementation();
+      }
+  
+      attachTo.setImmediate = setImmediate;
+      attachTo.clearImmediate = clearImmediate;
+  }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
+  
+  /* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(1)))
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+  var apply = Function.prototype.apply;
+  
+  // DOM APIs, for completeness
+  
+  exports.setTimeout = function() {
+    return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+  };
+  exports.setInterval = function() {
+    return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+  };
+  exports.clearTimeout =
+  exports.clearInterval = function(timeout) {
+    if (timeout) {
+      timeout.close();
+    }
+  };
+  
+  function Timeout(id, clearFn) {
+    this._id = id;
+    this._clearFn = clearFn;
+  }
+  Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+  Timeout.prototype.close = function() {
+    this._clearFn.call(window, this._id);
+  };
+  
+  // Does not start the time, just sets up the members needed.
+  exports.enroll = function(item, msecs) {
+    clearTimeout(item._idleTimeoutId);
+    item._idleTimeout = msecs;
+  };
+  
+  exports.unenroll = function(item) {
+    clearTimeout(item._idleTimeoutId);
+    item._idleTimeout = -1;
+  };
+  
+  exports._unrefActive = exports.active = function(item) {
+    clearTimeout(item._idleTimeoutId);
+  
+    var msecs = item._idleTimeout;
+    if (msecs >= 0) {
+      item._idleTimeoutId = setTimeout(function onTimeout() {
+        if (item._onTimeout)
+          item._onTimeout();
+      }, msecs);
+    }
+  };
+  
+  // setimmediate attaches itself to the global object
+  __webpack_require__(51);
+  exports.setImmediate = setImmediate;
+  exports.clearImmediate = clearImmediate;
+
 
 /***/ }
-/******/ ])));
+/******/ ]);
 //# sourceMappingURL=client.js.map

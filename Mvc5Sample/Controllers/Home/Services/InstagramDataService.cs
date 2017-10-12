@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using AspNetCoreSample.Controllers.Home.Models;
+using Mvc5Sample.Controllers.Home.Models;
 using Newtonsoft.Json;
 
-namespace AspNetCoreSample.Controllers.Home.Services
+namespace Mvc5Sample.Controllers.Home.Services
 {
     public interface IInstagramDataService
     {

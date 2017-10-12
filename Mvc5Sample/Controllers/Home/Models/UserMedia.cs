@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace AspNetCoreSample.Controllers.Home.Models
+namespace Mvc5Sample.Controllers.Home.Models
 {
     public class UserMedia
     {

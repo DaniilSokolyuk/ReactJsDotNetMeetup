@@ -1,11 +1,7 @@
-﻿@model Mvc5Sample.Controllers.IndexViewModel
+﻿@model Mvc5Sample.Controllers.Home.Models.InstagramSearch
 
 
-
-@Html.React("Components.CommentsBox", new { initialComments = Model.Comments })
-
+@Html.React("Components.Instagram", new { search = Model })
 
 
-
-
-
+@Html.React("Components.Gallery", new { })

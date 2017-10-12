@@ -12,6 +12,7 @@
         <ProjectReference Include="..\JsPoolOptimization\JsPoolOptimization.csproj" />
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="Autofac.Mvc5" Version="4.0.2" />
         <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.3" />
         <PackageReference Include="Microsoft.AspNet.Razor" Version="3.2.3" />
         <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.2.3" />
@@ -45,5 +46,8 @@
         <Reference Include="System.Web.Services" />
         <Reference Include="System.EnterpriseServices" />
         <Reference Include="System.Net.Http.WebRequest" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="css\" />
     </ItemGroup>
 </Project>

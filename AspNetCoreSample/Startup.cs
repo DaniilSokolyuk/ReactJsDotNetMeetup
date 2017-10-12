@@ -1,10 +1,8 @@
 ﻿using System;
 using AspNetCoreSample.Controllers.Home.Services;
 using JavaScriptEngineSwitcher.ChakraCore;
-using JavaScriptEngineSwitcher.Core;
 using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
 using JsPoolOptimization;
-// using JsPoolOptimization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

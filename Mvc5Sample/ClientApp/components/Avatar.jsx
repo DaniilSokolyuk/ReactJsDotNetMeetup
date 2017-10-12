@@ -5,20 +5,17 @@ export default class Avatar extends PureComponent {
     render() {
         return (
             <img
-                src={this.getPhotoUrl(this.props.author)}
-                alt={'Photo of ' + this.props.author.Name}
+                src={this.props.picUrl}
+                alt={'Photo of ' + this.props.name}
                 width={50}
                 height={50}
                 className="commentPhoto"
             />
         );
     }
-
-    getPhotoUrl(author) {
-        return 'https://avatars.githubusercontent.com/' + author.GithubUsername + '?s=50';
-    }
 }
 
 Avatar.propTypes = {
-    author: PropTypes.object.isRequired,
+    picUrl: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
 };
