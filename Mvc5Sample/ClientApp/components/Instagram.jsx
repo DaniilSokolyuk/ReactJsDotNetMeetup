@@ -11,10 +11,10 @@ export default class Instagram extends Component {
         loading: false
     };
 
-    componentWillUpdate(prevProps, prevState) {
-        const { searchText } = this.state;
-        if (prevState.searchText !== searchText && searchText) {
-            this.request(searchText);
+    componentWillUpdate(nextProps, nextState) {
+        const { searchText: oldSearchText } = this.state;
+        if (nextState.searchText !== oldSearchText && nextState.searchText) {
+            this.request(nextState.searchText);
         }
     }
 

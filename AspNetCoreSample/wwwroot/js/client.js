@@ -613,7 +613,7 @@
   exports.events = undefined;
   exports.debounce = debounce;
   
-  var _EventChannel = __webpack_require__(24);
+  var _EventChannel = __webpack_require__(25);
   
   var _EventChannel2 = _interopRequireDefault(_EventChannel);
   
@@ -760,6 +760,70 @@
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
+  /* WEBPACK VAR INJECTION */(function(Promise) {'use strict';
+  
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+  exports.default = api;
+  var APIActions = exports.APIActions = Object.freeze({
+      SEARCH: 'Search',
+      GET_USER: 'GetUser'
+  });
+  
+  function api(action, data) {
+  
+      var xhr = new XMLHttpRequest();
+  
+      // Default method
+      var method = 'GET';
+  
+      // Default expected status
+      var expectedStatus = 200;
+  
+      // Default request header
+      var requestHeaderKey = 'Content-type';
+      var requestHeaderValue = 'application/json';
+  
+      var params = null;
+      var url = void 0;
+  
+      switch (action) {
+  
+          case APIActions.SEARCH:
+              url = '/Home/Search/?text=' + data;
+              break;
+  
+          case APIActions.GET_USER:
+              url = '/Home/User/?userName=' + data;
+              break;
+      }
+  
+      return new Promise(function (resolve, reject) {
+          xhr.open(method, url, true);
+          xhr.setRequestHeader(requestHeaderKey, requestHeaderValue);
+          xhr.onload = function () {
+              if (this.status === expectedStatus) {
+                  resolve(this.response);
+              } else {
+                  var error = new Error(this.statusText);
+                  error.code = this.status;
+                  reject(error);
+              }
+          };
+  
+          xhr.onerror = function () {
+              reject(new Error('Network Error'));
+          };
+          xhr.send(params);
+      });
+  }
+  /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(42)))
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
   'use strict';
   
   Object.defineProperty(exports, "__esModule", {
@@ -818,7 +882,7 @@
   };
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -837,13 +901,13 @@
   
   var _propTypes2 = _interopRequireDefault(_propTypes);
   
-  var _Avatar = __webpack_require__(13);
+  var _Avatar = __webpack_require__(14);
   
   var _Avatar2 = _interopRequireDefault(_Avatar);
   
   var _utils = __webpack_require__(9);
   
-  var _api = __webpack_require__(25);
+  var _api = __webpack_require__(13);
   
   var _api2 = _interopRequireDefault(_api);
   
@@ -927,7 +991,7 @@
   };
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
   var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -981,7 +1045,7 @@
 
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
   /* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -1061,7 +1125,7 @@
   /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -1103,7 +1167,7 @@
   module.exports = containsNode;
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports) {
 
   /**
@@ -1132,7 +1196,7 @@
   module.exports = focusNode;
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports) {
 
   'use strict';
@@ -1173,7 +1237,7 @@
   module.exports = getActiveElement;
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports) {
 
   /**
@@ -1243,7 +1307,7 @@
   module.exports = shallowEqual;
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -1270,11 +1334,11 @@
   
   var _photoswipeUiDefault2 = _interopRequireDefault(_photoswipeUiDefault);
   
-  var _classnames = __webpack_require__(15);
+  var _classnames = __webpack_require__(16);
   
   var _classnames2 = _interopRequireDefault(_classnames);
   
-  var _events = __webpack_require__(22);
+  var _events = __webpack_require__(23);
   
   var _events2 = _interopRequireDefault(_events);
   
@@ -1511,7 +1575,7 @@
   module.exports = exports['default'];
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports) {
 
   'use strict';
@@ -1523,7 +1587,7 @@
   module.exports = exports['default'];
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -1533,7 +1597,7 @@
   });
   exports.PhotoSwipeGallery = exports.PhotoSwipe = undefined;
   
-  var _PhotoSwipe = __webpack_require__(21);
+  var _PhotoSwipe = __webpack_require__(22);
   
   var _PhotoSwipe2 = _interopRequireDefault(_PhotoSwipe);
   
@@ -1548,7 +1612,7 @@
   exports.PhotoSwipeGallery = _PhotoSwipeGallery2.default;
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports) {
 
   "use strict";
@@ -1606,70 +1670,6 @@
   exports.default = EventChannel;
 
 /***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-  /* WEBPACK VAR INJECTION */(function(Promise) {'use strict';
-  
-  Object.defineProperty(exports, "__esModule", {
-      value: true
-  });
-  exports.default = api;
-  var APIActions = exports.APIActions = Object.freeze({
-      SEARCH: 'Search',
-      GET_USER: 'GetUser'
-  });
-  
-  function api(action, data) {
-  
-      var xhr = new XMLHttpRequest();
-  
-      // Default method
-      var method = 'GET';
-  
-      // Default expected status
-      var expectedStatus = 200;
-  
-      // Default request header
-      var requestHeaderKey = 'Content-type';
-      var requestHeaderValue = 'application/json';
-  
-      var params = null;
-      var url = void 0;
-  
-      switch (action) {
-  
-          case APIActions.SEARCH:
-              url = '/Home/Search/?text=' + data;
-              break;
-  
-          case APIActions.GET_USER:
-              url = '/Home/User/?userName=' + data;
-              break;
-      }
-  
-      return new Promise(function (resolve, reject) {
-          xhr.open(method, url, true);
-          xhr.setRequestHeader(requestHeaderKey, requestHeaderValue);
-          xhr.onload = function () {
-              if (this.status === expectedStatus) {
-                  resolve(this.response);
-              } else {
-                  var error = new Error(this.statusText);
-                  error.code = this.status;
-                  reject(error);
-              }
-          };
-  
-          xhr.onerror = function () {
-              reject(new Error('Network Error'));
-          };
-          xhr.send(params);
-      });
-  }
-  /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(42)))
-
-/***/ },
 /* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1687,7 +1687,7 @@
   
   var _utils = __webpack_require__(9);
   
-  var _reactPhotoswipe = __webpack_require__(23);
+  var _reactPhotoswipe = __webpack_require__(24);
   
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
   
@@ -1783,13 +1783,13 @@
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _User = __webpack_require__(14);
+  var _User = __webpack_require__(15);
   
   var _User2 = _interopRequireDefault(_User);
   
-  var _reactPhotoswipe = __webpack_require__(23);
+  var _reactPhotoswipe = __webpack_require__(24);
   
-  var _api = __webpack_require__(25);
+  var _api = __webpack_require__(13);
   
   var _api2 = _interopRequireDefault(_api);
   
@@ -1844,11 +1844,11 @@
   
       _createClass(Instagram, [{
           key: 'componentWillUpdate',
-          value: function componentWillUpdate(prevProps, prevState) {
-              var searchText = this.state.searchText;
+          value: function componentWillUpdate(nextProps, nextState) {
+              var oldSearchText = this.state.searchText;
   
-              if (prevState.searchText !== searchText && searchText) {
-                  this.request(searchText);
+              if (nextState.searchText !== oldSearchText && nextState.searchText) {
+                  this.request(nextState.searchText);
               }
           }
       }, {
@@ -1892,7 +1892,7 @@
 
   'use strict';
   
-  var _User = __webpack_require__(14);
+  var _User = __webpack_require__(15);
   
   var _User2 = _interopRequireDefault(_User);
   
@@ -1900,7 +1900,7 @@
   
   var _Instagram2 = _interopRequireDefault(_Instagram);
   
-  var _Avatar = __webpack_require__(13);
+  var _Avatar = __webpack_require__(14);
   
   var _Avatar2 = _interopRequireDefault(_Avatar);
   
@@ -8190,7 +8190,7 @@
   var invariant = __webpack_require__(4);
   var ExecutionEnvironment = __webpack_require__(10);
   var _assign = __webpack_require__(5);
-  var EventListener = __webpack_require__(16);
+  var EventListener = __webpack_require__(17);
   var require$$0 = __webpack_require__(8);
   var hyphenateStyleName = __webpack_require__(34);
   var emptyFunction = __webpack_require__(3);
@@ -8199,10 +8199,10 @@
   var propTypes = __webpack_require__(6);
   var emptyObject = __webpack_require__(7);
   var checkPropTypes = __webpack_require__(11);
-  var shallowEqual = __webpack_require__(20);
-  var containsNode = __webpack_require__(17);
-  var focusNode = __webpack_require__(18);
-  var getActiveElement = __webpack_require__(19);
+  var shallowEqual = __webpack_require__(21);
+  var containsNode = __webpack_require__(18);
+  var focusNode = __webpack_require__(19);
+  var getActiveElement = __webpack_require__(20);
   
   /**
    * Copyright (c) 2013-present, Facebook, Inc.
@@ -25408,7 +25408,7 @@
    LICENSE file in the root directory of this source tree.
    Modernizr 3.0.0pre (Custom Build) | MIT
   */
-  'use strict';var aa=__webpack_require__(2);__webpack_require__(4);var l=__webpack_require__(10),n=__webpack_require__(5),ba=__webpack_require__(16),ca=__webpack_require__(3),da=__webpack_require__(7),ea=__webpack_require__(20),fa=__webpack_require__(17),ha=__webpack_require__(18),ia=__webpack_require__(19);
+  'use strict';var aa=__webpack_require__(2);__webpack_require__(4);var l=__webpack_require__(10),n=__webpack_require__(5),ba=__webpack_require__(17),ca=__webpack_require__(3),da=__webpack_require__(7),ea=__webpack_require__(21),fa=__webpack_require__(18),ha=__webpack_require__(19),ia=__webpack_require__(20);
   function w(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:w("227");
   function ja(a){switch(a){case "svg":return"http://www.w3.org/2000/svg";case "math":return"http://www.w3.org/1998/Math/MathML";default:return"http://www.w3.org/1999/xhtml"}}
   var ka={Namespaces:{html:"http://www.w3.org/1999/xhtml",mathml:"http://www.w3.org/1998/Math/MathML",svg:"http://www.w3.org/2000/svg"},getIntrinsicNamespace:ja,getChildNamespace:function(a,b){return null==a||"http://www.w3.org/1999/xhtml"===a?ja(b):"http://www.w3.org/2000/svg"===a&&"foreignObject"===b?"http://www.w3.org/1999/xhtml":a}},la=null,oa={};
@@ -25723,7 +25723,7 @@
   
   var _propTypes2 = _interopRequireDefault(_propTypes);
   
-  var _classnames = __webpack_require__(15);
+  var _classnames = __webpack_require__(16);
   
   var _classnames2 = _interopRequireDefault(_classnames);
   
@@ -25731,11 +25731,11 @@
   
   var _lodash2 = _interopRequireDefault(_lodash);
   
-  var _PhotoSwipe = __webpack_require__(21);
+  var _PhotoSwipe = __webpack_require__(22);
   
   var _PhotoSwipe2 = _interopRequireDefault(_PhotoSwipe);
   
-  var _events = __webpack_require__(22);
+  var _events = __webpack_require__(23);
   
   var _events2 = _interopRequireDefault(_events);
   

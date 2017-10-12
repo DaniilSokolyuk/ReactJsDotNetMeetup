@@ -211,7 +211,7 @@
   exports.events = undefined;
   exports.debounce = debounce;
 
-  var _EventChannel = __webpack_require__(14);
+  var _EventChannel = __webpack_require__(15);
 
   var _EventChannel2 = _interopRequireDefault(_EventChannel);
 
@@ -352,6 +352,69 @@
 
 /***/ },
 /* 8 */
+/***/ function(module, exports) {
+
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+  exports.default = api;
+  var APIActions = exports.APIActions = Object.freeze({
+      SEARCH: 'Search',
+      GET_USER: 'GetUser'
+  });
+
+  function api(action, data) {
+
+      var xhr = new XMLHttpRequest();
+
+      // Default method
+      var method = 'GET';
+
+      // Default expected status
+      var expectedStatus = 200;
+
+      // Default request header
+      var requestHeaderKey = 'Content-type';
+      var requestHeaderValue = 'application/json';
+
+      var params = null;
+      var url = void 0;
+
+      switch (action) {
+
+          case APIActions.SEARCH:
+              url = '/Home/Search/?text=' + data;
+              break;
+
+          case APIActions.GET_USER:
+              url = '/Home/User/?userName=' + data;
+              break;
+      }
+
+      return new Promise(function (resolve, reject) {
+          xhr.open(method, url, true);
+          xhr.setRequestHeader(requestHeaderKey, requestHeaderValue);
+          xhr.onload = function () {
+              if (this.status === expectedStatus) {
+                  resolve(this.response);
+              } else {
+                  var error = new Error(this.statusText);
+                  error.code = this.status;
+                  reject(error);
+              }
+          };
+
+          xhr.onerror = function () {
+              reject(new Error('Network Error'));
+          };
+          xhr.send(params);
+      });
+  }
+
+/***/ },
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -412,7 +475,7 @@
   };
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -431,13 +494,13 @@
 
   var _propTypes2 = _interopRequireDefault(_propTypes);
 
-  var _Avatar = __webpack_require__(8);
+  var _Avatar = __webpack_require__(9);
 
   var _Avatar2 = _interopRequireDefault(_Avatar);
 
   var _utils = __webpack_require__(5);
 
-  var _api = __webpack_require__(15);
+  var _api = __webpack_require__(8);
 
   var _api2 = _interopRequireDefault(_api);
 
@@ -521,7 +584,7 @@
   };
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
   var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -575,7 +638,7 @@
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -602,11 +665,11 @@
 
   var _photoswipeUiDefault2 = _interopRequireDefault(_photoswipeUiDefault);
 
-  var _classnames = __webpack_require__(10);
+  var _classnames = __webpack_require__(11);
 
   var _classnames2 = _interopRequireDefault(_classnames);
 
-  var _events = __webpack_require__(12);
+  var _events = __webpack_require__(13);
 
   var _events2 = _interopRequireDefault(_events);
 
@@ -843,7 +906,7 @@
   module.exports = exports['default'];
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports) {
 
   'use strict';
@@ -855,7 +918,7 @@
   module.exports = exports['default'];
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -865,7 +928,7 @@
   });
   exports.PhotoSwipeGallery = exports.PhotoSwipe = undefined;
 
-  var _PhotoSwipe = __webpack_require__(11);
+  var _PhotoSwipe = __webpack_require__(12);
 
   var _PhotoSwipe2 = _interopRequireDefault(_PhotoSwipe);
 
@@ -880,7 +943,7 @@
   exports.PhotoSwipeGallery = _PhotoSwipeGallery2.default;
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports) {
 
   "use strict";
@@ -938,69 +1001,6 @@
   exports.default = EventChannel;
 
 /***/ },
-/* 15 */
-/***/ function(module, exports) {
-
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-      value: true
-  });
-  exports.default = api;
-  var APIActions = exports.APIActions = Object.freeze({
-      SEARCH: 'Search',
-      GET_USER: 'GetUser'
-  });
-
-  function api(action, data) {
-
-      var xhr = new XMLHttpRequest();
-
-      // Default method
-      var method = 'GET';
-
-      // Default expected status
-      var expectedStatus = 200;
-
-      // Default request header
-      var requestHeaderKey = 'Content-type';
-      var requestHeaderValue = 'application/json';
-
-      var params = null;
-      var url = void 0;
-
-      switch (action) {
-
-          case APIActions.SEARCH:
-              url = '/Home/Search/?text=' + data;
-              break;
-
-          case APIActions.GET_USER:
-              url = '/Home/User/?userName=' + data;
-              break;
-      }
-
-      return new Promise(function (resolve, reject) {
-          xhr.open(method, url, true);
-          xhr.setRequestHeader(requestHeaderKey, requestHeaderValue);
-          xhr.onload = function () {
-              if (this.status === expectedStatus) {
-                  resolve(this.response);
-              } else {
-                  var error = new Error(this.statusText);
-                  error.code = this.status;
-                  reject(error);
-              }
-          };
-
-          xhr.onerror = function () {
-              reject(new Error('Network Error'));
-          };
-          xhr.send(params);
-      });
-  }
-
-/***/ },
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1018,7 +1018,7 @@
 
   var _utils = __webpack_require__(5);
 
-  var _reactPhotoswipe = __webpack_require__(13);
+  var _reactPhotoswipe = __webpack_require__(14);
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1114,13 +1114,13 @@
 
   var _react2 = _interopRequireDefault(_react);
 
-  var _User = __webpack_require__(9);
+  var _User = __webpack_require__(10);
 
   var _User2 = _interopRequireDefault(_User);
 
-  var _reactPhotoswipe = __webpack_require__(13);
+  var _reactPhotoswipe = __webpack_require__(14);
 
-  var _api = __webpack_require__(15);
+  var _api = __webpack_require__(8);
 
   var _api2 = _interopRequireDefault(_api);
 
@@ -1175,11 +1175,11 @@
 
       _createClass(Instagram, [{
           key: 'componentWillUpdate',
-          value: function componentWillUpdate(prevProps, prevState) {
-              var searchText = this.state.searchText;
+          value: function componentWillUpdate(nextProps, nextState) {
+              var oldSearchText = this.state.searchText;
 
-              if (prevState.searchText !== searchText && searchText) {
-                  this.request(searchText);
+              if (nextState.searchText !== oldSearchText && nextState.searchText) {
+                  this.request(nextState.searchText);
               }
           }
       }, {
@@ -1223,7 +1223,7 @@
 
   'use strict';
 
-  var _User = __webpack_require__(9);
+  var _User = __webpack_require__(10);
 
   var _User2 = _interopRequireDefault(_User);
 
@@ -1231,7 +1231,7 @@
 
   var _Instagram2 = _interopRequireDefault(_Instagram);
 
-  var _Avatar = __webpack_require__(8);
+  var _Avatar = __webpack_require__(9);
 
   var _Avatar2 = _interopRequireDefault(_Avatar);
 
@@ -7303,7 +7303,7 @@
 
   var _propTypes2 = _interopRequireDefault(_propTypes);
 
-  var _classnames = __webpack_require__(10);
+  var _classnames = __webpack_require__(11);
 
   var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -7311,11 +7311,11 @@
 
   var _lodash2 = _interopRequireDefault(_lodash);
 
-  var _PhotoSwipe = __webpack_require__(11);
+  var _PhotoSwipe = __webpack_require__(12);
 
   var _PhotoSwipe2 = _interopRequireDefault(_PhotoSwipe);
 
-  var _events = __webpack_require__(12);
+  var _events = __webpack_require__(13);
 
   var _events2 = _interopRequireDefault(_events);
 

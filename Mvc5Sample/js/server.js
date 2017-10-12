@@ -1175,11 +1175,11 @@
 
       _createClass(Instagram, [{
           key: 'componentWillUpdate',
-          value: function componentWillUpdate(prevProps, prevState) {
-              var searchText = this.state.searchText;
+          value: function componentWillUpdate(nextProps, nextState) {
+              var oldSearchText = this.state.searchText;
 
-              if (prevState.searchText !== searchText && searchText) {
-                  this.request(searchText);
+              if (nextState.searchText !== oldSearchText && nextState.searchText) {
+                  this.request(nextState.searchText);
               }
           }
       }, {
